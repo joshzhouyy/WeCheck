@@ -1,10 +1,20 @@
 const path = require('path');
 
-var BUILD_DIR = path.resolve(__dirname, 'src/client/public');
-var APP_DIR = path.resolve(__dirname, 'src/client/app');
+const BUILD_DIR = path.resolve(__dirname, 'src/client/public');
+const APP_DIR = path.resolve(__dirname, 'src/client/app');
 
-var config = {
-    entry: APP_DIR + '/index.jsx',
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
+  template: './src/client/app/index.html',
+  filename: 'index.html',
+  inject: 'body'
+})
+
+const config = {
+    entry: [
+        'webpack-dev-server/client?http://localhost:3000',
+        APP_DIR + '/app.js',
+    ],
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js'
@@ -13,11 +23,12 @@ var config = {
         loaders : [
             {
                 test : /\.jsx?/,
-                include : APP_DIR,
+                exclude: /node_modules/,
                 loader : 'babel-loader'
             }
         ]
-    }
+    },
+    plugins: [HtmlWebpackPluginConfig]
  };
 
  module.exports = config;
