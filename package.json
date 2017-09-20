@@ -21,7 +21,14 @@
     "jsdom": "11.2.0",
     "mocha": "3.5.3",
     "react-addons-test-utils": "15.6.0",
-    "sinon": "3.3.0"
+    "sinon": "3.3.0",
+    "body-parser": "1.18.1",
+    "cors": "2.8.4",
+    "express": "4.15.4",
+    "mongodb": "2.2.31",
+    "mongoose": "4.11.12",
+    "path": "0.12.7",
+    "socket.io": "2.0.3"
   },
   "scripts": {
     "test": "mocha --compilers js:babel-register --require ./src/client/test/helpers.js --require ./src/client/test/dom.js --recursive",
