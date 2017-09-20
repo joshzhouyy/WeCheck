@@ -1,1 +1,1 @@
-# CS408
+# WeCheck
