@@ -24,7 +24,7 @@
     "sinon": "3.3.0"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-register --require ./src/client/test/helpers.js --require ./src/client/test/dom.js --recursive",
+    "test": "mocha --compilers js:babel-register --require ./src/client/test/helpers.js --require ./src/client/test/dom.js --recursive src/client/test/*.spec.js",
     "dev": "webpack-dev-server --port 3000 --devtool eval --progress --colors --hot --content-base dist",
     "watch": "./node_modules/.bin/webpack -d --watch",
     "build": "./node_modules/.bin/webpack -p"
