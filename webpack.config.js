@@ -25,6 +25,10 @@ const config = {
                 test : /\.jsx?/,
                 exclude: /node_modules/,
                 loader : 'babel-loader'
+            },
+            {
+                test: /\.(png|jpg|gif|ico)$/,
+                loader: 'file-loader'
             }
         ]
     },
