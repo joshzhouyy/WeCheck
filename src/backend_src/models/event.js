@@ -5,12 +5,15 @@ var event = new mongoose.Schema({
     status: {
     	type: String,
     	enum: ['inprocess','finished']
-    }
+    },
     type: {
     	type: String,
     	enum: ['public','private']
+    },
+    category: {
+    	ype: String,
+    	enum: ['restaurant','hotel', 'flight']
     }
-    category:[{ type: Schema.Types.ObjectId, ref: 'Category'}]
 });
 
 module.exports = mongoose.model('event', event);

@@ -18,6 +18,22 @@ module.exports = function loadUserRoutes(router) {
         });
     });
 
+    router.post('/createvent', (req, res) => {
+        var newEvent = new user();
+        newEvent.eventname = req.body.eventname;
+        newEvent.status = req.body.status;
+        newEvent.type = req.body.type;
+        newEvent.category = req.body.category;
+
+        newEvent.save((error) => {
+            if(error){
+                res.json(null);
+                return;
+            }
+            res.json(newEvent);
+        });
+    });
+
     router.post('/login', (req, res) => {
         user.findOne({'username': req.body.username}, (error, user)=>{
             if(error){
