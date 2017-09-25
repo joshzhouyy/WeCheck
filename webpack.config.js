@@ -1,6 +1,6 @@
 const path = require('path');
 
-const BUILD_DIR = path.resolve(__dirname, 'src/client/public');
+const BUILD_DIR = path.resolve(__dirname, 'src/client/dist');
 const APP_DIR = path.resolve(__dirname, 'src/client/app');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -25,6 +25,10 @@ const config = {
                 test : /\.jsx?/,
                 exclude: /node_modules/,
                 loader : 'babel-loader'
+            },
+            {
+                test: /\.(png|jpg|gif|ico)$/,
+                loader: 'file-loader'
             }
         ]
     },
