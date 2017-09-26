@@ -1,7 +1,9 @@
+import React from 'react';
 import { Button } from 'react-bootstrap';
 
 
-class Login extends Component {
+
+class Login extends React.Component {
   constructor(props){
     super(props);
     this.state={

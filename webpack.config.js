@@ -11,10 +11,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 })
 
 const config = {
-    entry: [
-        'webpack-dev-server/client?http://localhost:3000',
-        APP_DIR + '/app.js',
-    ],
+    entry: APP_DIR + '/index.js',
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js'
@@ -27,13 +24,16 @@ const config = {
         loaders : [
             {
                 test : /\.jsx?/,
-                include: [APP_DIR],
                 exclude: ["/node_modules/"],
                 loader : 'babel-loader'
             },
             {
                 test: /\.(png|jpg|gif|ico)$/,
                 loader: 'file-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ]
             }
         ]
     },
