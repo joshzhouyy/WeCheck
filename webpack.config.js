@@ -1,11 +1,11 @@
 const path = require('path');
 
 const BUILD_DIR = path.resolve(__dirname, 'src/client/dist');
-const APP_DIR = path.resolve(__dirname, 'src/client/app');
+const APP_DIR = path.resolve(__dirname, 'src/client/src');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './src/client/app/index.html',
+  template: './src/client/src/index.html',
   filename: 'index.html',
   inject: 'body'
 })

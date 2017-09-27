@@ -24,6 +24,9 @@
     "jsdom": "11.2.0",
     "mocha": "3.5.3",
     "react-addons-test-utils": "15.6.0",
+    "react-redux": "5.0.6",
+    "redux": "3.7.2",
+    "redux-thunk": "2.2.0",
     "sinon": "3.3.0",
     "style-loader": "0.18.2"
   },
