@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
-import Login from './components/Login/Login';
+// import todoApp from './reducers'
+// import App from './components/App'
 
+
+let store = createStore(todoApp);
 
 ReactDOM.render(
-    <Login />,
-    document.getElementById('app')
+	<Provider store={store}>
+    	<App />
+  	</Provider>,
+  	document.getElementById('root')
 );
-
 
