@@ -1,3 +1,4 @@
+var hash = require('object-hash');
 var bodyParser = require('body-parser');
 var user = require('../models/user.js');
 
@@ -7,7 +8,8 @@ module.exports = function loadUserRoutes(router) {
     router.post('/signup', (req, res) => {
         var newUser = new user();
         newUser.username = req.body.username;
-        newUser.password = req.body.password;
+        newUser.password = hash(req.body.password)
+       //newUser.password = req.body.password;
 
         newUser.save((error) => {
             if(error){

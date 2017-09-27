@@ -3,11 +3,11 @@ var path = require('path');
 var cors = require('cors');
 var socketIO = require('socket.io');
 var mongoose = require('mongoose');
-// var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient;
 
 var mongooseURL = process.env.MONGOLAB_URL || 'mongodb://admin:admin@ds139844.mlab.com:39844/wecheckdb';
 
-mongoose.connect(mongooseURL,{useMongoClient: true}, function(err){
+mongoose.connect(mongooseURL,{useMongoClient:true}, function(err){
 //MongoClient.connect(mongooseURL, function(err){
     if(err){
         console.log("Fail to connect to mongoose.");
@@ -28,7 +28,7 @@ require('./routes/userRouter')(userRouter);
 app.use('/api', userRouter);
 
 //app.use('/', express.static(path.join(__dirname, '../..', 'static')));
-app.use('/', express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/../client/app/'));
 
 //run server
 const server = app.listen(port, function(err){
