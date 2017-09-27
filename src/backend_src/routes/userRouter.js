@@ -26,11 +26,13 @@ module.exports = function loadUserRoutes(router) {
                 res.send('Error: ' + error);
             }
             if(!user){
+                console.log("no user found");
                 res.json(null);
             }
-            if(user.password == req.body.password){
+            if(user.password === hash(req.body.password)){
                 res.json(user);
             }else{
+                console.log("password incorrect");
                 res.json(null);
             }
         });
