@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var event = new mongoose.Schema({
+var eventSchema = new mongoose.Schema({
     eventname: {type: String, unique: true},
-    owner: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+    owner_id: [{ type: Schema.Types.ObjectId, ref: 'User'}],
     status_a: {
     	type: String,
     	enum: ['inprocess','finished']
@@ -15,7 +16,8 @@ var event = new mongoose.Schema({
     	type: String,
     	enum: ['restaurant','hotel', 'flight']
     }
-    member:[{ type: Schema.Types.ObjectId, ref: 'User'}]
+    member_id:[{ type: Schema.Types.ObjectId, ref: 'User'}],
+    total: Number
 });
 
-module.exports = mongoose.model('event', event);
+module.exports = mongoose.model('Event', eventSchema);
