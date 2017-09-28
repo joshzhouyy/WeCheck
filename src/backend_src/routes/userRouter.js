@@ -5,14 +5,36 @@ var user = require('../models/user.js');
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
+    router.get('/userCheck', function(req, res){
+        user.findOne({email: req.query.email}, function(err, user){
+            console.log(req.query.email)
+            if(err){
+                console.log(err)
+            }
+            var message;
+            if(user){
+                console.log(user)
+                message = "user exists";
+                console.log(message)
+            }
+            else{
+                message = "uesr does not exist";
+                console.log(message)
+            }
+            res.json({message: message});
+        });
+    });
+
     router.post('/signup', (req, res) => {
+        //user.dropIndex({"username": 1})
         var newUser = new user();
-        newUser.username = req.body.username;
+        newUser.email = req.body.email;
         newUser.password = hash(req.body.password)
        //newUser.password = req.body.password;
 
         newUser.save((error) => {
             if(error){
+                console.log(error);
                 res.json(null);
                 return;
             }
@@ -21,7 +43,7 @@ module.exports = function loadUserRoutes(router) {
     });
 
     router.post('/login', (req, res) => {
-        user.findOne({'username': req.body.username}, (error, user)=>{
+        user.findOne({'email': req.body.email}, (error, user)=>{
             if(error){
                 res.send('Error: ' + error);
             }
@@ -43,8 +65,8 @@ module.exports = function loadUserRoutes(router) {
     });
 
     //get all usernames
-    router.get('/all_usernames', function(req, res){
-        user.find({'username': {$exists:true}}, function(err, data) {
+    router.get('/all_useremail', function(req, res){
+        user.find({'email': {$exists:true}}, function(err, data) {
             if(err){
                 console.log(err);
                 return res.status(500).json({msg: 'internal server error'});
