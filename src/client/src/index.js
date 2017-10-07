@@ -4,15 +4,20 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 // import todoApp from './reducers'
-// import App from './components/App'
+import App from './app/App'
 
 
-let store = createStore(todoApp);
+// let store = createStore(todoApp);
+
+// ReactDOM.render(
+// 	<Provider store={store}>
+//     	<App />
+//   	</Provider>,
+//   	document.getElementById('root')
+// );
+
 
 ReactDOM.render(
-	<Provider store={store}>
-    	<App />
-  	</Provider>,
+    <App />,
   	document.getElementById('root')
 );
-
