@@ -42,7 +42,7 @@ module.exports = function loadUserRoutes(router) {
         });
     });
 
-    router.post('/login', (req, res) => {
+    router.put('/login', (req, res) => {
         user.findOne({'email': req.body.email}, (error, user)=>{
             if(error){
                 res.send('Error: ' + error);
@@ -50,6 +50,7 @@ module.exports = function loadUserRoutes(router) {
             if(!user){
                 console.log("no user found");
                 res.json(null);
+                return;
             }
             if(user.password === hash(req.body.password)){
                 res.json(user);
