@@ -1,30 +1,42 @@
 const path = require('path');
 
-const BUILD_DIR = path.resolve(__dirname, 'src/client/public');
-const APP_DIR = path.resolve(__dirname, 'src/client/app');
+const BUILD_DIR = path.resolve(__dirname, 'src/client/dist');
+const APP_DIR = path.resolve(__dirname, 'src/client/src');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './src/client/app/index.html',
+  template: './src/client/src/index.html',
   filename: 'index.html',
   inject: 'body'
 })
 
 const config = {
-    entry: [
-        'webpack-dev-server/client?http://localhost:3000',
-        APP_DIR + '/app.js',
-    ],
+    entry: APP_DIR + '/index.js',
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js'
+    },
+    resolve: {
+      modules: [APP_DIR, "node_modules"],
+      extensions: ['.js', '.jsx']
     },
     module : {
         loaders : [
             {
                 test : /\.jsx?/,
-                exclude: /node_modules/,
+                exclude: ["/node_modules/"],
                 loader : 'babel-loader'
+            },
+            {
+                test: /\.(png|jpg|gif|ico)$/,
+                loader: 'file-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
             }
         ]
     },
