@@ -1,15 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Subheader from './Subheader'
+import SubHeader from './Subheader'
 
 
 class App extends React.Component {
 
 	render(){
+		const props = {
+			headerName: "Dashboard"
+		}
 
 		return (
-			<div><Subheader headerName='Dashboard' /></div>
+			<div><SubHeader {...props} /></div>
 		);
 	}
 }

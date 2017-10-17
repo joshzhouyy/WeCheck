@@ -4,10 +4,11 @@ import {Panel} from 'react-bootstrap'
 
 
 const subHeaderTitle = ({headerName}) => (
-  <h3>{headerName}</h3>
+   console.log(headerName)
+  //<h3>{headerName}</h3>
 );
 
-const subHeader = ({headerName}) => (
+const SubHeader = ({headerName}) => (
   <div>
     <Panel header={subHeaderTitle(headerName)}>
       Panel content
@@ -15,11 +16,11 @@ const subHeader = ({headerName}) => (
   </div>
 );
 
-subHeader.propTypes = {
+SubHeader.propTypes = {
 	headerName: PropTypes.string.isRequired
 }
 
-export default subHeader
+export default SubHeader
 
 
 
