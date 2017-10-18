@@ -24,8 +24,11 @@ app.use(cors())
 
 //load routes
 const userRouter = express.Router();
+const eventRouter = express.Router();
 require('./routes/userRouter')(userRouter);
+require('./routes/eventRouter')(eventRouter);
 app.use('/api', userRouter);
+app.use('/api', eventRouter);
 
 //app.use('/', express.static(path.join(__dirname, '../..', 'static')));
 app.use('/', express.static(__dirname + '/../client/app/'));
