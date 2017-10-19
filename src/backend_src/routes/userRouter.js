@@ -42,6 +42,7 @@ module.exports = function loadUserRoutes(router) {
         });
     });
 
+
     router.put('/login', (req, res) => {
         user.findOne({'email': req.body.email}, (error, user)=>{
             if(error){
