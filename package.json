@@ -21,7 +21,7 @@
     "babel-preset-es2015": "6.24.1",
     "babel-preset-react": "6.24.1",
     "chai": "4.1.2",
-    "css-loader": "0.28.7",
+    "css-loader": "^0.28.7",
     "enzyme": "2.9.1",
     "file-loader": "0.11.2",
     "jsdom": "11.2.0",
@@ -32,7 +32,7 @@
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",
     "sinon": "3.3.0",
-    "style-loader": "0.18.2"
+    "style-loader": "^0.18.2"
   },
   "scripts": {
     "test": "mocha --compilers js:babel-register --require ./src/client/test/helpers.js --require ./src/client/test/dom.js --recursive src/client/test/*.spec.js",
