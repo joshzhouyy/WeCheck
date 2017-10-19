@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {Grid, Row, Col} from 'react-bootstrap'
 
 import EventMemberPanel from '../event/EventMemberPanel'
@@ -9,17 +7,6 @@ import LeftContainer from '../splitter/LeftContainer'
 import MidContainer from '../splitter/MidContainer'
 import RightContainer from '../splitter/RightContainer'
 import './style.css'
-
-const muiTheme = getMuiTheme({
-  fontFamily: 'Alegreya Sans SC'
-});
-
-
-const Panel = () => (
-  <MuiThemeProvider muiTheme={muiTheme}>
-    <EventMemberPanel />
-  </MuiThemeProvider>
-);
 
 class App extends React.Component {
 

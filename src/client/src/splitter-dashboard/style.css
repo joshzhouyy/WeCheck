@@ -1,0 +1,10 @@
+/*:local(#paperContainer) {
+  height: 100%;
+  width: 100%;
+}
+*/
+
+#dashboardContainer {
+  height: 99%;
+  max-width: 100%;
+}
