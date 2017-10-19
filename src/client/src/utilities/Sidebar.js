@@ -4,6 +4,9 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import ActionHome from 'material-ui/svg-icons/action/home';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+
+
 import './sidebar.css';
 
 
@@ -24,7 +27,8 @@ const styles = {
 
 
 const Sidebar = () => (
-  <div >
+  <MuiThemeProvider>
+    <div >
     <nav id="parentDiv">
     <div id="sidebar">
     <IconButton
@@ -40,7 +44,7 @@ const Sidebar = () => (
     </div>
     </nav>
   </div>
-
+  </MuiThemeProvider>
 );
 
 export default Sidebar;

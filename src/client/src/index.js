@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import { BrowserRouter } from 'react-router-dom'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 // import todoApp from './reducers'
 import App from './app/App'
@@ -19,11 +18,9 @@ import App from './app/App'
 // );
 
 const WeCheck = () => (
-<BrowserRouter>
-	<MuiThemeProvider>
+  <BrowserRouter>
     <App />
-  </MuiThemeProvider>
-</BrowserRouter>
+  </BrowserRouter>
 );
 
 ReactDOM.render(

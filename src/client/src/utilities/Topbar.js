@@ -5,6 +5,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Switch, Route,Link } from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import Sidebar from './Sidebar';
 import Signup from '../signup/Signup';
@@ -49,16 +50,17 @@ const rightButtons = (
 
 
 
-const TopBar = () => (
-  <div>
-	  <AppBar
-	    title={<span style={styles.title}>WeCheck</span>}
-	    onTitleTouchTap={handleTouchTap}
-	    iconElementRight={rightButtons}
-	  />
-    
-  </div>
+const Topbar = () => (
+  <MuiThemeProvider>
+    <div>
+      <AppBar
+        title={<span style={styles.title}>WeCheck</span>}
+        onTitleTouchTap={handleTouchTap}
+        iconElementRight={rightButtons}
+      />
+    </div>
+  </MuiThemeProvider>
 
 );
 
-export default TopBar;
+export default Topbar;
