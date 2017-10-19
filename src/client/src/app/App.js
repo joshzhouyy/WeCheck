@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Subheader from './Subheader'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import EventMemberPanel from '../event/EventMemberPanel'
+import TopBar from "../utilities/Topbar"
+import Sidebar from "../utilities/Sidebar"
 
 
 const muiTheme = getMuiTheme({
@@ -25,7 +26,10 @@ class App extends React.Component {
 	render(){
 
 		return (
-			<Panel />
+			<div>
+			  <TopBar />
+		    <Sidebar />
+  		</div>
 		);
 	}
 }

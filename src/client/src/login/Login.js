@@ -1,27 +1,26 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
+import React from 'react'
+import './Login.css'
+
+const Login = () => (
+
+	<div className='popupl'>
+		<div className='popup_innerl'>
+	
+		<label id="emaila"><b>Email</b></label>
+		 <input type="password" placeholder="Enter Email" name="psw" required/>
+		 <label><b> Password</b></label>
+		 <input type="password" placeholder="Enter Password" name="psw-repeat" required/>
+		 <div className="clearfix">
+		 	<button type="button"  className="cancelbtn">Cancel</button>
+		 	<button type="submit" className="signupbtn">Login In</button>
+		 </div>
+	
+		</div>
+	</div>
+ 
 
 
 
-class Login extends React.Component {
-  constructor(props){
-    super(props);
-    this.state={
-      username:'',
-      password:''
-    }
-  }
-  render() {
-    return (
-      <div>
-          <label><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="uname" onChange = {(event,newValue) => this.setState({username:newValue})}/>
-          <label><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" onChange = {(event,newValue) => this.setState({password:newValue})}/>
-      </div>  
-    );  
-  }
-}
+)
 
-
-export default Login;
+export default Login
