@@ -1,5 +1,7 @@
 var bodyParser = require ('body-parser');
 var evt = require('../models/event_info.js');
+var user = require('../models/user.js');
+
 
 module.exports = function loadEventRoutes(router){
 	router.use(bodyParser.json());
@@ -7,7 +9,8 @@ module.exports = function loadEventRoutes(router){
 	//create an event
 	router.post('/createEvent', (req, res) => {
 		var newEvent = new evt();
-		newEvent.ownerID = req.body.creatorID;
+		newEvent.ownerID = req.body.ownerID;
+		console.log("ownerID = " + newEvent.ownerID);
 		newEvent.eventName = req.body.eventName;
 		newEvent.eventType = req.body.eventType;
 		newEvent.eventCategory = req.body.eventCategory;
@@ -25,6 +28,7 @@ module.exports = function loadEventRoutes(router){
 				return;
 			}
 			res.json(newEvent);
+			
 		});
 
 	});

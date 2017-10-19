@@ -28,8 +28,9 @@ module.exports = function loadUserRoutes(router) {
     router.post('/signup', (req, res) => {
         //user.dropIndex({"username": 1})
         var newUser = new user();
-        newUser.email = req.body.email;
-        newUser.password = hash(req.body.password)
+        newUser.userAccount = req.body.userAccount;
+        newUser.password = hash(req.body.password);
+        newUser.userName = req.body.userName;
        //newUser.password = req.body.password;
 
         newUser.save((error) => {

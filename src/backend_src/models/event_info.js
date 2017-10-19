@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var eventSchema = new mongoose.Schema({
-    owenerID: { type: Schema.Types.ObjectId, ref: 'user'},
+    ownerID: { type: Schema.Types.ObjectId, ref: 'user'},
     eventName: {type: String, unique: true},
     eventType: {
     	type: String,
