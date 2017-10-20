@@ -1,11 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Paper from 'material-ui/Paper'
 import {Card, CardHeader, CardText} from 'material-ui/Card'
-import {List, ListItem} from 'material-ui/List';
-import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
-import RaisedButton from 'material-ui/RaisedButton';
+import {List, ListItem} from 'material-ui/List'
+import {darkBlack} from 'material-ui/styles/colors'
+import RaisedButton from 'material-ui/RaisedButton'
 
 import "./BalancePanel.css"
 

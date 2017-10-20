@@ -4,6 +4,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 import EventMemberPanel from '../event/EventMemberPanel'
 import BalancePanel from '../balance-panel/BalancePanel'
+import MessageBox from '../message-box/MessageBox'
 import "./SplitterContainers.css"
 
 const muiTheme = getMuiTheme({
@@ -12,7 +13,7 @@ const muiTheme = getMuiTheme({
 
   const Panel = () => (
     <MuiThemeProvider muiTheme={muiTheme}>
-      <BalancePanel />
+      <MessageBox />
     </MuiThemeProvider>
   );
 
