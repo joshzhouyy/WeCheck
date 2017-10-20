@@ -3,7 +3,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 import EventMemberPanel from '../event/EventMemberPanel'
-import "./style.css"
+import BalancePanel from '../balance-panel/BalancePanel'
+import "./SplitterContainers.css"
 
 const muiTheme = getMuiTheme({
     fontFamily: 'Alegreya Sans SC'
@@ -11,7 +12,7 @@ const muiTheme = getMuiTheme({
 
   const Panel = () => (
     <MuiThemeProvider muiTheme={muiTheme}>
-      <EventMemberPanel />
+      <BalancePanel />
     </MuiThemeProvider>
   );
 

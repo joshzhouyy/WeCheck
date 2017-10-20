@@ -15,11 +15,12 @@ html, body {
 }
 
 #topRow {
-  height: 8%;
+  height: 10%;
+  width: 100%;
 }
 
 #btmRow {
-  height: 92%; 
+  height: 90%; 
   width: 100%;
 }
 

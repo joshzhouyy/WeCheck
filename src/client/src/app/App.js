@@ -2,11 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Grid, Row, Col} from 'react-bootstrap'
 
-import EventMemberPanel from '../event/EventMemberPanel'
 import LeftContainer from '../splitter/LeftContainer'
 import MidContainer from '../splitter/MidContainer'
 import RightContainer from '../splitter/RightContainer'
-import './style.css'
+import './App.css'
 
 class App extends React.Component {
 
@@ -29,24 +28,6 @@ class App extends React.Component {
       </Grid>
     );
 	}
-
-  // render() {
-  //   return (
-  //     <Panel />
-  //   );
-  // }
-  // <div id="outerContainer">
-  //       <div id="topContainer">
-  //       </div>
-  //       <div id="btmContainer">
-  //         <div id="sideBar" className="containers"></div>
-  //         <div id="mainActivity" className="containers">
-  //           <LeftContainer />
-  //           <MidContainer />
-  //           <RightContainer />  
-  //         </div>
-  //       </div>
-  //     </div>
 }
 
 export default App

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import "./style.css"
+import "./SplitterContainers.css"
 
 class RightContainer extends React.Component {
 

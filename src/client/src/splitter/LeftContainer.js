@@ -2,7 +2,7 @@ import React from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Dashboard from '../splitter-dashboard/Dashboard'
-import './style.css'
+import './SplitterContainers.css'
 
 class LeftContainer extends React.Component {
 
