@@ -13,7 +13,7 @@ const muiTheme = getMuiTheme({
 
   const Panel = () => (
     <MuiThemeProvider muiTheme={muiTheme}>
-      <MessageBox />
+      <EventMemberPanel />
     </MuiThemeProvider>
   );
 

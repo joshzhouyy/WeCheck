@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     font-size: 100%;
+    font-family: 'Alegreya Sans SC';
 }
 
 #root {
@@ -39,8 +40,3 @@ html, body {
 .mainActivityCols {
   height: 100%;
 }
-
-
-/*.containers {
-  height: 100%;
-}*/
