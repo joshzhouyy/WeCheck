@@ -34,8 +34,8 @@ module.exports = function loadEventRoutes(router){
 	});
 
 	//edit detail of an existing event
-	router.put('/editEvent', (req, res) => {
-		evt.findOne({'eventName': req.body.eventName}, (error, evt) => {
+	router.put('/editEvent/:eventID', (req, res) => {
+		evt.findOne({'_id': req.params.eventID}, (error, evt) => {
 			if(error){
 				res.send('Error:' + error);
 				return;
@@ -70,8 +70,8 @@ module.exports = function loadEventRoutes(router){
 	})
 
 	//delete an event from database
-	router.post('/deleteEvent', function(req, res){
-		var toRemoved = evt.findOne({'eventName':req.body.eventName, 'ownerID':req.body.ownerID}, (error, toRemoved) => {
+	router.post('/deleteEvent/:eventID', function(req, res){
+		var toRemoved = evt.findOne({'eventID':req.params.eventID}, (error, toRemoved) => {
 			if(error){
 				res.status(500).send('Error: ' + error);
 				return;
