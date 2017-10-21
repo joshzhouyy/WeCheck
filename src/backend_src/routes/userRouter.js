@@ -6,8 +6,8 @@ module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
     router.get('/userCheck', function(req, res){
-        user.findOne({email: req.query.email}, function(err, user){
-            console.log(req.query.email)
+        user.findOne({'userAccount': req.query.userAccount}, function(err, user){
+            console.log(req.query.userAccount)
             if(err){
                 console.log(err)
             }
@@ -45,7 +45,7 @@ module.exports = function loadUserRoutes(router) {
 
 
     router.put('/login', (req, res) => {
-        user.findOne({'email': req.body.email}, (error, user)=>{
+        user.findOne({'userAccount': req.body.userAccount}, (error, user)=>{
             if(error){
                 res.send('Error: ' + error);
             }
@@ -69,7 +69,7 @@ module.exports = function loadUserRoutes(router) {
 
     //get all usernames
     router.get('/all_useremail', function(req, res){
-        user.find({'email': {$exists:true}}, function(err, data) {
+        user.find({'userAccount': {$exists:true}}, function(err, data) {
             if(err){
                 console.log(err);
                 return res.status(500).json({msg: 'internal server error'});
@@ -77,4 +77,28 @@ module.exports = function loadUserRoutes(router) {
             res.json(data);
         });
     })
+
+    //delete user
+    router.post('/deleteUser', function(req, res){
+        var toRemoved = user.findOne({'userAccount': req.body.userAccount}, (error, toRemoved) =>{
+            console.log(req.body.email);
+            if(error){
+                res.send('Error: ' + error);
+                return;
+            }
+            if(!toRemoved){
+                console.log('no such user found');
+                res.status(500).send("internal server error");
+                return;
+            }
+            response = {
+                message: 'User successfully deleted',
+                id:toRemoved._id
+            };
+            toRemoved.remove();
+            res.status(200).send(response);
+            return;
+
+        });
+    });
 };

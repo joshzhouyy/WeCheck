@@ -45,7 +45,7 @@ module.exports = function loadEventRoutes(router){
 				res.json(null);
 				return;
 			}
-			evt.ownerID = req.body.creatorID;
+			evt.ownerID = req.body.ownerID;
 			evt.eventName = req.body.eventName;
 			evt.eventType = req.body.eventType;
 			evt.eventCategory = req.body.eventCategory;
@@ -68,6 +68,27 @@ module.exports = function loadEventRoutes(router){
 			});
 		});
 	})
+
+	//delete an event from database
+	router.post('/deleteEvent', function(req, res){
+		var toRemoved = evt.findOne({'eventName':req.body.eventName, 'ownerID':req.body.ownerID}, (error, toRemoved) => {
+			if(error){
+				res.status(500).send('Error: ' + error);
+				return;
+			}
+			if(!toRemoved){
+				res.status(500).send('no such event found');
+				return;
+			}
+			response = {
+				message: "event successfully deleted",
+				id: toRemoved._id
+			};
+			toRemoved.remove();
+			res.status(200).send(response);
+			return;
+		});
+	});
 
 
 	//get all stored event
