@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Paper from 'material-ui/Paper';
 import Subheader from 'material-ui/Subheader';
@@ -9,13 +10,7 @@ import ActionGrade from 'material-ui/svg-icons/action/grade';
 import './Dashboard.css';
 
 
-const handleTouchTap = (item) => {
-  console.log(item + " was selected\n")
-  let selectedItem = item
-  return selectedItem
-}
-
-const Dashboard = () => (
+const Dashboard = ({handleTouchTap}) => (
   <Paper id="dashboardContainer">
     <List>
       <Subheader>Dashboard</Subheader>
@@ -24,5 +19,9 @@ const Dashboard = () => (
     </List>
   </Paper>
 );
+
+Dashboard.propTypes = {
+  handleTouchTap: PropTypes.func.isRequired
+}
 
 export default Dashboard;

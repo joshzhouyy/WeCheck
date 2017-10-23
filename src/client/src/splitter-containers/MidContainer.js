@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
@@ -35,14 +37,23 @@ const ActivePanel = (props)=> {
 
 
 class MidContainer extends React.Component {
-  
+  constructor(props) {
+    super(props)
+  }
+
   render(){
+    const panelName = this.props.activePanel
+
     return (
       <div id="midContainer" className="containers">
-        <ActivePanel panelName={"MESSAGE_BOX"} />
+        <ActivePanel panelName={panelName} />
       </div>
     );
   }
+}
+
+MidContainer.propTypes = {
+  activePanel: PropTypes.string.isRequired
 }
 
 export default MidContainer
