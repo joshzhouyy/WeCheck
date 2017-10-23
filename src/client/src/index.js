@@ -18,6 +18,9 @@ if (process.env.NODE_ENV !== 'production') {
 const store = createStore(rootReducer, applyMiddleware(...middleware));
 
 
+  // let store = createStore(actions);
+
+
 const WeCheck = () => (
   <BrowserRouter>
     <Provider store={store}>

@@ -40,7 +40,7 @@ class App extends React.Component {
     };
 
     let midContainerProps = {
-      activePanel: this.props.activePanel
+      activePanel: "MESSAGE_BOX"
     };
 
 		return (
