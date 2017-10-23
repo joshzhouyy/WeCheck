@@ -6,7 +6,7 @@ var evt = require('../models/event_info.js');
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
-    router.get('/userCheck', function(req, res){
+    router.get('/api/userCheck', function(req, res){
         user.findOne({'userAccount': req.query.userAccount}, function(err, user){
             console.log(req.query.userAccount)
             if(err){
@@ -52,14 +52,15 @@ module.exports = function loadUserRoutes(router) {
             }
             if(!user){
                 console.log("no user found");
-                res.json(null);
+                res.status(402).send("email does not exists");
                 return;
             }
             if(user.password === hash(req.body.password)){
                 res.json(user);
             }else{
                 console.log("password incorrect");
-                res.json(null);
+                res.status(403).send("password incorrect");
+                //res.json(null);
             }
         });
     });
@@ -69,7 +70,7 @@ module.exports = function loadUserRoutes(router) {
     });
 
     //get all usernames
-    router.get('/all_useremail', function(req, res){
+    router.get('/api/all_useremail', function(req, res){
         user.find({'userAccount': {$exists:true}}, function(err, data) {
             if(err){
                 console.log(err);
