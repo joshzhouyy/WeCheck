@@ -1,6 +1,7 @@
 var hash = require('object-hash');
 var bodyParser = require('body-parser');
 var user = require('../models/user.js');
+var evt = require('../models/event_info.js');
 
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
@@ -99,6 +100,30 @@ module.exports = function loadUserRoutes(router) {
             res.status(200).send(response);
             return;
 
+        });
+    });
+
+    //get all events of a user
+    router.post('/allevents/:userID/events', function(req, res){
+        user.findOne({'_id':req.params.userID})
+        .exec((error, data_a) => {
+            if(error){
+                res.status(500).send('Error: ' + error);
+                return;
+            }
+            if(!data_a){
+                res.status(500).send('no memberList');
+                return;
+            }
+            
+            evt.find({'_id': { $in: user.eventId}})
+            .exec((error,data) => {
+                if (!data) {
+                    res.status(500).send("no data");
+                    return;
+                }
+                res.json(data);
+            })
         });
     });
 };

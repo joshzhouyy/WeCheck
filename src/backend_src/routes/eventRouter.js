@@ -101,5 +101,30 @@ module.exports = function loadEventRoutes(router){
 			res.json(data);
 		});
 	});
+
+	//get all member from a event
+	router.post('/allmember/:eventID/members', function(req, res){
+		evt.findOne({'_id':req.params.eventID})
+		.exec((error, data_a) => {
+			if(error){
+				res.status(500).send('Error: ' + error);
+				return;
+			}
+			if(!data_a){
+				res.status(500).send('no memberList');
+				return;
+			}
+
+			user.find({'_id': { $in: evt.memberList}})
+			.exec((error,data) => {
+				if (!data) {
+					res.status(500).send("no data");
+					return;
+				}
+				res.json(data);
+			})
+		});
+	});
+
 }
 
