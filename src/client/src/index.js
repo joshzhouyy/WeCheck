@@ -17,10 +17,15 @@ import App from './app/App'
 //   	document.getElementById('root')
 // );
 
+  // let store = createStore(actions);
+
+
 const WeCheck = () => (
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+
 );
 
 ReactDOM.render(
