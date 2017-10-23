@@ -26,7 +26,8 @@
 }
 
 #eventBtnContainer {
-  float: right;
+  width: 100%
+
 }
 
 #eventBillSumRow {
@@ -42,4 +43,47 @@
 #eventBillSumTable {
   width: 100%;
 }
+
+#eventMemberListCol {  
+  height: 100%;
+
+}
+
+#memberListContainerDiv {  
+  height: 100%;
+  position: relative;
+
+}
+#memberListButtonDiv {  
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+}
+
+.creatorMemberListBtns {
+  width: 50%;
+}
+.memberAddBtn {
+  width: 100%;
+}
+
+.creatorBtns {
+  margin-right: 1%;
+
+}
+
+#memberBtnsDiv {
+    
+    width: 210px;
+    float: right;
+}
+
+#creatorBtnsDiv {
+    width: 300px;
+    float: right;
+    
+    
+    
+}
+
 

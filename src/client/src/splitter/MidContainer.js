@@ -11,18 +11,21 @@ const muiTheme = getMuiTheme({
     fontFamily: 'Alegreya Sans SC'
   });
 
-  const Panel = () => (
+  const Panel = (props) => (
     <MuiThemeProvider muiTheme={muiTheme}>
-      <EventMemberPanel />
+      <EventMemberPanel isCreator={props.isCreator}/>
     </MuiThemeProvider>
   );
 
 class MidContainer extends React.Component {
 
   render(){
+    let props = {
+      isCreator: false
+    }
     return (
       <div id="midContainer" className="containers">
-        <Panel />
+        <Panel {...props}/>
       </div>
     );
   }
