@@ -1,0 +1,17 @@
+#sidebar
+{ 
+    position:absolute;
+    top:0px;
+    left:0px;
+    bottom:0px;
+    width:180px;
+    min-height:700px;
+    background-color: rgb(249, 250, 252);
+}
+
+#parentDiv
+{
+    position:relative;
+
+    min-height:700px;
+}
