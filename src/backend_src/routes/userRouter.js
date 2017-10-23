@@ -51,14 +51,15 @@ module.exports = function loadUserRoutes(router) {
             }
             if(!user){
                 console.log("no user found");
-                res.json(null);
+                res.status(402).send("email does not exists");
                 return;
             }
             if(user.password === hash(req.body.password)){
                 res.json(user);
             }else{
                 console.log("password incorrect");
-                res.json(null);
+                res.status(403).send("password incorrect");
+                //res.json(null);
             }
         });
     });
