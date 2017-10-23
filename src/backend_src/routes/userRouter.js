@@ -5,7 +5,7 @@ var user = require('../models/user.js');
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
-    router.get('/userCheck', function(req, res){
+    router.get('/api/userCheck', function(req, res){
         user.findOne({'userAccount': req.query.userAccount}, function(err, user){
             console.log(req.query.userAccount)
             if(err){
@@ -68,7 +68,7 @@ module.exports = function loadUserRoutes(router) {
     });
 
     //get all usernames
-    router.get('/all_useremail', function(req, res){
+    router.get('/api/all_useremail', function(req, res){
         user.find({'userAccount': {$exists:true}}, function(err, data) {
             if(err){
                 console.log(err);
@@ -101,4 +101,5 @@ module.exports = function loadUserRoutes(router) {
 
         });
     });
+
 };
