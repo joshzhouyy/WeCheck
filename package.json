@@ -10,9 +10,11 @@
     "material-ui": "^0.19.4",
     "path": "0.12.7",
     "react": "15.6.1",
+    "react-autobind": "^1.0.6",
     "react-bootstrap": "0.31.3",
     "react-dom": "15.6.1",
     "react-router-dom": "^4.2.2",
+    "underscore": "^1.8.3",
     "webpack": "3.6.0",
     "webpack-dev-server": "2.8.2"
   },

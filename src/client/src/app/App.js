@@ -4,9 +4,9 @@ import {Grid, Row, Col} from 'react-bootstrap'
 
 import Topbar from "../utilities/Topbar"
 import Sidebar from "../utilities/Sidebar"
-import LeftContainer from '../splitter/LeftContainer'
-import MidContainer from '../splitter/MidContainer'
-import RightContainer from '../splitter/RightContainer'
+import LeftContainer from '../splitter-containers/LeftContainer'
+import MidContainer from '../splitter-containers/MidContainer'
+import RightContainer from '../splitter-containers/RightContainer'
 import './App.css'
 
 class App extends React.Component {
