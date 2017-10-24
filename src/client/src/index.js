@@ -1,28 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+
 import { BrowserRouter } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-// import todoApp from './reducers'
+import { createStore, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom';
+
 import App from './app/App'
+import rootReducer from './app/reducers'
+
+const middleware = [ thunk ];
+if (process.env.NODE_ENV !== 'production') {
+  middleware.push(createLogger());
+}
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 import CreateEventPanel from './event/CreateEventPanel'
 
-// let store = createStore(todoApp);
+  // let store = createStore(actions);
 
-// ReactDOM.render(
-// 	<Provider store={store}>
-//     	<App />
-//   	</Provider>,
-//   	document.getElementById('root')
-// );
 
 const WeCheck = () => (
   /*
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
   */
   
