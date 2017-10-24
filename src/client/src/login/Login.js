@@ -54,7 +54,7 @@ class Login extends Component {
     }
 
     showError() {
-        console.log('this.props.userAccount:', this.props.userAccount);
+        // console.log('this.props.userAccount:', this.props.userAccount);
         if (this.props.failedToSignIn == true) {
             return (
                 <p style={{color: 'red'}}>Failed to sign in</p>

@@ -1,0 +1,28 @@
+#eventListContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#EventListGrid {
+  height: 100%;
+  width: 100%;
+}
+
+#menuOptionsRow {
+  height: 6%;
+}
+
+#menuOptionsDiv {
+  height: 100%;
+}
+
+.menuOptionBtns {
+  /*height: 80%;*/
+  width: 50%;
+  /*font-size: 1.5rem;*/
+}
+
+#eventListRow {
+  height: 94%;
+}
+

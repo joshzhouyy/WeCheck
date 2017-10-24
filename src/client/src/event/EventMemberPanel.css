@@ -1,3 +1,89 @@
-body {
-    font-family: 'Alegreya Sans SC';
+#eventPanelContainer {
+	height: 99%;
+	width: 100%;
 }
+
+#eventGrid {
+  height: 100%;
+  width: 100%;
+}
+
+#eventOuterRow {
+  height: 100%;
+}
+
+#eventInfoCol {
+  height: 100%;
+}
+
+.eventInnerRows {
+  width: 100%;
+}
+
+#eventBtnRow {
+  width: 100%;
+  height: 6%;
+}
+
+#eventBtnContainer {
+  width: 100%
+
+}
+
+#eventBillSumRow {
+  width: 100%;
+  height: 6%;
+}
+
+#eventBillDetailRow {
+  width: 100%;
+  height: 88%;
+}
+
+#eventBillSumTable {
+  width: 100%;
+}
+
+#eventMemberListCol {  
+  height: 100%;
+
+}
+
+#memberListContainerDiv {  
+  height: 100%;
+  position: relative;
+
+}
+#memberListButtonDiv {  
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+}
+
+.creatorMemberListBtns {
+  width: 50%;
+}
+.memberAddBtn {
+  width: 100%;
+}
+
+.creatorBtns {
+  margin-right: 1%;
+
+}
+
+#memberBtnsDiv {
+    
+    width: 210px;
+    float: right;
+}
+
+#creatorBtnsDiv {
+    width: 300px;
+    float: right;
+    
+    
+    
+}
+
+
