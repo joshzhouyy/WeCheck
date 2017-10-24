@@ -31,7 +31,7 @@ app.use('', userRouter);
 app.use('', eventRouter);
 
 //app.use('/', express.static(path.join(__dirname, '../..', 'static')));
-app.use('/', express.static(__dirname + '/../client/app/'));
+app.use('/', express.static(__dirname + '/../client/dist/'));
 
 //run server
 const server = app.listen(port, function(err){
