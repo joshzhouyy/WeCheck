@@ -20,16 +20,16 @@ import CreateEventPanel from './event/CreateEventPanel'
 // );
 
 const WeCheck = () => (
-  
+  /*
   <BrowserRouter>
     <App />
   </BrowserRouter>
+  */
   
-  /*
   <MuiThemeProvider>
     <CreateEventPanel />
   </MuiThemeProvider>
-  */
+  
 );
 
 ReactDOM.render(

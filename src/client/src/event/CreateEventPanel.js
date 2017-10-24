@@ -4,15 +4,23 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-
 import TextField from 'material-ui/TextField';
-
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import './CreateEventPanel.css';
-import styles from './CreateEventPanelStyle'
+import {styles} from './CreateEventPanelStyle'
 
 class CreateEventPanel extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {value: 1};
+  }
+
+  handleChange = (event, index, value) => this.setState({value});
+
   state = {
     checked: false,
   }
@@ -68,18 +76,17 @@ class CreateEventPanel extends React.Component {
             hintStyle={styles.floatingLabelStyle}
             underlineStyle={styles.underlineStyle}
         /><br />
-        <br />
+        
         
 
-        <TextField  
-            hintText="Enter a member's name"
-            hintStyle={styles.floatingLabelStyle}
-            underlineStyle={styles.underlineStyle}
-        />
-        <br />
       
 
-        
+        <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+          <MenuItem value={1} primaryText="Restaurant" />
+          <MenuItem value={2} primaryText="Hotel" />
+          <MenuItem value={3} primaryText="Flight" />
+          
+        </DropDownMenu>
 
 
         <TextField  
