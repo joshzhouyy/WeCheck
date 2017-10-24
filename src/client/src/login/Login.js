@@ -2,31 +2,32 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Button, input } from 'react-bootstrap';
 import * as authActions from '../actions/authActions';
+import autoBind from 'react-autobind';
 
 class Login extends Component {
     static propTypes = {
-        welomePage: PropTypes.string.isRequired,
         dispatch: PropTypes.func.isRequired
     };
     constructor(props, context) {
         super(props, context);
         this.state = {
-            username: '',
+            userAccount: '',
             password: ''
         };
+        autoBind(this);
     }
 
     componentDidMount() {
-        if (this.state.username.length) {
+        if (this.state.userAccount.length) {
             this.refs.passwordInput.focus();
         }else{
-            this.refs.usernameInput.focus();
+            this.refs.userAccountInput.focus();
         }
     }
 
     handleChange(event) {
-        if(event.target.name === 'username') {
-            this.setState({ username: event.target.value });
+        if(event.target.name === 'userAccount') {
+            this.setState({ userAccount: event.target.value });
         }
         if(event.target.name === 'password') {
             this.setState({ password: event.target.value });
@@ -36,24 +37,24 @@ class Login extends Component {
     handleSubmit(event) {
         event.preventDefault();
         const { dispatch } = this.props;
-        if(this.state.username.length < 1) {
-            this.refs.usernameInput.focus();
+        if(this.state.userAccount.length < 1) {
+            this.refs.userAccountInput.focus();
         }
-        if(this.state.username.length > 0 && this.state.password.length < 1) {
+        if(this.state.userAccount.length > 0 && this.state.password.length < 1) {
             this.refs.passwordInput.focus();
         }
-        if(this.state.username.length > 0 && this.state.password.length > 0) {
+        if(this.state.userAccount.length > 0 && this.state.password.length > 0) {
             var userObj = {
-                username: this.state.username,
+                userAccount: this.state.userAccount,
                 password: this.state.password
             };
             dispatch(authActions.signIn(userObj))
-            this.setState({username: '', password: ''});
+            this.setState({userAccount: '', password: ''});
         }
     }
 
     showError() {
-        console.log('this.props.username:', this.props.username);
+        console.log('this.props.userAccount:', this.props.userAccount);
         if (this.props.failedToSignIn == true) {
             return (
                 <p style={{color: 'red'}}>Failed to sign in</p>
@@ -70,14 +71,14 @@ class Login extends Component {
           <main style={{display: 'flex', justifyContent: 'center'}}>
             <form onSubmit={this.handleSubmit}>
                 <section style={{height: '5em'}}>
-                  <p style={{fontSize: '1em'}}>Username</p>
+                  <p style={{fontSize: '1em'}}>userAccount</p>
                   <input
-                    label="Username"
-                    ref="usernameInput"
+                    label="userAccount"
+                    ref="userAccountInput"
                     type="text"
-                    name="username"
-                    placeholder="Enter username"
-                    value={this.state.username}
+                    name="userAccount"
+                    placeholder="Enter userAccount"
+                    value={this.state.userAccount}
                     onChange={this.handleChange}
                   />
                 </section>

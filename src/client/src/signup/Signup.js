@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { input, Button } from 'react-bootstrap';
+import autoBind from 'react-autobind';
 import * as authActions from '../actions/authActions';
 
 class Signup extends Component {
@@ -10,28 +11,27 @@ class Signup extends Component {
         this.state = {
             username: '',
             password: '',
-            confirmPassword: ''
+            userEmail: ''
         };
+        autoBind(this);
     }
-
-    static propTypes = {
-        failedToSignUp: PropTypes.string.isRequired
-    };
-
 
 
     handleChange(event) {
         const {dispatch} = this.props;
+        // console.log(dispatch);
 
         if (event.target.name === 'username') {
-          dispatch(authActions.resetFailedToSignUp());
+          // dispatch(authActions.resetFailedToSignUp());
           this.setState({ username: event.target.value});
         }
+        
+        if (event.target.name === 'userEmail') {
+          this.setState({ userEmail: event.target.value});
+        }
+
         if (event.target.name === 'password') {
           this.setState({ password: event.target.value });
-        }
-        if (event.target.name === 'confirm-password') {
-          this.setState({ confirmPassword: event.target.value });
         }
     }
 
@@ -40,16 +40,20 @@ class Signup extends Component {
 
         const { dispatch } = this.props;
 
-        if (this.state.username.length && this.state.password.length && this.state.confirmPassword.length) {
+        if (this.state.username.length 
+            && this.state.password.length
+            && this.state.userEmail.length) {
           const userObj = {
-            username: this.state.username,
+            userName: this.state.username,
+            userAccount: this.state.userEmail,
             password: this.state.password,
-            confirmPassword: this.state.confirmPassword
           };
+
+          console.log(JSON.stringify(userObj));
 
           dispatch(authActions.signUp(userObj));
 
-          this.setState({ username: '', password: '', confirmPassword: ''});
+          this.setState({ username: '', password: '', userEmail: ''});
         }
     }
 
@@ -57,12 +61,8 @@ class Signup extends Component {
         return 'success';
     }
 
-    validateConfirmPassword() {
-        if (this.state.password !== this.state.confirmPassword) {
-            return (
-                <p style={{color: 'red'}}>Password should match confirm password</p>
-            );
-        }
+    validateUserEmail() {
+        return 'success';
     }
 
     showError() {
@@ -82,10 +82,10 @@ class Signup extends Component {
                 <main style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <form onSubmit={this.handleSubmit} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <section style={{height: '5em'}}>
-                            <p style={{fontSize: '1em'}}>Username</p>
+                            <p style={{fontSize: '1em'}}>User Name</p>
                             <input
-                                label="Username"
-                                ref="usernameInput"
+                                label="User Name"
+                                ref="username"
                                 type="text"
                                 help={this.validateUsername() === 'error' && 'A user with that name already exists!'}
                                 bsStyle={this.validateUsername()}
@@ -94,6 +94,22 @@ class Signup extends Component {
                                 autoFocus="true"
                                 placeholder="Enter username"
                                 value={this.state.username}
+                                onChange={this.handleChange}
+                                />
+                        </section>
+                        <section style={{height: '5em'}}>
+                            <p style={{fontSize: '1em'}}>User Email</p>
+                            <input
+                                label="User Email"
+                                ref="userEmailInput"
+                                type="text"
+                                help={this.validateUserEmail() === 'error' && 'A user with that email already exists!'}
+                                bsStyle={this.validateUserEmail()}
+                                hasFeedback
+                                name="userEmail"
+                                autoFocus="true"
+                                placeholder="Enter user email"
+                                value={this.state.userEmail}
                                 onChange={this.handleChange}
                                 />
                         </section>
@@ -109,22 +125,9 @@ class Signup extends Component {
                                 onChange={this.handleChange}
                                 />
                         </section>
-                        <section style={{height: '5em'}}>
-                            <p style={{fontSize: '1em'}}>Confirm password</p>
-                            <input
-                                label="Confirm Password"
-                                ref="confirmPasswordInput"
-                                help={this.validateConfirmPassword() === 'error' && 'Your password doesn\'t match'}
-                                type="password"
-                                name="confirm-password"
-                                placeholder="Enter password again" value={this.state.confirmPassword}
-                                onChange={this.handleChange}
-                                />
-                        </section>
                         {this.showError()}
-                        {this.validateConfirmPassword()}
                         <Button
-                            disabled={this.validateUsername() === 'error' || this.validateConfirmPassword() === 'error' && true}
+                            disabled={this.validateUsername() === 'error' && true}
                             bsStyle="success"
                             style={{margin: 'auto', width: '100%', height: '3.5em'}}
                             onClick={this.handleSubmit}

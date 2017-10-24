@@ -2,6 +2,7 @@ import * as types from '../constants/ActionTypes';
 import { browserHistory } from 'react-router';
 import axios from 'axios';
 
+
 // helper action requestSignUp
 function requestSignUp() {
     return {
@@ -41,11 +42,10 @@ export function signUp(user) {
 
         return axios.post('/signup', user)
                .then((response) => {
-                   console.log(response);
                    if (response.data != null && response.data != "") {
                        console.log(response);
                        dispatch(receiveUser(user.username));
-                       browserHistory.push('/chat');
+                       browserHistory.push('/');
                    } else {
                        dispatch(notReceiveUser());
                    }
@@ -85,11 +85,10 @@ export function signIn(user) {
     return dispatch => {
         dispatch(requestSignIn());
 
-        return axios.post('/api/login', user).then((response) => {
-            console.log(response);
+        return axios.put('/login', user).then((response) => {
             if(response.data != null && response.data != "") {
                 console.log(response);
-                dispatch(receiveSignIn(user.username));
+                dispatch(receiveSignIn(user.userAccount));
                 browserHistory.push('/');
             } else {
                 dispatch(notReceiveSignIn());

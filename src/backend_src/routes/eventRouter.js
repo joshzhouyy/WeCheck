@@ -101,7 +101,8 @@ module.exports = function loadEventRoutes(router){
 	})
 
 	//delete an event from database
-	router.post('event/deleteEvent/:eventID', function(req, res){
+	router.post('/deleteEvent/:eventID', function(req, res){
+		console.log(req.params.eventID);
 		var toRemoved = evt.findOne({'_id':req.params.eventID}, (error, toRemoved) => {
 			if(error){
 				res.status(500).send('Error: ' + error);
@@ -184,8 +185,8 @@ module.exports = function loadEventRoutes(router){
     	});
     });
 	//get all stored event
-	router.get('/api/event/all_event', function(req, res){
-		evt.find({'_id': {$exists:true}}, function(err, data){
+	router.get('/api/all_event', function(req, res){
+		evt.find({'eventName': {$exists:true}}, function(err, data){
 			if(err){
 				console.log(err);
 				return res.status(500).json({msg: 'internal server error'});
@@ -194,29 +195,4 @@ module.exports = function loadEventRoutes(router){
 		});
 	});
 
-	//get all member from a event
-	router.post('/allmember/:eventID/members', function(req, res){
-		evt.findOne({'_id':req.params.eventID})
-		.exec((error, data_a) => {
-			if(error){
-				res.status(500).send('Error: ' + error);
-				return;
-			}
-			if(!data_a){
-				res.status(500).send('no memberList');
-				return;
-			}
-
-			user.find({'_id': { $in: evt.memberList}})
-			.exec((error,data) => {
-				if (!data) {
-					res.status(500).send("no data");
-					return;
-				}
-				res.json(data);
-			})
-		});
-	});
-
-}
 
