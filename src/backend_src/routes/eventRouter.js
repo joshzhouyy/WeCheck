@@ -101,7 +101,8 @@ module.exports = function loadEventRoutes(router){
 	})
 
 	//delete an event from database
-	router.post('event/deleteEvent/:eventID', function(req, res){
+	router.post('/deleteEvent/:eventID', function(req, res){
+		console.log(req.params.eventID);
 		var toRemoved = evt.findOne({'_id':req.params.eventID}, (error, toRemoved) => {
 			if(error){
 				res.status(500).send('Error: ' + error);
@@ -184,8 +185,8 @@ module.exports = function loadEventRoutes(router){
     	});
     });
 	//get all stored event
-	router.get('/api/event/all_event', function(req, res){
-		evt.find({'_id': {$exists:true}}, function(err, data){
+	router.get('/api/all_event', function(req, res){
+		evt.find({'eventName': {$exists:true}}, function(err, data){
 			if(err){
 				console.log(err);
 				return res.status(500).json({msg: 'internal server error'});
@@ -193,5 +194,28 @@ module.exports = function loadEventRoutes(router){
 			res.json(data);
 		});
 	});
+
+	//add a user into an event
+	router.put('/event/addMember/:eventID', function(req, res){
+		var oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
+			if(error){
+				res.status(500).send('Error: ' + error);
+				return;
+			}
+			oldEvt.memberAccount.push(req.body.userID);
+			oldEvt.save((error) => {
+				if(error){
+					console.log(error);
+					//should return json of event before modification, need to be tested
+					res.status(501).send('failed to add member');
+					res.json(oldEvt);
+					return;
+				}
+				//return json of event after modification
+				res.json(oldEvt);
+			});
+		});
+	});
+
 }
 

@@ -5,46 +5,57 @@ var user = require('../models/user.js');
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
-    router.get('/api/userCheck', function(req, res){
-        user.findOne({'userAccount': req.query.userAccount}, function(err, user){
-            console.log(req.query.userAccount)
-            if(err){
-                console.log(err)
-            }
-            var message;
-            if(user){
-                console.log(user)
-                message = "user exists";
-                console.log(message)
-            }
-            else{
-                message = "uesr does not exist";
-                console.log(message)
-            }
-            res.json({message: message});
-        });
-    });
 
     router.post('/signup', (req, res) => {
         //user.dropIndex({"username": 1})
-        var newUser = new user();
-        newUser.userAccount = req.body.userAccount;
-        newUser.password = hash(req.body.password);
-        newUser.userName = req.body.userName;
-       //newUser.password = req.body.password;
-
-        newUser.save((error) => {
-            if(error){
-                console.log(error);
-                res.json(null);
+        user.findOne({'userAccount':req.body.userAccount}, (error, user) => {
+            if(user){
+                console.log('user exists');
+                message = {
+                    "userAccount":req.body.userAccount,
+                    "message": "user already exists"
+                }
+                res.status(500).json(message);
                 return;
             }
-            res.json(newUser);
+            else{
+                //var newUser = new user();
+                if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
+                    var newUser = new user();
+                    newUser.userAccount = req.body.userAccount;
+                    newUser.password = hash(req.body.password);
+                    newUser.userName = req.body.userName;
+                    //newUser.password = req.body.password;
+
+                    newUser.save((error) => {
+                    if(error){
+                        console.log(error);
+                        res.json(null);
+                        return;
+                        }
+                    res.json(newUser);
+                    });
+                }
+                else{
+                    res.status(500).send("bad parameters");
+                }
+            }
         });
     });
 
 
+
     router.put('/login', (req, res) => {
+        if(req.body.userAccount == '' || req.body.password == ''){
+            if(req.body.userAccount == ''){
+                res.status(500).send("empty userAccount");
+                return;
+            }
+            if(req.body.password == ''){
+                res.status(500).send("empty password");
+                return;
+            }
+        }
         user.findOne({'userAccount': req.body.userAccount}, (error, user)=>{
             if(error){
                 res.send('Error: ' + error);
