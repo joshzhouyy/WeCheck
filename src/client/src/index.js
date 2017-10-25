@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger());
 }
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(...middleware));
 
 
 const WeCheck = () => (
@@ -25,6 +25,8 @@ const WeCheck = () => (
     </Provider>
   </BrowserRouter>
 );
+
+// console.log(store.getState())
 
 ReactDOM.render(
     <WeCheck />,

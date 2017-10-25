@@ -1,16 +1,27 @@
 import {SELECT_ACTIVE_PANEL} from '../constants/ActionTypes'
 
-export const getAtivePanel = (state) => {
-  return state.ativePanel;
+// Selectors(getters)
+export const getActivePanel = (state) => {
+  // console.log(JSON.stringify(state))
+  return state.panels.activePanel;
 }
 
-const panels = (state="MESSAGE_BOX", action) => {
+const initialState = {
+    activePanel: "MESSAGE_BOX"
+};
+
+// Reducers(setters)
+const panels = (state = initialState, action) => {
   switch(action.type) {
     case SELECT_ACTIVE_PANEL:
-      return action.activePanel;
+      console.log("selected " + action.activePanel)
+      return {
+        ...state,
+        ativePanel: action.activePanel
+      }
     default:
       return state;
   }
 }
 
-export default panels;
+export default panels

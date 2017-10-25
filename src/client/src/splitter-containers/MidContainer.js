@@ -1,15 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import EventMemberPanel from '../event/EventMemberPanel';
+import BalancePanel from '../balance-panel/BalancePanel';
+import MessageBox from '../message-box/MessageBox';
+import {MESSAGE_BOX, BALANCE} from '../constants/Names';
+import "./SplitterContainers.css";
 
-import EventMemberPanel from '../event/EventMemberPanel'
-import BalancePanel from '../balance-panel/BalancePanel'
-import MessageBox from '../message-box/MessageBox'
-
-import {MESSAGE_BOX, BALANCE} from '../constants/Names'
-import "./SplitterContainers.css"
+import { connect } from 'react-redux';
+import {selectActivePanel} from '../app/AppActions';
+import * as appSelectors from '../app/appReducer';
 
 const muiTheme = getMuiTheme({
     fontFamily: 'Alegreya Sans SC'
@@ -38,11 +39,12 @@ const ActivePanel = (props)=> {
 
 class MidContainer extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   render(){
-    const panelName = this.props.activePanel
+    // console.log(this.props);
+    const panelName = this.props.activePanel;
 
     return (
       <div id="midContainer" className="containers">
@@ -52,8 +54,8 @@ class MidContainer extends React.Component {
   }
 }
 
-MidContainer.propTypes = {
-  activePanel: PropTypes.string.isRequired
-}
+const mapStateToProps = (state, ownProps) => ({
+  activePanel: appSelectors.getActivePanel(state)
+});
 
-export default MidContainer
+export default connect(mapStateToProps)(MidContainer)
