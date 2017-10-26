@@ -7,9 +7,9 @@ module.exports = function loadUserRoutes(router) {
 
 
     router.post('/signup', (req, res) => {
-        //user.dropIndex({"username": 1})
-        user.findOne({'userAccount':req.body.userAccount}, (error, user) => {
-            if(user){
+        //create a variable name different than 'user'
+        var userCheck = user.findOne({'userAccount':req.body.userAccount}, (error, userCheck) => {
+            if(userCheck){
                 console.log('user exists');
                 message = {
                     "userAccount":req.body.userAccount,
@@ -19,6 +19,7 @@ module.exports = function loadUserRoutes(router) {
                 return;
             }
             else{
+                //console.log("here");
                 //var newUser = new user();
                 if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
                     var newUser = new user();
@@ -30,7 +31,7 @@ module.exports = function loadUserRoutes(router) {
                     newUser.save((error) => {
                     if(error){
                         console.log(error);
-                        res.json(null);
+                        res.status(500).send('Saving error: ' + error);
                         return;
                         }
                     res.json(newUser);

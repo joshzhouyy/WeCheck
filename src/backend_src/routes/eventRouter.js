@@ -7,7 +7,7 @@ module.exports = function loadEventRoutes(router){
 	router.use(bodyParser.json());
 
 	//create an event
-	router.post('event/createEvent', (req, res) => {
+	router.post('/event/createEvent', (req, res) => {
 		var newEvent = new evt();
 		newEvent.ownerID = req.body.ownerID;
 		console.log("ownerID = " + newEvent.ownerID);
@@ -60,7 +60,7 @@ module.exports = function loadEventRoutes(router){
 	});
 
 	//edit detail of an existing event
-	router.put('event/editEvent/:eventID', (req, res) => {
+	router.put('/editEvent/:eventID', (req, res) => {
 		evt.findOne({'_id': req.params.eventID}, (error, evt) => {
 			if(error){
 				res.send('Error:' + error);
@@ -124,7 +124,7 @@ module.exports = function loadEventRoutes(router){
 
 
 	//When a event is complete
-	router.put('/event/completeEvent/:eventID', function(req, res){
+	router.put('/completeEvent/:eventID', function(req, res){
 		console.log("event id = " + req.params.eventID);
 		evt.findOne({'_id':req.params.eventID},(error, evt) => {
 			if(error){
@@ -155,7 +155,7 @@ module.exports = function loadEventRoutes(router){
 				res.status(500).send('Error: ' + error);
 				return;
 			}
-			res.json(evt.invitationList);
+			res.json(evt.memberAccount);
 			return;
 		});
 	});
