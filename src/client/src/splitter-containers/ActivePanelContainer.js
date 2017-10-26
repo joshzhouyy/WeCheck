@@ -1,34 +1,12 @@
-import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { connect } from 'react-redux';
 
-import EventMemberPanel from '../event/EventMemberPanel';
-import BalancePanel from '../balance-panel/BalancePanel';
-import MessageBox from '../message-box/MessageBox';
-import {MESSAGE_BOX, BALANCE} from '../constants/Names';
+import {selectActivePanel} from '../app/AppActions';
+import * as appSelectors from '../app/appReducer';
+import ActivePanel from './ActivePanel';
 
-const muiTheme = getMuiTheme({
-    fontFamily: 'Alegreya Sans SC'
+const mapStateToProps = (state, ownProps) => ({
+  activePanel: appSelectors.getActivePanel(state)
 });
 
-const ActivePanelContainer = (props)=> {
-  const activePanel = props.activePanel
-  switch(activePanel) {
-    case MESSAGE_BOX:
-      return (
-        <MuiThemeProvider muiTheme={muiTheme}>
-          <MessageBox />
-        </MuiThemeProvider>
-      );
-    case  BALANCE:
-      return (
-        <MuiThemeProvider muiTheme={muiTheme}>
-          <BalancePanel />
-        </MuiThemeProvider>
-      );
-    default:
-      return null
-  }
-}
 
-export default ActivePanelContainer
+export default connect(mapStateToProps)(ActivePanel)
