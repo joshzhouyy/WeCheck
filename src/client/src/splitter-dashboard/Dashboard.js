@@ -10,15 +10,17 @@ import ActionGrade from 'material-ui/svg-icons/action/grade';
 import './Dashboard.css';
 
 
-const Dashboard = ({handleTouchTap}) => (
+const Dashboard = ({handleTouchTap, activePanel}) => {
+  // console.log(activePanel)
+  return (
   <Paper id="dashboardContainer">
     <List>
       <Subheader>Dashboard</Subheader>
-      <ListItem primaryText="Message Box" rightIcon={<ContentInbox />} onClick={(e) => handleTouchTap("MESSAGE_BOX")} />
-      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={(e) => handleTouchTap("BALANCE")} />
+      <ListItem primaryText="Message Box" rightIcon={<ContentInbox />} onClick={() => handleTouchTap("MESSAGE_BOX")} />
+      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={() => handleTouchTap("BALANCE")} />
     </List>
   </Paper>
-);
+);}
 
 Dashboard.propTypes = {
   handleTouchTap: PropTypes.func.isRequired
