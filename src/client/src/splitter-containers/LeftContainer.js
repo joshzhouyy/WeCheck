@@ -1,10 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import Dashboard from '../splitter-dashboard/Dashboard'
+import DashboardContainer from '../splitter-dashboard/DashboardContainer'
 import './SplitterContainers.css'
-
 
 class LeftContainer extends React.Component {
   constructor(props) {
@@ -12,22 +10,15 @@ class LeftContainer extends React.Component {
   }
 
   render(){
-    let props = {
-      handleTouchTap: this.props.handleTouchTap
-    }
 
     return (
       <div id="leftContainer" className="containers">
         <MuiThemeProvider>
-          <Dashboard {...props}/>
+          <DashboardContainer />
         </MuiThemeProvider>
       </div>
     );
   }
-}
-
-LeftContainer.propTypes = {
-  handleTouchTap: PropTypes.func.isRequired
 }
 
 export default LeftContainer

@@ -1,4 +1,4 @@
-export const selectActivePanel = (activePanel) => {
+export const selectActivePanel = (selectedPanel) => ({
   type: "SELECT_ACTIVE_PANEL",
-  activePanel
-}
+  selectedPanel
+})

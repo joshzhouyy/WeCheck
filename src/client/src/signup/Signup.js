@@ -142,6 +142,7 @@ class Signup extends Component {
 }
 
 function mapStateToProps(state) {
+    // console.log(JSON.stringify(state));
     return {
         failedToSignUp: state.authReducer.failedToSignUp
     }
