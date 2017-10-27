@@ -7,7 +7,7 @@ import ActionHome from 'material-ui/svg-icons/action/home';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 
-import './sidebar.css';
+import './Sidebar.css';
 
 
 
