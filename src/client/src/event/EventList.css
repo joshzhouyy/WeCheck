@@ -26,3 +26,18 @@
   height: 94%;
 }
 
+#eventListDiv {
+  height: 100%;
+
+}
+
+#eventListBtnDiv {
+  width: 92%;
+  position: absolute;
+  bottom: 10px;
+}
+
+.eventListBtn {
+  width:100%;
+
+}
