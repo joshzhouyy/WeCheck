@@ -2,6 +2,7 @@ var hash = require('object-hash');
 var bodyParser = require('body-parser');
 var user = require('../models/user.js');
 
+
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 

@@ -1,6 +1,7 @@
 var bodyParser = require ('body-parser');
 var evt = require('../models/event_info.js');
 var user = require('../models/user.js');
+var evt_user = require('../models/event_expense.js');
 
 
 module.exports = function loadEventRoutes(router){
@@ -20,11 +21,12 @@ module.exports = function loadEventRoutes(router){
 		newEvent.invitationList = req.body.invitationList;
 		newEvent.eventStatus = 'in process';
 		newEvent.totalAmount = 0;
+		newEvent.memberAccount.push(req.body.ownerID);
 
 		newEvent.save((error) => {
 			if(error){
 				console.log(error);
-				res.json(null);
+				res.status(500).send("Error: " + error);
 				return;
 			}
 			res.json(newEvent);
@@ -47,6 +49,7 @@ module.exports = function loadEventRoutes(router){
 		newEvent.invitationList = req.body.invitationList;
 		newEvent.eventStatus = 'in process';
 		newEvent.totalAmount = 0;
+		newEvent.memberAccount.push(req.body.ownerID);
 
 		newEvent.save((error) => {
 			if(error){
@@ -68,7 +71,8 @@ module.exports = function loadEventRoutes(router){
 			}
 			if(!evt){
 				console.log('No such event found!');
-				res.json(null);
+				//res.json(null);
+				res.status(404).send("No such event found!");
 				return;
 			}
 			//check if user has authority to edit event
@@ -216,6 +220,76 @@ module.exports = function loadEventRoutes(router){
 			});
 		});
 	});
+
+	//owner update total amount of an event
+	router.put('/event/updateTotal/:userID/:eventID', function(req, res){
+		evt.findOne({'_id': req.params.eventID}, (error, evt) => {
+			if(error){
+				res.status(500).send("Update total error: " + error);
+				return;
+			}
+			if(req.body.totalAmount === undefined || req.body.totalAmount === null || req.body.totalAmount <= 0){
+				res.status(504).send('Error: invalid amount');
+				return;
+			}
+			if(req.params.userID != evt.ownerID){
+				res.status(501).send('Error: unauthorized');
+				return;
+			}
+			evt.totalAmount = req.body.totalAmount;
+			res.status(200).json(evt);
+			return;
+
+		});
+	});
+
+	/*check if total amount matches with sum of individual amount
+	router.get('event/amountCheck/:eventID', function(req, res){
+		evt.findOne({'_id': req.params.eventID}, (error, evt) => {
+			if(error){
+				res.status(500).send("findOne error: " + error);
+				return;
+
+			}
+		})
+	})*/
+
+	//individual enters their own amount in an event
+	router.post('/event/individualAmount/:eventID/:userID', function(req, res){
+		var est = evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
+			if(error){
+				res.status(500).send("Error: " + error);
+				return;
+			}
+			if(est != null){
+				res.status(500).send("entry existed");
+				return;
+			}
+		});
+		evt.findOne({'_id': req.params.eventID, memberAccount: {"$in":[req.params.userID]}}, (error, evt) => {
+			if(error){
+				res.status(500).send("Error in findOne: " + error);
+				return;
+			}
+			if(req.body.individualAmount === null || req.body.individualAmount <= 0 || req.body.individualAmount === undefined){
+				res.status(500).send("invalid input amount");
+				return;
+			}
+			var event_user = new evt_user();
+			event_user.eventID = req.params.eventID;
+			event_user.userID = req.params.userID;
+			event_user.individualAmount = req.body.individualAmount;
+			event_user.save((error) => {
+				if(error){
+					console.log("Error: " + error);
+					res.status(500).send("Error: " + error);
+					return;
+				}
+				res.status(200).json(event_user);
+			});
+		});
+	});
+
 
 }
 
