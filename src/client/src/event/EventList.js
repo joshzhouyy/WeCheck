@@ -51,17 +51,6 @@ const eventList = () => (
   </Chip>
 
 
-    <div id="eventListBtnDiv">
-      <RaisedButton 
-      label="Create a new event" 
-      backgroundColor={orange100}
-      className="eventListBtn"
-      style={{ fontSize: '1.5rem' }}
-      /> 
-    
-
-    </div>
-
   </div>
 );
 

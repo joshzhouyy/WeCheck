@@ -125,7 +125,7 @@ class Signup extends Component {
                                 onChange={this.handleChange}
                                 />
                         </section>
-                        {this.showError()}
+                      {this.showError()}
                         <Button
                             disabled={this.validateUsername() === 'error' && true}
                             bsStyle="success"
