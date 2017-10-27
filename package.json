@@ -48,8 +48,7 @@
     "mongodb": "2.2.31",
     "mongoose": "4.11.12",
     "path": "0.12.7",
-    "socket.io": "2.0.3",
-
+    "socket.io": "2.0.3"
   },
   "scripts": {
     "start": "node src/backend_src/server.js",
