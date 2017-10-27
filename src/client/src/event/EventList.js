@@ -49,6 +49,19 @@ const eventList = () => (
       <Avatar color="#444" icon={<SvgIconFace />} />
       This is the name of the event 2
   </Chip>
+
+
+    <div id="eventListBtnDiv">
+      <RaisedButton 
+      label="Create a new event" 
+      backgroundColor={orange100}
+      className="eventListBtn"
+      style={{ fontSize: '1.5rem' }}
+      /> 
+    
+
+    </div>
+
   </div>
 );
 
