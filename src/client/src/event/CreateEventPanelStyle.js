@@ -1,6 +1,11 @@
 import {orange500, blue500, indigo900, black, orange800} from 'material-ui/styles/colors';
 
 export const styles = {
+
+  dropdown: {
+    height:61,
+  },
+
   block: {
     maxWidth: 250,
   },
@@ -13,6 +18,7 @@ export const styles = {
     color: orange500,
   },
   underlineStyle: {
+    bottom:9,
     borderColor: black,
   },
   
@@ -29,8 +35,8 @@ export const styles = {
     color: blue500,
   },
 
-  labelStyle: {
-    width: 230   
+  buttonSize: {
+    width: 287,  
   },
 
   buttonStyle: {    
