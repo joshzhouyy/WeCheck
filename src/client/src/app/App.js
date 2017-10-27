@@ -20,7 +20,7 @@ class App extends React.Component {
 		return (
       <Grid id="outerContainer">
         <Row id="topRow">
-          <Topbar />
+          <Topbar/>
         </Row>
 
         <Row id="btmRow">
