@@ -148,7 +148,6 @@ const EventMemberList = (isCreator) => {
 
 const EventMemberPanel = ({isCreator}) => {
     console.log(isCreator)
-  
     return(
       <Paper id="eventPanelContainer">
         <Grid id="eventGrid">

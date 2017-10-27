@@ -15,7 +15,8 @@ export const getSelectedEventId = (state) => {
 const initialState = {
     selectedPanel: "MESSAGE_BOX",
     activePanel: "MESSAGE_BOX",
-    selectedEventId: ""
+    selectedEventId: "",
+    isOwner: false
 };
 
 // Reducers(setters)
@@ -32,7 +33,8 @@ const panels = (state = initialState, action) => {
       console.log(action.eventId + " was selected")
       return {
         ...state,
-        selectedEventId: action.eventId,
+        selectedEventId: action.event.eventId,
+        isOwner: action.event.isOwner,
         activePanel: EVENT_PANEL
       }
     default:

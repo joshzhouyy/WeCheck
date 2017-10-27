@@ -7,7 +7,7 @@ import * as authSelectors from '../reducers/auth_reducer';
 
 import EventList from './EventList';
 
-//TODO: load existing events
+
 const mapStateToProps = (state) => ({
   selectedEventId: appSelectors.getSelectedEventId(state),
   userId: authSelectors.getUserId(state)

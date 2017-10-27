@@ -2,7 +2,7 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import EventMemberPanel from '../event/EventMemberPanel';
+import EventPanelContainer from '../event/EventPanelContainer';
 import BalancePanel from '../balance-panel/BalancePanel';
 import MessageBox from '../message-box/MessageBox';
 import {MESSAGE_BOX, BALANCE, EVENT_PANEL} from '../constants/Names';
@@ -29,7 +29,7 @@ const ActivePanel = (props)=> {
     case EVENT_PANEL:
       return (
         <MuiThemeProvider muiTheme={muiTheme}>
-          <EventMemberPanel />
+          <EventPanelContainer />
         </MuiThemeProvider>
       );
     default:

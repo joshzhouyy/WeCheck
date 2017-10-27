@@ -35,17 +35,24 @@ const menuOptions = () => (
 );
 
 
-const eventItem = (props) => (
+const eventItem = (props) => {
+  const event = {
+    eventId: props.eventId,
+    isOwner: props.isOwner
+  }
+
+  return (
   <Chip className="eventItem" key = {props.eventId}
     onRequestDelete={() => handleRequestDelete}
-    onClick={() => props.onClick(props.eventId)}
+    onClick={() => props.onClick(event)}
     >
     <Avatar color="#444" icon={<SvgIconFace />} />
       {props.eventName}
   </Chip>
-);
+  );
+}
 
-const eventItems = (events, onClick) => {
+const eventItems = (userId, events, onClick) => {
   let props = {
     onClick: onClick
   }
@@ -56,17 +63,19 @@ const eventItems = (events, onClick) => {
       //TODO: event name attribute?
       props.eventName = e.eventLocation;
       props.eventId = e._id;
-      console.log(props)
+      props.isOwner = e.ownerID === userId ? true:false;
+      // console.log(props)
+      // console.log(userId)
       return eventItem(props);
     })}
   </div>
   );
 }
 
-const eventList = (events, handleRequestDelete, onClick) => (
+const eventList = (userId, events, onClick, handleRequestDelete) => (
   <div id="eventListDiv">
     
-    {eventItems(events, handleRequestDelete, onClick)}
+    {eventItems(userId, events, onClick, handleRequestDelete)}
     
     <div id="eventListBtnDiv">
       <RaisedButton 
@@ -90,16 +99,23 @@ class EventList extends React.Component {
   }
 
   componentDidMount() {
-    getOngoingEvents(this.props.userId)
+    // console.log(this.props.userId)
+    //TODO:
+    // if (this.props.userId !== null) {
+      getOngoingEvents(this.props.userId)
       .then(events => {
         this.setState({
           ongoingEvents: events
         });
       })
+    // }
   }
 
   render(){
     const events = this.state.ongoingEvents;
+    const onClick = this.props.onClick;
+    const userId = this.props.userId;
+
     console.log(JSON.stringify(this.state))
     return (
       <Paper id="eventListContainer">
@@ -108,25 +124,12 @@ class EventList extends React.Component {
           {menuOptions()}
         </Row>
         <Row id="eventListRow">
-          {eventList(events, this.props.onClick)}
+          {eventList(userId, events, onClick)}
         </Row>
       </Grid>
       </Paper>
     );
   }
 }
-
-// const EventList = ({onClick}) => (
-//   <Paper id="eventListContainer">
-//     <Grid id="EventListGrid">
-//     <Row id="menuOptionsRow">
-//       {menuOptions()}
-//     </Row>
-//     <Row id="eventListRow">
-//       {eventList(events, onClick)}
-//     </Row>
-//   </Grid>
-//   </Paper>
-// );
 
 export default EventList;

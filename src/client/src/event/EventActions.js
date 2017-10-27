@@ -1,11 +1,18 @@
 import axios from 'axios';
 
 
-export const selectEvent = (eventId) => ({
+export const selectEvent = (event) => ({
   type: "SELECT_EVENT",
+  event
+});
+
+
+export const removeEvent = (eventId) => ({
+  type: "REMOVE_EVENT",
   eventId
 });
 
+// Helper functions
 export const getOngoingEvents = (userId) => {
   //TODO: use userId to get relavant events
   return new Promise ((resolve, reject) => {
@@ -31,3 +38,5 @@ export const getOngoingEvents = (userId) => {
 const getFinishedEvents = () => {
 
 }
+
+// export 
