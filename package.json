@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.17.0",
     "babel-preset-stage-1": "^6.24.1",
+    "body-parser": "^1.18.1",
     "cors": "^2.8.4",
     "css-loader": "^0.28.7",
     "express": "4.15.4",
@@ -46,9 +47,7 @@
     "jsdom": "11.2.0",
     "mocha": "3.5.3",
     "prop-types": "15.6.0",
-    "react-addons-test-utils": "15.6.0",
-    "body-parser": "1.18.1",
-    "path": "0.12.7"
+    "react-addons-test-utils": "15.6.0"
   },
   "scripts": {
     "start": "node src/backend_src/server.js",
