@@ -19,7 +19,7 @@ mongoose.connect(mongooseURL,{useMongoClient:true}, function(err){
 });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(cors())
 
 //load routes
