@@ -10,6 +10,8 @@
     "axios": "^0.17.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "body-parser": "^1.18.1",
     "cors": "^2.8.4",
@@ -17,13 +19,16 @@
     "express": "4.15.4",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "2.30.1",
+    "jsdom": "^11.2.0",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.4",
     "mongodb": "^2.2.31",
     "mongoose": "^4.11.12",
     "object-hash": "1.1.8",
     "path": "0.12.7",
+    "prop-types": "^15.6.0",
     "react": "15.6.1",
+    "react-addons-test-utils": "^15.6.0",
     "react-autobind": "^1.0.6",
     "react-bootstrap": "0.31.3",
     "react-dom": "15.6.1",
@@ -39,14 +44,9 @@
     "webpack-dev-server": "2.8.2"
   },
   "devDependencies": {
-    "babel-preset-es2015": "6.24.1",
-    "babel-preset-react": "6.24.1",
     "chai": "4.1.2",
     "enzyme": "2.9.1",
-    "jsdom": "11.2.0",
-    "mocha": "3.5.3",
-    "prop-types": "15.6.0",
-    "react-addons-test-utils": "15.6.0"
+    "mocha": "3.5.3"
   },
   "scripts": {
     "start": "node src/backend_src/server.js",
