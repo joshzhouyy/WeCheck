@@ -12,6 +12,10 @@ export const getSelectedEventId = (state) => {
   return state.panels.selectedEventId;
 }
 
+export const getUserIdentity = (state) => {
+  return state.panels.isOwner;
+}
+
 const initialState = {
     selectedPanel: "MESSAGE_BOX",
     activePanel: "MESSAGE_BOX",
@@ -30,7 +34,7 @@ const panels = (state = initialState, action) => {
         activePanel: action.selectedPanel
       }
     case SELECT_EVENT:
-      console.log(action.eventId + " was selected")
+      console.log(action.event.eventId + " was selected")
       return {
         ...state,
         selectedEventId: action.event.eventId,
