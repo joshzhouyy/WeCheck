@@ -64,11 +64,12 @@ function requestSignIn(username) {
 }
 
 //helper action receiveSignIn
-function receiveSignIn(username) {
+function receiveSignIn(userAccount) {
     const user = {
-        username,
-        id: Symbol(username)
+        userAccount,
+        id: Symbol(userAccount)
     }
+    console.log(user)
     return {
         type: types.AUTH_SIGNIN_SUCCESS,
         user

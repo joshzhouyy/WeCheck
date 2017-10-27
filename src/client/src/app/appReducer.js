@@ -2,7 +2,7 @@ import {SELECT_ACTIVE_PANEL} from '../constants/ActionTypes'
 
 // Selectors(getters)
 export const getActivePanel = (state) => {
-  console.log(JSON.stringify(state))
+  // console.log(JSON.stringify(state))
   return state.panels.activePanel;
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Paper from 'material-ui/Paper'
 import {Grid, Row, Col} from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -12,10 +13,6 @@ import "./EventList.css"
 
 function handleRequestDelete() {
   alert('You clicked the delete button.');
-}
-
-function handleTouchTap() {
-  alert('You clicked the Chip.');
 }
 
 const menuOptions = () => (
@@ -35,22 +32,38 @@ const menuOptions = () => (
   </div>
 );
 
-const eventList = () => (
-  <div id="eventListDiv">
-    <Chip
-      onRequestDelete={handleRequestDelete}
-      >
-      <Avatar color="#444" icon={<SvgIconFace />} />
-      This is the name of the event 1
-    </Chip>
-    <Chip
-      onRequestDelete={handleRequestDelete}
+
+const eventItem = (props) => (
+  <Chip className="eventItem" key = {props.eventName}
+    onRequestDelete={() => handleRequestDelete}
+    onClick={() => props.onClick(props.eventName)}
     >
-      <Avatar color="#444" icon={<SvgIconFace />} />
-      This is the name of the event 2
+    <Avatar color="#444" icon={<SvgIconFace />} />
+      {props.eventName}
   </Chip>
+);
 
+const eventItems = (events, onClick) => {
+  let props = {
+    onClick: onClick
+  }
 
+  return (
+  <div id="eventItems">
+    {_.map(events, (e) => {
+      props.eventName = e;
+      console.log(props)
+      return eventItem(props);
+    })}
+  </div>
+  );
+}
+
+const eventList = (events, handleRequestDelete, onClick) => (
+  <div id="eventListDiv">
+    
+    {eventItems(events, handleRequestDelete, onClick)}
+    
     <div id="eventListBtnDiv">
       <RaisedButton 
       label="Create a new event" 
@@ -58,21 +71,20 @@ const eventList = () => (
       className="eventListBtn"
       style={{ fontSize: '1.5rem' }}
       /> 
-    
-
     </div>
-
   </div>
 );
 
-const EventList = () => (
+const events = ["Event A", "Event B"]
+
+const EventList = ({onClick}) => (
   <Paper id="eventListContainer">
     <Grid id="EventListGrid">
     <Row id="menuOptionsRow">
       {menuOptions()}
     </Row>
     <Row id="eventListRow">
-      {eventList()}
+      {eventList(events, onClick)}
     </Row>
   </Grid>
   </Paper>
