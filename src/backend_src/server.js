@@ -19,16 +19,19 @@ mongoose.connect(mongooseURL,{useMongoClient:true}, function(err){
 });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use(cors())
 
 //load routes
 const userRouter = express.Router();
 const eventRouter = express.Router();
+const event_userRouter = express.Router();
 require('./routes/userRouter')(userRouter);
 require('./routes/eventRouter')(eventRouter);
+require('./routes/event_userRouter')(event_userRouter);
 app.use('', userRouter);
 app.use('', eventRouter);
+app.use('', event_userRouter);
 
 //app.use('/', express.static(path.join(__dirname, '../..', 'static')));
 app.use('/', express.static(__dirname + '/../client/dist/'));

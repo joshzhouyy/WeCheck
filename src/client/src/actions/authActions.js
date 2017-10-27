@@ -11,10 +11,10 @@ function requestSignUp() {
 }
 
 // helper action receiveUser
-function receiveUser(username) {
+function receiveUser(user) {
     const newUser = {
-        username,
-        id: Symbol(username)
+        userAccount: user.userAccount,
+        id: user.id
     }
     return {
         type: types.AUTH_SIGNUP_SUCCESS,
@@ -43,9 +43,12 @@ export function signUp(user) {
         return axios.post('/signup', user)
                .then((response) => {
                    if (response.data != null && response.data != "") {
-                       console.log(response);
-                       dispatch(receiveUser(user.username));
-                       browserHistory.push('/');
+                      console.log(response);
+                      let data = {};
+                      data.userAccount = response.data.userAccount;
+                      data.id = response.data._id;
+                      dispatch(receiveUser(data));
+                      browserHistory.push('/');
                    } else {
                        dispatch(notReceiveUser());
                    }
@@ -64,12 +67,12 @@ function requestSignIn(username) {
 }
 
 //helper action receiveSignIn
-function receiveSignIn(userAccount) {
+function receiveSignIn(data) {
     const user = {
-        userAccount,
-        id: Symbol(userAccount)
+        userAccount: data.userAccount,
+        id: data.id
     }
-    console.log(user)
+    // console.log(user)
     return {
         type: types.AUTH_SIGNIN_SUCCESS,
         user
@@ -88,8 +91,10 @@ export function signIn(user) {
 
         return axios.put('/login', user).then((response) => {
             if(response.data != null && response.data != "") {
-                console.log(response);
-                dispatch(receiveSignIn(user.userAccount));
+                let data = {};
+                data.userAccount = response.data.userAccount;
+                data.id = response.data._id;
+                dispatch(receiveSignIn(data));
                 browserHistory.push('/');
             } else {
                 dispatch(notReceiveSignIn());

@@ -113,7 +113,6 @@ class Login extends Component {
 
 function mapStateToProps(state) {
     return {
-        welcomPage: state.welcomPage,
         failedToSignIn: state.authReducer.failedToSignIn
     }
 }

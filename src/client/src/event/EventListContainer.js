@@ -2,12 +2,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {selectEvent} from './EventActions';
-import * as eventSelectors from './eventReducer';
+import * as appSelectors from '../app/appReducer';
+import * as authSelectors from '../reducers/auth_reducer';
+
 import EventList from './EventList';
 
 //TODO: load existing events
 const mapStateToProps = (state) => ({
-  selectedEventId: eventSelectors.getSelectedEventId(state)
+  selectedEventId: appSelectors.getSelectedEventId(state),
+  userId: authSelectors.getUserId(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

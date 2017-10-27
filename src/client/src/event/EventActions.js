@@ -1,30 +1,31 @@
 import axios from 'axios';
 
 
-export const selectEvent = (eventId) => {
-  
-  return ({
-    type: "SELECT_EVENT",
-    eventId
-  });
-}
+export const selectEvent = (eventId) => ({
+  type: "SELECT_EVENT",
+  eventId
+});
 
-const getOngoingEvents = (userId) => {
+export const getOngoingEvents = (userId) => {
   //TODO: use userId to get relavant events
-  axios.get('api/all_event', events)
+  return new Promise ((resolve, reject) => {
+    axios.get('api/all_event', userId)
     .then((response) => {
-      if (response !== null && response.length > 0) {
-        return response;
+      const data = response.data;
+      if (data !== null && data.length > 0) {
+        // console.log(data)
+        resolve(data);
       }
       else {
         console.log("Found none events\n");
-        return [];
+        // reject([])
       }
     })
     .catch((err) => {
-      console.log("err " + err + "\n");
-      return null;
+      console.log(err);
+      throw error;
     });
+  })
 }
 
 const getFinishedEvents = () => {

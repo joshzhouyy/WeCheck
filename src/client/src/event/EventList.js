@@ -9,6 +9,8 @@ import Chip from 'material-ui/Chip'
 import FontIcon from 'material-ui/FontIcon'
 import SvgIconFace from 'material-ui/svg-icons/action/face'
 
+import {getOngoingEvents} from './EventActions';
+
 import "./EventList.css"
 
 function handleRequestDelete() {
@@ -34,9 +36,9 @@ const menuOptions = () => (
 
 
 const eventItem = (props) => (
-  <Chip className="eventItem" key = {props.eventName}
+  <Chip className="eventItem" key = {props.eventId}
     onRequestDelete={() => handleRequestDelete}
-    onClick={() => props.onClick(props.eventName)}
+    onClick={() => props.onClick(props.eventId)}
     >
     <Avatar color="#444" icon={<SvgIconFace />} />
       {props.eventName}
@@ -51,7 +53,9 @@ const eventItems = (events, onClick) => {
   return (
   <div id="eventItems">
     {_.map(events, (e) => {
-      props.eventName = e;
+      //TODO: event name attribute?
+      props.eventName = e.eventLocation;
+      props.eventId = e._id;
       console.log(props)
       return eventItem(props);
     })}
@@ -75,19 +79,54 @@ const eventList = (events, handleRequestDelete, onClick) => (
   </div>
 );
 
-const events = ["Event A", "Event B"]
 
-const EventList = ({onClick}) => (
-  <Paper id="eventListContainer">
-    <Grid id="EventListGrid">
-    <Row id="menuOptionsRow">
-      {menuOptions()}
-    </Row>
-    <Row id="eventListRow">
-      {eventList(events, onClick)}
-    </Row>
-  </Grid>
-  </Paper>
-);
+class EventList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ongoingEvents: [],
+      finishedEvents: []
+    }
+  }
+
+  componentDidMount() {
+    getOngoingEvents(this.props.userId)
+      .then(events => {
+        this.setState({
+          ongoingEvents: events
+        });
+      })
+  }
+
+  render(){
+    const events = this.state.ongoingEvents;
+    console.log(JSON.stringify(this.state))
+    return (
+      <Paper id="eventListContainer">
+        <Grid id="EventListGrid">
+        <Row id="menuOptionsRow">
+          {menuOptions()}
+        </Row>
+        <Row id="eventListRow">
+          {eventList(events, this.props.onClick)}
+        </Row>
+      </Grid>
+      </Paper>
+    );
+  }
+}
+
+// const EventList = ({onClick}) => (
+//   <Paper id="eventListContainer">
+//     <Grid id="EventListGrid">
+//     <Row id="menuOptionsRow">
+//       {menuOptions()}
+//     </Row>
+//     <Row id="eventListRow">
+//       {eventList(events, onClick)}
+//     </Row>
+//   </Grid>
+//   </Paper>
+// );
 
 export default EventList;

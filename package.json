@@ -1,7 +1,10 @@
 {
-  "name": "WeCheck",
+  "name": "wecheck",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "6.x"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^0.17.0",
@@ -18,8 +21,15 @@
     "react-dom": "15.6.1",
     "react-router-dom": "^4.2.2",
     "redux-logger": "^3.0.6",
+    "cors": "2.8.4",
     "webpack": "3.6.0",
-    "webpack-dev-server": "2.8.2"
+    "webpack-dev-server": "2.8.2",
+    "express": "4.15.4",
+    "react-redux": "5.0.6",
+    "redux": "3.7.2",
+    "redux-thunk": "^2.2.0",
+    "sinon": "3.3.0",
+    "style-loader": "^0.18.2"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
@@ -35,19 +45,13 @@
     "prop-types": "15.6.0",
     "react-addons-test-utils": "15.6.0",
     "body-parser": "1.18.1",
-    "cors": "2.8.4",
-    "express": "4.15.4",
     "mongodb": "2.2.31",
     "mongoose": "4.11.12",
     "path": "0.12.7",
-    "socket.io": "2.0.3",
-    "react-redux": "5.0.6",
-    "redux": "3.7.2",
-    "redux-thunk": "^2.2.0",
-    "sinon": "3.3.0",
-    "style-loader": "^0.18.2"
+    "socket.io": "2.0.3"
   },
   "scripts": {
+    "start": "node src/backend_src/server.js",
     "test": "mocha --compilers js:babel-register --require ./src/client/test/helpers.js --require ./src/client/test/dom.js --recursive src/client/test/*.spec.js",
     "dev": "webpack-dev-server --port 3001 --devtool eval --progress --colors --hot --content-base dist",
     "watch": "./node_modules/.bin/webpack -d --watch",
