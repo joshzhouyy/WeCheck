@@ -2,6 +2,9 @@
   "name": "WeCheck",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "6.x"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^0.17.0",
@@ -48,6 +51,7 @@
     "style-loader": "^0.18.2"
   },
   "scripts": {
+    "start": "NODE_ENV=production node src/backend_src/server",
     "test": "mocha --compilers js:babel-register --require ./src/client/test/helpers.js --require ./src/client/test/dom.js --recursive src/client/test/*.spec.js",
     "dev": "webpack-dev-server --port 3000 --devtool eval --progress --colors --hot --content-base dist",
     "watch": "./node_modules/.bin/webpack -d --watch",
