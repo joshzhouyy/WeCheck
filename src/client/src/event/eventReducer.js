@@ -1,9 +1,9 @@
 import {REMOVE_EVENT} from '../constants/ActionTypes'
 
 // Selectors(getters)
-// export const getSelectedEventId = (state) => {
-//   return state.event.selectedEventId;
-// }
+export const getRemovedEventId = (state) => {
+  return state.event.selectedDeleteEventId;
+}
 
 const initialState = {
     selectedDeleteEventId: ""
@@ -13,7 +13,7 @@ const initialState = {
 const event = (state = initialState, action) => {
   switch(action.type) {
     case REMOVE_EVENT:
-      console.log(action.eventId + " was selected")
+      console.log(action.eventId + " was selected to be removed")
       return {
         ...state,
         selectedDeleteEventId: action.eventId,
@@ -23,4 +23,4 @@ const event = (state = initialState, action) => {
   }
 }
 
-// export default event
+export default event

@@ -13,10 +13,6 @@ import {getOngoingEvents} from './EventActions';
 
 import "./EventList.css"
 
-function handleRequestDelete() {
-  alert('You clicked the delete button.');
-}
-
 const menuOptions = () => (
   <div id="menuOptionsDiv">
     <RaisedButton 
@@ -43,7 +39,7 @@ const eventItem = (props) => {
 
   return (
   <Chip className="eventItem" key = {props.eventId}
-    onRequestDelete={() => handleRequestDelete}
+    onRequestDelete={() => props.handleRequestDelete(props.eventId)}
     onClick={() => props.onClick(event)}
     >
     <Avatar color="#444" icon={<SvgIconFace />} />
@@ -52,42 +48,31 @@ const eventItem = (props) => {
   );
 }
 
-const eventItems = (userId, events, onClick) => {
-  let props = {
-    onClick: onClick
+const eventItems = (props) => {
+  const userId = props.userId;
+  const events = props.events;
+  const onClick = props.onClick;
+  const handleRequestDelete = props.handleRequestDelete;
+
+  let params = {
+    onClick: onClick,
+    handleRequestDelete: handleRequestDelete
   }
 
   return (
   <div id="eventItems">
     {_.map(events, (e) => {
       //TODO: event name attribute?
-      props.eventName = e.eventLocation;
-      props.eventId = e._id;
-      props.isOwner = e.ownerID === userId ? true:false;
+      params.eventName = e.eventLocation;
+      params.eventId = e._id;
+      params.isOwner = e.ownerID === userId ? true:false;
       // console.log(props)
       // console.log(userId)
-      return eventItem(props);
+      return eventItem(params);
     })}
   </div>
   );
 }
-
-const eventList = (userId, events, onClick, handleRequestDelete) => (
-  <div id="eventListDiv">
-    
-    {eventItems(userId, events, onClick, handleRequestDelete)}
-    
-    <div id="eventListBtnDiv">
-      <RaisedButton 
-      label="Create a new event" 
-      backgroundColor={orange100}
-      className="eventListBtn"
-      style={{ fontSize: '1.5rem' }}
-      /> 
-    </div>
-  </div>
-);
-
 
 class EventList extends React.Component {
   constructor(props) {
@@ -100,7 +85,7 @@ class EventList extends React.Component {
 
   componentDidMount() {
     // console.log(this.props.userId)
-    //TODO:
+    //TODO: add userId check
     // if (this.props.userId !== null) {
       getOngoingEvents(this.props.userId)
       .then(events => {
@@ -115,6 +100,14 @@ class EventList extends React.Component {
     const events = this.state.ongoingEvents;
     const onClick = this.props.onClick;
     const userId = this.props.userId;
+    const handleRequestDelete = this.props.handleRequestDelete;
+    
+    const props = {
+      events: events,
+      userId: userId,
+      onClick: onClick,
+      handleRequestDelete: handleRequestDelete
+    }
 
     console.log(JSON.stringify(this.state))
     return (
@@ -124,7 +117,9 @@ class EventList extends React.Component {
           {menuOptions()}
         </Row>
         <Row id="eventListRow">
-          {eventList(userId, events, onClick)}
+          <div id="eventListDiv">
+            {eventItems(props)}
+          </div>
         </Row>
       </Grid>
       </Paper>
