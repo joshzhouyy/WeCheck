@@ -1,6 +1,9 @@
 {
   "name": "local_src",
   "version": "1.0.0",
+  "engines":{
+	  "node":"6.11.5"
+	}
   "description": "local server for wecheck",
   "main": "server.js",
   "scripts": {
