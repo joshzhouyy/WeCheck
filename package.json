@@ -15,6 +15,8 @@
     "html-webpack-plugin": "2.30.1",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.4",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.12",
     "object-hash": "1.1.8",
     "path": "0.12.7",
     "react": "15.6.1",
@@ -27,6 +29,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "sinon": "3.3.0",
+    "socket.io": "^2.0.3",
     "style-loader": "^0.18.2",
     "webpack": "3.6.0",
     "webpack-dev-server": "2.8.2"
@@ -45,10 +48,7 @@
     "prop-types": "15.6.0",
     "react-addons-test-utils": "15.6.0",
     "body-parser": "1.18.1",
-    "mongodb": "2.2.31",
-    "mongoose": "4.11.12",
-    "path": "0.12.7",
-    "socket.io": "2.0.3"
+    "path": "0.12.7"
   },
   "scripts": {
     "start": "node src/backend_src/server.js",
