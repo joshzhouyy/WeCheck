@@ -38,7 +38,7 @@ const Sidebar = () => (
       <ActionHome />
     </IconButton>
     <br />
-    <RaisedButton label="Split" primary={true} style={styles.margin} />
+    <RaisedButton label="Splitter" primary={true} style={styles.margin} />
     <br />
     <RaisedButton label="Finance" primary={true} style={styles.margin} />
     </div>

@@ -14,9 +14,7 @@ import Login from '../login/Login';
 
 
 
-function handleTouchTap() {
-  alert('onClick triggered on the title component');
-}
+
 
 const styles = {
   title: {
@@ -53,7 +51,6 @@ const Topbar = () => (
     <div id="topBar">
       <AppBar
         title={<span style={styles.title}>WeCheck</span>}
-        onTitleTouchTap={handleTouchTap}
         iconElementRight={rightButtons}
       />
     </div>
