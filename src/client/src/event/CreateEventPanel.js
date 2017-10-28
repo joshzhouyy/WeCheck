@@ -46,7 +46,8 @@ class CreateEventPanel extends React.Component {
       <div id = "pageDiv">
         <h1>CREATE PAGE</h1>
         <h2>Start a New Event</h2>
-        
+        <br />
+
         <TextField  
             hintText="Event Name"
             hintStyle={styles.floatingLabelStyle}
@@ -71,23 +72,21 @@ class CreateEventPanel extends React.Component {
             underlineStyle={styles.underlineStyle}
         />
         <br />
-        <TextField  
-            hintText="Split Type"
-            hintStyle={styles.floatingLabelStyle}
-            underlineStyle={styles.underlineStyle}
-        /><br />
         
+        <p id="splitType" style={styles.floatingLabelStyle} >
+          Split Type: 
         
-
       
 
-        <DropDownMenu value={this.state.value} onChange={this.handleChange}>
-          <MenuItem value={1} primaryText="Restaurant" />
-          <MenuItem value={2} primaryText="Hotel" />
-          <MenuItem value={3} primaryText="Flight" />
-          
-        </DropDownMenu>
+          <DropDownMenu value={this.state.value} onChange={this.handleChange} style={styles.dropdown} >
+            <MenuItem value={1} primaryText="Restaurant" />
+            <MenuItem value={2} primaryText="Hotel" />
+            <MenuItem value={3} primaryText="Flight" />
+            
+          </DropDownMenu>
 
+        </p>
+        <br />
 
         <TextField  
             hintText="Type an email address to add"
@@ -103,7 +102,7 @@ class CreateEventPanel extends React.Component {
 
           <FlatButton id="FlatButtonSize"        
             label="+Add a person to the list"
-            style = {styles.labelStyle}
+            style = {styles.buttonStyle}
             onClick={this.buttonClicked.bind(this)}
 
           />

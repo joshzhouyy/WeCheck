@@ -1,0 +1,42 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-size: 100%;
+    font-family: 'Alegreya Sans SC';
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+#outerContainer {
+  width: 100%;
+  height: 100%;
+}
+
+#topRow {
+  height: 7%;
+  width: 100%;
+}
+
+#btmRow {
+  height: 93%; 
+  width: 100%;
+}
+
+#sideBar {
+  height: 100%;
+}
+
+#mainActivityRow {
+  height: 100%;
+}
+
+#mainActivity {
+  height: 100%;
+}
+
+.mainActivityCols {
+  height: 100%;
+}
