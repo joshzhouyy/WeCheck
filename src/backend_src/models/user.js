@@ -5,7 +5,8 @@ var userSchema = new mongoose.Schema({
    	userName: String,
     userAccount: {type: String, unique: true},
     password: String,
-    eventId:[{ type: Schema.Types.ObjectId, ref: 'eventinfo'}]
+    //list that contains all event that a user owns or in
+    eventList:[{ type: Schema.Types.ObjectId, ref: 'eventinfo'}]
 });
 
 module.exports = mongoose.model('user', userSchema);

@@ -1,6 +1,7 @@
 var hash = require('object-hash');
 var bodyParser = require('body-parser');
 var user = require('../models/user.js');
+var evt = require('../models/event_info.js');
 
 
 module.exports = function loadUserRoutes(router) {
@@ -27,6 +28,7 @@ module.exports = function loadUserRoutes(router) {
                     newUser.userAccount = req.body.userAccount;
                     newUser.password = hash(req.body.password);
                     newUser.userName = req.body.userName;
+                    newUser.eventList = [];
                     //newUser.password = req.body.password;
 
                     newUser.save((error) => {
@@ -114,6 +116,92 @@ module.exports = function loadUserRoutes(router) {
             return;
 
         });
+    });
+
+
+    //when user join in an event, add that event to user's eventList
+    router.put('/joinEvent/:userID', function(req, res){
+
+        var flag_1 = user.findOne({'_id': req.params.userID}, (error, user) => {
+            if(error){
+                console.log(error);
+                //res.status(500).send("Error: " + error);
+                return 0;
+            }
+            if(!user){
+                console.log("user not found");
+                //res.status(404).send("user not found");
+                return 0;
+            }
+            if(user.eventList.indexOf(req.body.eventID) === -1){
+                user.eventList.push(req.body.eventID);
+                console.log("pushed");
+                user.save((error) => {
+                    if(error){
+                        //res.status(500).send("Error: " + error);
+                        console.log("Error: " + error);
+                        return 0 ;
+                    }
+                });
+                return 1;
+            }
+            else{
+                console.log("user already in this event");
+                return 0;
+            }
+        });
+        
+        var flag_2 = evt.findOne({'_id': req.body.eventID}, (error, evt) => {
+
+            if(error){
+                //res.status(500).send("Error: " + error);
+                console.log("Error: " + error);
+                return 0;
+            }
+
+            if(!evt){
+                user.findOne({"_id":req.params.userID}, (error, user) => {
+                    user.eventList.pop();
+                });
+                //res.status(404).send("event not found");
+                console.log("event not found");
+                return 0;
+            }
+            //console.log(evt.eventName);
+            if(evt.memberAccount.indexOf(req.params.userID) === -1){
+                evt.memberAccount.push(req.params.userID);
+                evt.save((error) => {
+                    if(error){
+                        //res.status(500).send("Error: " + error);
+                        console.log("Error: "+ error);
+                        return 0;
+                    }
+                });
+                return 1;
+            }
+            else{
+                //res.status(500).send("User already in event");
+                console.log("event already has this user");
+                return 0;
+            }
+            console.log(evt.memberAccount);
+        });
+
+        //if both check complete, send success response
+        response = {
+                "userID": req.params.userID,
+                "eventID": req.body.eventID,
+                "message": "successfully joined event: " + req.body.eventID
+            };
+            if(flag_1 == 1 && flag_2 == 1){
+                res.status(200).send(response);
+                return;
+            }
+            else{
+                res.status(500).send("ERROR");
+                return;
+            }
+    
     });
 
 };

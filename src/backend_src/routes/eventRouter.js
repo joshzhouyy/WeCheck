@@ -49,6 +49,7 @@ module.exports = function loadEventRoutes(router){
 		newEvent.invitationList = req.body.invitationList;
 		newEvent.eventStatus = 'in process';
 		newEvent.totalAmount = 0;
+		//TODO: possible defect: event member list not include owner
 		newEvent.memberAccount.push(req.body.ownerID);
 
 		newEvent.save((error) => {
@@ -89,7 +90,7 @@ module.exports = function loadEventRoutes(router){
 			evt.splitType = req.body.splitType;
 			evt.invitationList = req.body.invitationList;
 			//evt.eventStatus = req.body.eventStatus; //should not be allowed to edit event status
-			evt.totalAmount = req.body.totalAmount;
+			//evt.totalAmount = req.body.totalAmount;
 
 			evt.save((error) => {
 				if(error){
@@ -289,6 +290,19 @@ module.exports = function loadEventRoutes(router){
 			});
 		});
 	});
+
+	//get all 'in process' event that an user is in or owns
+	router.get('/getAllOnGoingEvent/:userID', function(req, res){
+		var targetUser = user.findOne({'_id':rew.params.userID});
+		if(!targetUser){
+			res.status(404).send("user not found!");
+			return;
+		}
+		var list = targetUser.eventList;
+		console.log(list);
+	});
+
+	
 
 
 }
