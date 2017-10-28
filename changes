@@ -1,0 +1,113 @@
+diff --git a/src/client/src/event/CreateEventPanel.css b/src/client/src/event/CreateEventPanel.css
+index 0a09106..8e4757c 100644
+--- a/src/client/src/event/CreateEventPanel.css
++++ b/src/client/src/event/CreateEventPanel.css
+@@ -5,6 +5,7 @@
+   bottom: 0;
+   left: 0;
+   right: 0;
++  
+ 
+   margin: auto;
+ }
+diff --git a/src/client/src/event/CreateEventPanel.js b/src/client/src/event/CreateEventPanel.js
+index 86b058e..8a214b7 100644
+--- a/src/client/src/event/CreateEventPanel.js
++++ b/src/client/src/event/CreateEventPanel.js
+@@ -44,7 +44,7 @@ class CreateEventPanel extends React.Component {
+       
+       
+       <div id = "pageDiv">
+-        <h1>CREATE PAGE</h1>
++        <h1>CREATE EVENT PAGE</h1>
+         <h2>Start a New Event</h2>
+         <br />
+ 
+@@ -100,7 +100,7 @@ class CreateEventPanel extends React.Component {
+         
+         <div>
+ 
+-          <FlatButton id="FlatButtonSize"        
++          <FlatButton id="buttonSize"        
+             label="+Add a person to the list"
+             style = {styles.buttonStyle}
+             onClick={this.buttonClicked.bind(this)}
+diff --git a/src/client/src/event/CreateEventPanelStyle.js b/src/client/src/event/CreateEventPanelStyle.js
+index 8e6d965..c2cf72d 100644
+--- a/src/client/src/event/CreateEventPanelStyle.js
++++ b/src/client/src/event/CreateEventPanelStyle.js
+@@ -3,7 +3,7 @@ import {orange500, blue500, indigo900, black, orange800} from 'material-ui/style
+ export const styles = {
+ 
+   dropdown: {
+-    height:61,
++    //height:61,
+   },
+ 
+   block: {
+@@ -18,7 +18,7 @@ export const styles = {
+     color: orange500,
+   },
+   underlineStyle: {
+-    bottom:9,
++    //bottom:9,
+     borderColor: black,
+   },
+   
+@@ -36,11 +36,13 @@ export const styles = {
+   },
+ 
+   buttonSize: {
+-    width: 287,  
++    //width: 287,  
++    width: 15,
+   },
+ 
+   buttonStyle: {    
+-    margin: 6
++    margin: 6,
++    
+   }
+ 
+ };
+\ No newline at end of file
+diff --git a/src/client/src/index.js b/src/client/src/index.js
+index a05c0a9..5788cd9 100644
+--- a/src/client/src/index.js
++++ b/src/client/src/index.js
+@@ -7,9 +7,13 @@ import { createLogger } from 'redux-logger';
+ import thunk from 'redux-thunk';
+ import { BrowserRouter } from 'react-router-dom';
+ 
+-import App from './app/App'
++//import App from './app/App'
+ import rootReducer from './app/reducers'
+ 
++import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
++import App from './moonsunApp/App'
++import CreateEventPanel from './event/CreateEventPanel'
++
+ const middleware = [ thunk ];
+ if (process.env.NODE_ENV !== 'production') {
+   middleware.push(createLogger());
+@@ -19,11 +23,20 @@ const store = createStore(rootReducer, applyMiddleware(...middleware));
+ 
+ 
+ const WeCheck = () => (
++  
+   <BrowserRouter>
+     <Provider store={store}>
+       <App />
+     </Provider>
+   </BrowserRouter>
++  
++  
++  /*
++  <MuiThemeProvider>
++    <CreateEventPanel />
++  </MuiThemeProvider>
++  */
++  
+ );
+ 
+ // console.log(store.getState())
