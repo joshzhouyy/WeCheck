@@ -1,0 +1,27 @@
+#expensePanelContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#expensePanelGrid {
+  height: 100%;
+  width: 100%;
+}
+
+#expenseOptionsRow {
+  height: 100%
+}
+
+#expenseOptionsDiv {
+  height: 100%;
+}
+
+
+#categoryDropdown {
+  height: 5%;
+  margin-top: 41px;
+}
+
+.saveBtn {
+  width: 10%;
+}
