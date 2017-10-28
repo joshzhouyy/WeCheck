@@ -293,13 +293,31 @@ module.exports = function loadEventRoutes(router){
 
 	//get all 'in process' event that an user is in or owns
 	router.get('/getAllOnGoingEvent/:userID', function(req, res){
-		var targetUser = user.findOne({'_id':rew.params.userID});
-		if(!targetUser){
-			res.status(404).send("user not found!");
-			return;
-		}
-		var list = targetUser.eventList;
-		console.log(list);
+		
+		user.findOne({'_id': req.params.userID}, function(error, user) {
+			if(error){
+				res.status(500).send("Error: " + error);
+				return;
+			}
+			if(!user){
+				res.status(404).send("user not found");
+				return;
+			}
+			const eventList = user.eventList;
+			evt.find({
+				'_id': {$in: eventList},
+				'eventStatus':'in process'
+			}, function(error, events){
+				if(error){
+					res.status(500).send("Error: " + error);
+					return;
+				}
+				res.status(200).json(events);
+				return;
+			});
+			
+		});
+		
 	});
 
 	
