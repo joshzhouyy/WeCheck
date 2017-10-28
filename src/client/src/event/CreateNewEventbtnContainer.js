@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 
 import {selectActivePanel} from '../app/AppActions';
 import * as appSelectors from '../app/appReducer';
-import Dashboard from './Dashboard';
+import CreateNewEventbtn from './CreateNewEventbtn';
+
 
 const mapStateToProps = (state) => ({
   activePanel: appSelectors.getActivePanel(state)
@@ -11,15 +12,15 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   const d = ({
-  handleTouchTap: bindActionCreators(selectActivePanel, dispatch)
-});
-  console.log(d);
+  onClick: bindActionCreators(selectActivePanel, dispatch)
+})
+  console.log(JSON.stringify(d));
   return d;
-}
+};
 
-const DashboardContainer = connect(
+const CreateNewEventbtnContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Dashboard);
+)(CreateNewEventbtn);
 
-export default DashboardContainer;
+export default CreateNewEventbtnContainer;

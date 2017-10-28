@@ -5,7 +5,9 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import EventPanelContainer from '../event/EventPanelContainer';
 import BalancePanel from '../balance-panel/BalancePanel';
 import MessageBox from '../message-box/MessageBox';
-import {MESSAGE_BOX, BALANCE, EVENT_PANEL} from '../constants/Names';
+import {MESSAGE_BOX, BALANCE, EVENT_PANEL, CREATE_BOX} from '../constants/Names';
+import CreateEventPanel from '../event/CreateEventPanel';
+
 
 const muiTheme = getMuiTheme({
     fontFamily: 'Alegreya Sans SC'
@@ -30,6 +32,12 @@ const ActivePanel = (props)=> {
       return (
         <MuiThemeProvider muiTheme={muiTheme}>
           <EventPanelContainer />
+        </MuiThemeProvider>
+      );
+    case  CREATE_BOX:
+      return (
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <CreateEventPanel />
         </MuiThemeProvider>
       );
     default:

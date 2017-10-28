@@ -23,6 +23,7 @@ const initialState = {
     isOwner: false
 };
 
+
 // Reducers(setters)
 const panels = (state = initialState, action) => {
   switch(action.type) {
