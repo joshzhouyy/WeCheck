@@ -1,0 +1,39 @@
+#ExpenseAnalysisContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#ExpenseAnalysisGrid {
+  height: 100%;
+  width: 100%;
+}
+
+
+#DiagramRow {
+  width: 100%;
+  
+}
+
+#ExpenseAnalysisDiv {
+  height: 100%;
+}
+
+#info {
+  font-size: 170%;
+}
+
+#paper {
+  
+
+}
+
+h1 {
+    text-align: center;
+}
+
+img {
+    display: block;
+    margin: auto;
+    
+}
+

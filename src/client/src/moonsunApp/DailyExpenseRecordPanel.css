@@ -1,0 +1,58 @@
+#DailyExpenseRecordContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#DailyExpenseRecordGrid {
+  height: 100%;
+  width: 100%;
+}
+
+#DailyExpenseRecordRow {
+  height: 100%
+}
+
+#DailyExpenseInfoDiv {
+  height: 100%;
+}
+
+#date {
+  font-size: 150%
+}
+
+#amount {
+  font-size: 150%
+}
+
+#paper1 {
+  width: 100%;
+  position: relative;
+}
+
+#paper2 {
+  width: 100%;
+  position: relative;
+}
+
+
+#info {
+  font-size: 150%;
+}
+
+#Btns {
+  position: absolute;
+  right: 0%;
+  top:6%;
+}
+
+.editBtn {
+  
+  width: 45%;
+
+}
+
+.deleteBtn {
+  
+  width: 45%;
+}
+
