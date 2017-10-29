@@ -2,6 +2,9 @@
 export const SELECT_ACTIVE_PANEL = "SELECT_ACTIVE_PANEL"
 export const SELECT_EVENT = "SELECT_EVENT"
 
+// Page
+export const SELECT_ACTIVE_PAGE = "SELECT_ACTIVE_PAGE"
+
 // Auth
 export const AUTH_SIGNUP = "AUTH_SIGNUP"
 export const AUTH_SIGNUP_SUCCESS = "AUTH_SIGNUP_SUCCESS"

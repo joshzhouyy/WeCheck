@@ -9,13 +9,9 @@ const mapStateToProps = (state) => ({
   activePanel: appSelectors.getActivePanel(state)
 });
 
-const mapDispatchToProps = (dispatch) => {
-  const d = ({
+const mapDispatchToProps = (dispatch) => ({
   handleTouchTap: bindActionCreators(selectActivePanel, dispatch)
 });
-  console.log(d);
-  return d;
-}
 
 const DashboardContainer = connect(
   mapStateToProps,

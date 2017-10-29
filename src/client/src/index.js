@@ -7,7 +7,7 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 
-import App from './app/App'
+import AppContainer from './app/AppContainer'
 import rootReducer from './app/reducers'
 
 const middleware = [ thunk ];
@@ -21,7 +21,7 @@ console.log(store.getState())
 const WeCheck = () => (
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <AppContainer />
     </Provider>
   </BrowserRouter>
 );

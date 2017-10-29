@@ -1,4 +1,8 @@
-import {SELECT_ACTIVE_PANEL, SELECT_EVENT} from '../constants/ActionTypes'
+import {
+  SELECT_ACTIVE_PANEL, 
+  SELECT_EVENT,
+  SELECT_ACTIVE_PAGE
+        } from '../constants/ActionTypes'
 import {EVENT_PANEL} from '../constants/Names';
 
 
@@ -16,11 +20,16 @@ export const getUserIdentity = (state) => {
   return state.panels.isOwner;
 }
 
+export const getActivePage = (state) => {
+  return state.panels.selectedPage;
+}
+
 const initialState = {
     selectedPanel: "MESSAGE_BOX",
     activePanel: "MESSAGE_BOX",
     selectedEventId: "",
-    isOwner: false
+    isOwner: false,
+    selectedPage: "SPLITTER"
 };
 
 
@@ -41,6 +50,11 @@ const panels = (state = initialState, action) => {
         selectedEventId: action.event.eventId,
         isOwner: action.event.isOwner,
         activePanel: EVENT_PANEL
+      }
+    case SELECT_ACTIVE_PAGE:
+      return {
+        ...state,
+        selectedPage: action.selectedPage
       }
     default:
       return state;

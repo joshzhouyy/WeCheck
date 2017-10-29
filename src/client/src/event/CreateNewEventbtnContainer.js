@@ -10,13 +10,9 @@ const mapStateToProps = (state) => ({
   activePanel: appSelectors.getActivePanel(state)
 });
 
-const mapDispatchToProps = (dispatch) => {
-  const d = ({
+const mapDispatchToProps = (dispatch) => ({
   onClick: bindActionCreators(selectActivePanel, dispatch)
-})
-  console.log(JSON.stringify(d));
-  return d;
-};
+});
 
 const CreateNewEventbtnContainer = connect(
   mapStateToProps,

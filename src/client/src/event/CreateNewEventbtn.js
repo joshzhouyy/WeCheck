@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
 
 
 const CreateNewEventbtn = ({onClick, activePanel}) => {
-  console.log(onClick)
-  console.log(activePanel)
+  // console.log(onClick)
+  // console.log(activePanel)
     return (
          <div id="eventListBtnDiv">
           <RaisedButton 
