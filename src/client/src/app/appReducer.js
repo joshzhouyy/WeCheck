@@ -37,14 +37,14 @@ const initialState = {
 const panels = (state = initialState, action) => {
   switch(action.type) {
     case SELECT_ACTIVE_PANEL:
-      console.log("selected " + action.selectedPanel)
+      // console.log("selected " + action.selectedPanel)
       return {
         ...state,
         selectedPanel: action.selectedPanel,
         activePanel: action.selectedPanel
       }
     case SELECT_EVENT:
-      console.log(action.event.eventId + " was selected")
+      // console.log(action.event.eventId + " was selected")
       return {
         ...state,
         selectedEventId: action.event.eventId,

@@ -5,7 +5,8 @@ import * as appSelectors from '../app/appReducer';
 import EventMemberPanel from './EventMemberPanel';
 
 const mapStateToProps = (state) => ({
-  isCreator: appSelectors.getUserIdentity(state)
+  isCreator: appSelectors.getUserIdentity(state),
+  selectedEventId: appSelectors.getSelectedEventId(state)
 });
 
 const EventPanelContainer = connect(

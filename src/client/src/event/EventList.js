@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'
 import {Grid, Row, Col} from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -61,15 +62,18 @@ const eventItems = (props) => {
 
   return (
   <div id="eventItems">
-    {_.map(events, (e) => {
-      //TODO: event name attribute?
-      params.eventName = e.eventLocation;
-      params.eventId = e._id;
-      params.isOwner = e.ownerID === userId ? true:false;
-      // console.log(props)
-      // console.log(userId)
-      return eventItem(params);
-    })}
+    {
+      _.map(events, (e) => {
+        //TODO: event name attribute?
+        // console.log(JSON.stringify(e))
+        params.eventName = e.eventName;
+        params.eventId = e._id;
+        params.isOwner = e.ownerID === userId ? true:false;
+        // console.log(props)
+        // console.log(userId)
+        return eventItem(params);
+      })
+    }
   </div>
   );
 }
@@ -98,8 +102,8 @@ class EventList extends React.Component {
 
   render(){
     const events = this.state.ongoingEvents;
-    const onClick = this.props.onClick;
     const userId = this.props.userId;
+    const onClick = this.props.onClick;
     const handleRequestDelete = this.props.handleRequestDelete;
     
     const props = {
@@ -109,7 +113,7 @@ class EventList extends React.Component {
       handleRequestDelete: handleRequestDelete
     }
 
-    console.log(JSON.stringify(this.state))
+    // console.log(JSON.stringify(this.state))
     return (
       <Paper id="eventListContainer">
         <Grid id="EventListGrid">
@@ -127,4 +131,12 @@ class EventList extends React.Component {
   }
 }
 
+EventList.propTypes = {
+  events: PropTypes.arrayOf(PropTypes.object),
+  userId: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+  handleRequestDelete: PropTypes.func.isRequired
+}
+
 export default EventList;
+

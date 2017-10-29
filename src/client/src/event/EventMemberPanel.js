@@ -11,6 +11,7 @@ import Subheader from 'material-ui/Subheader';
 import {orange500, blue500, indigo900, black, orange800, orange100, indigo100, teal100, amberA400, red200} from 'material-ui/styles/colors'
 
 import EventBillSumChart from './EventBillSumChart'
+import {getMemberList} from './EventActions';
 import './EventMemberPanel.css'
 
 
@@ -59,96 +60,109 @@ const BillSum = (totalSum) => {
   return (<h3>{info}</h3>);
 }
 
-const EventMemberList = (isCreator) => {
 
-  const checked = false;
+const CreatorMemberListBtns = () => {
+  <div id="memberListButtonDiv">
+    <RaisedButton 
+      label="+" 
+      backgroundColor={teal100}
+      className="creatorMemberListBtns"
+      style={{ fontSize: '1.5rem' }}
+      onClick={buttonClicked.bind(this)}
+    /> 
+    <RaisedButton 
+      label="-" 
+      backgroundColor={indigo100} 
+      className="creatorMemberListBtns"
+      style={{ fontSize: '1.5rem' }}
+      onClick={buttonClicked.bind(this)}
+    />
+  </div>
+}
+
+const MemberListBtns = () => {
+  return (
+    <div id="memberListButtonDiv">
+      <RaisedButton 
+        label="+" 
+        backgroundColor={teal100}
+        className="memberAddBtn"
+        style={{ fontSize: '1.5rem' }}
+        onClick={buttonClicked.bind(this)}
+      /> 
+      
+    </div>
+  );
+}
+
+const Member = (memberName) => {
+  return (
+    <Checkbox
+      checkedIcon={<ActionFavorite />}
+      uncheckedIcon={<ActionFavoriteBorder />}
+      label={memberName}
+      defaultChecked={false}
+      onCheck={updateCheck}
+    />
+  );
+}
+
+
+const EventMemberList = (isCreator, members) => {
+  console.log(members)
   if (!isCreator) {
     return (
-        <div id="memberListContainerDiv">
-        <Subheader>Member List</Subheader>
-        
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            label="Xiaohua Shi"
-            //onCheck={this.buttonClicked.bind(this)}
-            defaultChecked={checked}
-            onCheck={updateCheck}
-          />
-        
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            label="Mengxue Luo"
-            defaultChecked={checked}
-            onCheck={updateCheck}
-          />
-        
-        <div id="memberListButtonDiv">
-          <RaisedButton 
-            label="+" 
-            backgroundColor={teal100}
-            className="memberAddBtn"
-            style={{ fontSize: '1.5rem' }}
-            onClick={buttonClicked.bind(this)}
-          /> 
-          
-        </div>
-          
+      <div id="memberListContainerDiv">
+      <Subheader>Member List</Subheader>
+        {
+          _.map(members, (m) => {
+            //TODO: Display member name
+            return Member(m);
+          })
+        }
+        <MemberListBtns />
       </div>
-
       );
   } else {
     return (  
-
       <div id="memberListContainerDiv">
         <Subheader>Member List</Subheader>
-        
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            defaultChecked={checked}
-            label="Xiaohua Shi"
-            
-          />
-        
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            defaultChecked={checked}
-            label="Mengxue Luo"
-            
-          />
-        
-        <div id="memberListButtonDiv">
-          <RaisedButton 
-            label="+" 
-            backgroundColor={teal100}
-            className="creatorMemberListBtns"
-            style={{ fontSize: '1.5rem' }}
-            onClick={buttonClicked.bind(this)}
-          /> 
-          <RaisedButton 
-            label="-" 
-            backgroundColor={indigo100} 
-            className="creatorMemberListBtns"
-            style={{ fontSize: '1.5rem' }}
-            onClick={buttonClicked.bind(this)}
-          />
-        </div>
-          
+        {
+          _.map(members, (m) => {
+            //TODO: Display member name
+            return Member(m);
+          })
+        }
+        <CreatorMemberListBtns />
       </div>
     );
   }
 
 }
   
- 
 
 
-const EventMemberPanel = ({isCreator}) => {
-    // console.log(isCreator)
-    return(
+class EventMemberPanel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      members: []
+    }
+  }
+
+  componentDidMount() {
+    getMemberList(this.props.selectedEventId)
+      .then(members => {
+        this.setState({
+          members: members
+        });
+      });
+  }
+
+  render (){
+    const isCreator = this.props.isCreator;
+    const members = this.state.members;
+    return (
       <Paper id="eventPanelContainer">
         <Grid id="eventGrid">
           <Row id="eventOuterRow">
@@ -166,14 +180,13 @@ const EventMemberPanel = ({isCreator}) => {
               </Row>
             </Col>
             <Col md={3} id="eventMemberListCol">
-                {EventMemberList(isCreator)}
+                {EventMemberList(isCreator, members)}
             </Col>
           </Row>
         </Grid> 
       </Paper>
     );
-  
-
+  }
 }
 
 export default EventMemberPanel;
