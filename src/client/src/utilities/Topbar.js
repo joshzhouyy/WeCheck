@@ -7,11 +7,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { Switch, Route,Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-import Sidebar from './Sidebar';
-import Signup from '../signup/Signup';
-import Login from '../login/Login';
-
-
+import App from '../app/App';
+import WelcomePage from '../event/WelcomePage';
 
 
 
@@ -31,16 +28,7 @@ const styles = {
 
 const rightButtons = (
     <div>
-      <FlatButton label="Sign up"  style={styles.buttonStyle} containerElement={<Link to="/Signup"/>} />
-      <FlatButton label="Sign in"  style={styles.buttonStyle} containerElement={<Link to="/Login"/>}/>
-
-
-      <Switch>
-          <Route path='/Signup' component={Signup} />
-          <Route path='/Login' component={Login} />     
-      </Switch>
-
-    
+      <FlatButton label="Sign Out"  style={styles.buttonStyle} containerElement={<Link to="/WelcomePage"/>} />
     </div>
   );
 

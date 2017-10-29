@@ -3,7 +3,7 @@ import {SELECT_ACTIVE_PANEL} from '../constants/ActionTypes'
 // Selectors(getters)
 //why this can get the state of activePanel, what is panels
 export const getActivePanel = (state) => {
-  console.log("called getActivePanel")
+  // console.log("called getActivePanel")
   return state.panels.activePanel;
 }
 
@@ -22,7 +22,7 @@ const initialState = {
 const panels = (state = initialState, action) => {
   switch(action.type) {
     case SELECT_ACTIVE_PANEL:
-      console.log("selected " + action.selectedPanel)
+      // console.log("selected " + action.selectedPanel)
       return {
         // why selectedPanel: action.selectedPanel, and activePanel: action.selectedPanel
         ...state,

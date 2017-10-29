@@ -39,18 +39,25 @@ export function resetFailedToSignUp() {
 export function signUp(user) {
     return dispatch => {
         dispatch(requestSignUp());
-
+        // console.log(0)
         return axios.post('/signup', user)
                .then((response) => {
+                  // console.log("cxaxcsafgsja" + JSON.stringify(user))
+                  // console.log("m")
+                  // console.log("@@@@@@@@@@@@@@@@@@@@@ " + JSON.stringify(response))
                    if (response.data != null && response.data != "") {
                        console.log(response);
-                       dispatch(receiveUser(user.username));
-                       browserHistory.push('/');
+                       dispatch(receiveUser(user.userName));
+                       browserHistory.push('/app');
                    } else {
+                       // console.log("m")
                        dispatch(notReceiveUser());
                    }
                })
                .catch((error) => {
+                  console.log("n")
+                  
+                  dispatch(notReceiveUser());
                   console.log("error: ", error);
                });
     };
@@ -86,15 +93,11 @@ export function signIn(user) {
         dispatch(requestSignIn());
 
         return axios.put('/login', user).then((response) => {
-            if(response.data != null && response.data != "") {
-                console.log(response);
-                dispatch(receiveSignIn(user.userAccount));
-                browserHistory.push('/');
-            } else {
-                dispatch(notReceiveSignIn());
-            }
+          dispatch(receiveSignIn(user.userAccount));
+          browserHistory.push('/app');
         })
         .catch((error) => {
+            dispatch(notReceiveSignIn());
             console.log("error: ", error);
         });
     };
@@ -117,17 +120,18 @@ function receiveSignOut() {
 export function signOut() {
     return dispatch => {
         dispatch(requestSignOut());
-
-        return axios.get('/api/logout').then((response) => {
-            if(response.statusText == "OK") {
-                console.log(response);
-                dispatch(receiveSignOut());
-                browserHistory.push('/');
-            }
-        })
-        .catch((error) => {
-            console.log("error: ", error);
-        });
+        browserHistory.push('/');
+        dispatch(receiveSignOut());
+        // return axios.get('/api/logout').then((response) => {
+        //     if(response.statusText == "OK") {
+        //         console.log(response);
+        //         dispatch(receiveSignOut());
+        //         browserHistory.push('/');
+        //     }
+        // })
+        // .catch((error) => {
+        //     console.log("error: ", error);
+        // });
     };
 }
 
