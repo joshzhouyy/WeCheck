@@ -2,6 +2,7 @@ var bodyParser = require ('body-parser');
 var evt = require('../models/event_info.js');
 var user = require('../models/user.js');
 var evt_user = require('../models/event_expense.js');
+var assert = require('assert');
 
 
 module.exports = function loadEventRoutes(router){
@@ -121,7 +122,7 @@ module.exports = function loadEventRoutes(router){
 				message: "event successfully deleted",
 				id: toRemoved._id
 			};
-			toRemoved.remove();
+			toRemoved.eventStatus = 'deleted';
 			res.status(200).send(response);
 			return;
 		});
@@ -319,6 +320,79 @@ module.exports = function loadEventRoutes(router){
 		});
 		
 	});
+
+
+	
+	//remove specific user from event's userList
+	router.put('/removeUser/:eventID', function(req, res){
+		var user_promise = user.findOne({'_id':req.body.userID}).exec();
+		var event_promise = evt.findOne({'_id':req.params.eventID}).exec();
+		assert.ok(user_promise instanceof require('mpromise'));
+		user_promise.then(function(user){
+			if(user === undefined || user === null){
+				console.log("user not found");
+				res.status(404).send("user not found");
+			}
+			else{
+				assert.ok(event_promise instanceof require('mpromise'));
+				console.log("user found");
+				event_promise.then(function(evt){
+					if(evt === undefined || evt === null){
+						console.log('event not found');
+						res.status(404).send('event not found');
+					}
+					else{
+						console.log("event found");
+						var indexToRemove = evt.memberAccount.indexOf(req.body.userID);
+						if(indexToRemove !== -1){
+							evt.memberAccount.splice(indexToRemove, 1);
+							evt.save((error) => {
+								if(error){
+									console.log("Error: " + error);
+									res.status(500).send("Error: " + error);
+								}
+							})
+						}
+						else{
+							console.log("event does not have user");
+							res.status(500).send("event does not have this user");
+						}
+					}
+				}).catch((error) => {
+					console.log(error);
+					res.status(500).send("Error: " + error);
+				});
+
+				//get index of the event from user's eventList
+				indexToDelete = user.eventList.indexOf(req.params.eventID);
+				if(indexToDelete !== -1){
+					user.eventList.splice(indexToDelete, 1);
+					user.save((error) => {
+						if(error){
+							console.log("Error: " + error);
+							res.status(500).send("Error: " + error);
+						}
+					});
+					response = {
+						userID: req.body.userID,
+						eventID: req.params.eventID,
+						message: "user successfully removed from event"
+					};
+					res.status(200).send(response);
+				}
+				else{
+					console.log("user is not in this event");
+					res.status(500).send("user is not in this event");
+				}
+			}
+		}).catch((error) => {
+			console.log("Error: "+ error);
+			res.status(500).send("Error: " + error);
+		});
+	});
+
+
+
 
 	
 

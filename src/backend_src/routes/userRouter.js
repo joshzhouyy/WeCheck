@@ -2,6 +2,7 @@ var hash = require('object-hash');
 var bodyParser = require('body-parser');
 var user = require('../models/user.js');
 var evt = require('../models/event_info.js');
+var assert = require('assert');
 
 
 module.exports = function loadUserRoutes(router) {
@@ -120,88 +121,71 @@ module.exports = function loadUserRoutes(router) {
 
 
     //when user join in an event, add that event to user's eventList
+ 
+
     router.put('/joinEvent/:userID', function(req, res){
 
-        var flag_1 = user.findOne({'_id': req.params.userID}, (error, user) => {
-            if(error){
-                console.log(error);
-                //res.status(500).send("Error: " + error);
-                return 0;
-            }
-            if(!user){
+        var user_promise = user.findOne({'_id': req.params.userID}).exec();
+        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        assert.ok(user_promise instanceof require('mpromise'));
+        user_promise.then(function(user){
+            //console.log(error);
+            //console.log(user)
+            if(user === undefined || user === null){
                 console.log("user not found");
-                //res.status(404).send("user not found");
-                return 0;
+                res.status(404).send("user not found");
             }
-            if(user.eventList.indexOf(req.body.eventID) === -1){
-                user.eventList.push(req.body.eventID);
-                console.log("pushed");
-                user.save((error) => {
-                    if(error){
-                        //res.status(500).send("Error: " + error);
-                        console.log("Error: " + error);
-                        return 0 ;
+            else {
+                assert.ok(event_promise instanceof require('mpromise'));
+                console.log("user found")
+                event_promise.then(function(evt){
+                    if(evt === undefined || evt === null){
+                        console.log("event not found");
+                        res.status(404).send("event not found");
                     }
-                });
-                return 1;
-            }
-            else{
-                console.log("user already in this event");
-                return 0;
-            }
-        });
-        
-        var flag_2 = evt.findOne({'_id': req.body.eventID}, (error, evt) => {
-
-            if(error){
-                //res.status(500).send("Error: " + error);
-                console.log("Error: " + error);
-                return 0;
-            }
-
-            if(!evt){
-                user.findOne({"_id":req.params.userID}, (error, user) => {
-                    user.eventList.pop();
-                });
-                //res.status(404).send("event not found");
-                console.log("event not found");
-                return 0;
-            }
-            //console.log(evt.eventName);
-            if(evt.memberAccount.indexOf(req.params.userID) === -1){
-                evt.memberAccount.push(req.params.userID);
-                evt.save((error) => {
-                    if(error){
-                        //res.status(500).send("Error: " + error);
-                        console.log("Error: "+ error);
-                        return 0;
+                    else{
+                        console.log("event found");
+                        if(evt.memberAccount.indexOf(req.params.userID) === -1){
+                            evt.memberAccount.push(req.params.userID);
+                            evt.save((error) => {
+                                if(error){
+                                    console.log("Error: " + error);
+                                    res.status(500).send("Error: " + error);
+                                }
+                            });
+                        }
+                        else{
+                            console.log("user already in this event");
+                            res.status(500).send("user already in this event");
+                        }
                     }
-                });
-                return 1;
-            }
-            else{
-                //res.status(500).send("User already in event");
-                console.log("event already has this user");
-                return 0;
-            }
-            console.log(evt.memberAccount);
-        });
+                }).catch((error) => {
+                    console.log(error);
+                    res.status(500).send("Error: " + error);
+                    });
 
-        //if both check complete, send success response
-        response = {
-                "userID": req.params.userID,
-                "eventID": req.body.eventID,
-                "message": "successfully joined event: " + req.body.eventID
-            };
-            if(flag_1 == 1 && flag_2 == 1){
-                res.status(200).send(response);
-                return;
+                if(user.eventList.indexOf(req.body.eventID) === -1){
+                    user.eventList.push(req.body.eventID);
+                    user.save((error) => {
+                        if(error){
+                            console.log("Error: " + error);
+                            res.status(500).send("Error: " + error);
+                        }
+                    });
+
+                    response = {
+                        userID: req.params.userID,
+                        eventID: req.body.eventID,
+                        message:"successfully joined event"
+                    };
+                    res.status(200).send(response);
+                }
+ 
             }
-            else{
-                res.status(500).send("ERROR");
-                return;
-            }
-    
+        }).catch((error) => {
+            console.log(error);
+            res.status(500).send("Error: " + error);
+            });
     });
 
 };
