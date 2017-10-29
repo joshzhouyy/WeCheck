@@ -74,4 +74,30 @@ export const getMemberList = (eventId) => {
   })
 }
 
+export const getBillSum = (eventId) => {
+  return new Promise ((resolve, reject) => {
+    axios.get('api/event/' + eventId)
+      .then((response) => {
+        const status = response.status;
+        const statusText = response.statusText;
+        if (status === 200) {
+          const data = response.data;
+          if (data !== null) {
+            resolve(data.totalAmount);
+          }
+          else {
+            console.log("Data is null");
+          }
+        }
+        else {
+          console.log(statusText);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  });
+}
+
 // export 

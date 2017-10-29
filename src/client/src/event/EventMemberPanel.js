@@ -11,7 +11,7 @@ import Subheader from 'material-ui/Subheader';
 import {orange500, blue500, indigo900, black, orange800, orange100, indigo100, teal100, amberA400, red200} from 'material-ui/styles/colors'
 
 import EventBillSumChart from './EventBillSumChart'
-import {getMemberList} from './EventActions';
+import {getMemberList, getBillSum} from './EventActions';
 import './EventMemberPanel.css'
 
 
@@ -98,6 +98,7 @@ const MemberListBtns = () => {
 const Member = (memberName) => {
   return (
     <Checkbox
+      key = {memberName}
       checkedIcon={<ActionFavorite />}
       uncheckedIcon={<ActionFavoriteBorder />}
       label={memberName}
@@ -109,7 +110,7 @@ const Member = (memberName) => {
 
 
 const EventMemberList = (isCreator, members) => {
-  console.log(members)
+  // console.log(members)
   if (!isCreator) {
     return (
       <div id="memberListContainerDiv">
@@ -146,22 +147,28 @@ class EventMemberPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      members: []
+      members: [],
+      billSum: 0
     }
   }
 
   componentDidMount() {
-    getMemberList(this.props.selectedEventId)
-      .then(members => {
-        this.setState({
-          members: members
-        });
+    const eventId = this.props.selectedEventId;
+    const p1 = getBillSum(eventId);
+    const p2 = getMemberList(eventId);
+    Promise.all([p1,p2]).then(values => {
+      this.setState({
+        billSum: values[0],
+        members: values[1]
+
       });
+    });
   }
 
   render (){
     const isCreator = this.props.isCreator;
     const members = this.state.members;
+    const billSum = this.state.billSum;
     return (
       <Paper id="eventPanelContainer">
         <Grid id="eventGrid">
@@ -173,7 +180,7 @@ class EventMemberPanel extends React.Component {
                 </div>
               </Row>
               <Row id="eventBillSumRow" className="eventInnerRows">
-                {BillSum(50)}
+                {BillSum(billSum)}
               </Row>
               <Row id="eventBillDetailRow" className="eventInnerRows">
                 {EventBillSumChart()}
