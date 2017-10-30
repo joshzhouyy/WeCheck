@@ -1,7 +1,7 @@
 import React from 'react'
 import {Grid, Row, Col} from 'react-bootstrap'
 
-import Topbar from "../utilities/Topbar"
+import TopbarContainer from "../utilities/TopbarContainer"
 import Sidebar from "../utilities/Sidebar"
 import LeftContainer from '../splitter-containers/LeftContainer'
 import MidContainer from '../splitter-containers/MidContainer'
@@ -20,7 +20,7 @@ class App extends React.Component {
 		return (
       <Grid id="outerContainer">
         <Row id="topRow">
-         
+         <TopbarContainer />
         </Row>
 
         <Row id="btmRow">

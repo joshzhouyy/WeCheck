@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/FlatButton';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Switch, Route,Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import App from '../app/App';
@@ -26,24 +25,23 @@ const styles = {
   },
 };
 
-const rightButtons = (
+const rightButtons = (onClick) => (
     <div>
-      <FlatButton label="Sign Out"  style={styles.buttonStyle} containerElement={<Link to="/WelcomePage"/>} />
+      <FlatButton label="Sign Out"  style={styles.buttonStyle} onClick={() => onClick()}/>
     </div>
   );
 
 
 
-const Topbar = () => (
+const Topbar = ({onClick}) => (
   <MuiThemeProvider>
     <div id="topBar">
       <AppBar
         title={<span style={styles.title}>WeCheck</span>}
-        iconElementRight={rightButtons}
+        iconElementRight={rightButtons(onClick)}
       />
     </div>
   </MuiThemeProvider>
-
 );
 
 export default Topbar;
