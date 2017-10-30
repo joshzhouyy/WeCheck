@@ -16,7 +16,7 @@ export const removeEvent = (eventId) => ({
 export const getOngoingEvents = (userId) => {
   //TODO: use userId to get relavant events + replace api to getAllOnGoingEvent/{userID}
   return new Promise ((resolve, reject) => {
-    axios.get('api/all_event', userId)
+    axios.get('getAllOnGoingEvent/' + userId)
     .then((response) => {
       const status = response.status;
       const statusText = response.statusText;
