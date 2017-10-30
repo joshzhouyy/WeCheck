@@ -13,10 +13,40 @@ export const removeEvent = (eventId) => ({
 });
 
 // Helper functions
+// export const getOngoingEvents = (userId) => {
+//   //TODO: use userId to get relavant events + replace api to getAllOnGoingEvent/{userID}
+//   return new Promise ((resolve, reject) => {
+//     axios.get('getAllOnGoingEvent/' + userId)
+//     .then((response) => {
+//       const status = response.status;
+//       const statusText = response.statusText;
+//       if (status === 200) {
+//         const data = response.data;
+//         if (data !== null) {
+//           // console.log(data)
+//           resolve(data);
+//         }
+//         else {
+//           console.log("Found none events\n");
+//           // reject([])
+//         }
+//       }
+//       else {
+//         console.log(statusText);
+//       }
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       throw error;
+//     });
+//   })
+// }
+
+//Defect 15
 export const getOngoingEvents = (userId) => {
   //TODO: use userId to get relavant events + replace api to getAllOnGoingEvent/{userID}
   return new Promise ((resolve, reject) => {
-    axios.get('getAllOnGoingEvent/' + userId)
+    axios.get('api/all_event')
     .then((response) => {
       const status = response.status;
       const statusText = response.statusText;
