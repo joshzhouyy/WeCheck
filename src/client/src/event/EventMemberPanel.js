@@ -62,6 +62,7 @@ const BillSum = (totalSum) => {
 
 
 const CreatorMemberListBtns = () => {
+  return (
   <div id="memberListButtonDiv">
     <RaisedButton 
       label="+" 
@@ -78,6 +79,7 @@ const CreatorMemberListBtns = () => {
       onClick={buttonClicked.bind(this)}
     />
   </div>
+  );
 }
 
 const MemberListBtns = () => {
@@ -110,15 +112,13 @@ const Member = (memberName) => {
 
 
 const EventMemberList = (isCreator, members) => {
-  // console.log(members)
   if (!isCreator) {
     return (
       <div id="memberListContainerDiv">
       <Subheader>Member List</Subheader>
         {
           _.map(members, (m) => {
-            //TODO: Display member name
-            return Member(m);
+            return Member(m.userAccount);
           })
         }
         <MemberListBtns />
@@ -130,8 +130,7 @@ const EventMemberList = (isCreator, members) => {
         <Subheader>Member List</Subheader>
         {
           _.map(members, (m) => {
-            //TODO: Display member name
-            return Member(m);
+            return Member(m.userAccount);
           })
         }
         <CreatorMemberListBtns />
@@ -166,11 +165,11 @@ class EventMemberPanel extends React.Component {
   }
 
   componentWillReceiveProps() {
-    console.log(this.props);
+    // console.log(this.props);
   }
 
   render (){
-    console.log("in render" + JSON.stringify(this.props));
+    // console.log("in render" + JSON.stringify(this.props));
     const isCreator = this.props.isCreator;
     const members = this.state.members;
     const billSum = this.state.billSum;

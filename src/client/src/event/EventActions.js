@@ -51,7 +51,7 @@ export const getMemberList = (eventId) => {
   return new Promise ((resolve, reject) => {
     axios.get('api/event/eventMember/' + eventId)
       .then((response) => {
-        // console.log(response)
+        // console.log(response);
         const status = response.status;
         const statusText = response.statusText;
         if (status === 200) {
