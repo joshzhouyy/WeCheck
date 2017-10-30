@@ -165,7 +165,12 @@ class EventMemberPanel extends React.Component {
     });
   }
 
+  componentWillReceiveProps() {
+    console.log(this.props);
+  }
+
   render (){
+    console.log("in render" + JSON.stringify(this.props));
     const isCreator = this.props.isCreator;
     const members = this.state.members;
     const billSum = this.state.billSum;
