@@ -17,9 +17,7 @@ const Dashboard = ({handleTouchTap, activePanel}) => {
     <List>
       <Subheader>Dashboard</Subheader>
       <ListItem primaryText="Message Box" rightIcon={<ContentInbox />} onClick={() => handleTouchTap("MESSAGE_BOX")} />
-      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={() => {
-        console.log("user clicked")
-        handleTouchTap("BALANCE")}} />
+      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={() => handleTouchTap("BALANCE")} />
     </List>
   </Paper>
 );}
