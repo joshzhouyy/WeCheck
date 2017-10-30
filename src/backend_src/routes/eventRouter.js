@@ -161,8 +161,24 @@ module.exports = function loadEventRoutes(router){
 				res.status(500).send('Error: ' + error);
 				return;
 			}
-			res.json(evt.memberAccount);
-			return;
+			else{
+				const memberList = evt.memberAccount;
+				//console.log(memberList);
+				user.find({'_id': {$in: memberList}}, (error, users) => {
+					console.log(users.length);
+					if(users.length !== memberList.length){
+						console.log("some users not found");
+						res.status(500).send("some users not found");					}
+					if(error){
+						console.log("Error: " + error);
+						res.status(500).send("Error: " + error);
+					}
+					else{
+						res.status(200).json(users);
+					}
+				})
+				
+			}
 		});
 	});
 
