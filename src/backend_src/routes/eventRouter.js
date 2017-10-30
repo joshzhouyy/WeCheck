@@ -169,7 +169,7 @@ module.exports = function loadEventRoutes(router){
 					if(users.length !== memberList.length){
 						console.log("some users not found");
 						res.status(500).send("some users not found");					}
-					if(error){
+					else if(error){
 						console.log("Error: " + error);
 						res.status(500).send("Error: " + error);
 					}
