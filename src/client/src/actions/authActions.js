@@ -119,9 +119,6 @@ function receiveSignOut() {
 
 export function signOut() {
     // return dispatch => {
-        // dispatch(requestSignOut());
-   
-    // dispatch(receiveSignOut());
         // return axios.get('/api/logout').then((response) => {
         //     if(response.statusText == "OK") {
         //         console.log(response);
