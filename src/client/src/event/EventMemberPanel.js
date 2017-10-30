@@ -12,7 +12,7 @@ import * as colors from 'material-ui/styles/colors';
 
 import EventBillSumChart from './EventBillSumChart';
 import DialogBox from './DialogBox';
-import {getMemberList, getBillSum} from './EventActions';
+import {getMemberList, getBillSum, deleteEvent} from './EventActions';
 import './EventMemberPanel.css'
 
 
@@ -27,7 +27,11 @@ import './EventMemberPanel.css'
 // }
 
 
-const BtnGroup = (isCreator) => {
+const BtnGroup = (props) => {
+  const isCreator = props.isCreator;
+  const deleteEvent = props.deleteEvent;
+  const eventId = props.eventId;
+
   if (!isCreator) {
     return (
       <div id="memberBtnsDiv">
@@ -39,7 +43,9 @@ const BtnGroup = (isCreator) => {
         type: "secondary",
         label: "Delete",
         title: "Delete Event",
-        info: "Are you sure you want to delete this event?"
+        info: "Are you sure you want to delete this event?",
+        onClick: deleteEvent,
+        eventId: eventId
       }
       return (
         <div id="creatorBtnsDiv">
@@ -153,7 +159,6 @@ class EventMemberPanel extends React.Component {
       this.setState({
         billSum: values[0],
         members: values[1]
-
       });
     });
   }
@@ -174,12 +179,20 @@ class EventMemberPanel extends React.Component {
   render (){
     // console.log("in render" + JSON.stringify(this.props));
     const isCreator = this.props.isCreator;
+    const eventId = this.props.selectedEventId;
     const members = this.state.members;
     const billSum = this.state.billSum;
 
+
     const memberListProps = {
       isCreator: isCreator,
-      members: members,
+      members: members
+    }
+
+    const btnGroupProps = {
+      isCreator: isCreator,
+      deleteEvent: deleteEvent,
+      eventId: eventId
     }
 
     return (
@@ -189,7 +202,7 @@ class EventMemberPanel extends React.Component {
             <Col md={9} id="eventInfoCol">
               <Row id="eventBtnRow" className="eventInnerRows">
                 <div id="eventBtnContainer">                
-                    {BtnGroup(isCreator)}                
+                    {BtnGroup(btnGroupProps)}                
                 </div>
               </Row>
               <Row id="eventBillSumRow" className="eventInnerRows">

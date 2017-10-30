@@ -129,3 +129,20 @@ export const getBillSum = (eventId) => {
       });
   });
 }
+
+export const deleteEvent = (eventId) => {
+  return new Promise ((resolve, reject) => {
+    axios.post('deleteEvent/' + eventId)
+      .then((response) => {
+        const data = response.data;
+        // console.log(response)
+        if (data !== null) {
+          resolve(data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  })
+}

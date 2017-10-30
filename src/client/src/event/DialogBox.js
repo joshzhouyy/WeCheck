@@ -9,15 +9,15 @@ const DialogBtn = (type, label, handleOpen) => {
   switch(type) {
     case "primary":
       return (
-        <RaisedButton label={label} primary={true} onClick={() => handleOpen()} />
+        <RaisedButton label={label} primary={true} onClick={handleOpen} />
         );
     case "secondary":
       return (
-        <RaisedButton label={label} secondary={true} onClick={() => handleOpen()} />
+        <RaisedButton label={label} secondary={true} onClick={handleOpen} />
         );
     default:
       return (
-        <RaisedButton label={label} onClick={() => handleOpen()} />
+        <RaisedButton label={label} onClick={handleOpen} />
         );
   }
 }
@@ -33,33 +33,41 @@ class DialogBox extends React.Component {
   }
 
   handleOpen = () => {
-    console.log("n")
     this.setState({open: true})
   };
 
-  handleClose = () => {
+  handleCancel = () => {
     this.setState({open: false})
   };
 
+  handleSubmit = (onClick, eventId) => {
+    this.setState({open: false});
+    onClick(eventId).then(value => {
+      alert(value.message);
+    })
+  }
+
   render () {
-    console.log(this.props);
+    // console.log(this.props);
     const type = this.props.type;
     const label = this.props.label;
     const title = this.props.title;
     const info = this.props.info;
+    const onClick = this.props.onClick;
+    const eventId = this.props.eventId;
 
     const actions = [
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={this.handleClose}
+        onClick={this.handleCancel}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={this.handleClose}
-      />,
+        onClick={() => this.handleSubmit(onClick, eventId)}
+      />
     ];
 
     return (
