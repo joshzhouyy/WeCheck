@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Paper from 'material-ui/Paper';
 import Subheader from 'material-ui/Subheader';
@@ -17,7 +17,9 @@ const Dashboard = ({handleTouchTap, activePanel}) => {
     <List>
       <Subheader>Dashboard</Subheader>
       <ListItem primaryText="Message Box" rightIcon={<ContentInbox />} onClick={() => handleTouchTap("MESSAGE_BOX")} />
-      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={() => handleTouchTap("BALANCE")} />
+      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={() => {
+        console.log("user clicked")
+        handleTouchTap("BALANCE")}} />
     </List>
   </Paper>
 );}

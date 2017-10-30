@@ -1,4 +1,6 @@
 import React from 'react';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'
 import {Grid, Row, Col} from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -8,15 +10,9 @@ import Chip from 'material-ui/Chip'
 import FontIcon from 'material-ui/FontIcon'
 import SvgIconFace from 'material-ui/svg-icons/action/face'
 
+import {getOngoingEvents} from './EventActions';
+
 import "./EventList.css"
-
-function handleRequestDelete() {
-  alert('You clicked the delete button.');
-}
-
-function handleTouchTap() {
-  alert('You clicked the Chip.');
-}
 
 const menuOptions = () => (
   <div id="menuOptionsDiv">
@@ -35,47 +31,112 @@ const menuOptions = () => (
   </div>
 );
 
-const eventList = () => (
-  <div id="eventListDiv">
-    <Chip
-      onRequestDelete={handleRequestDelete}
-      >
-      <Avatar color="#444" icon={<SvgIconFace />} />
-      This is the name of the event 1
-    </Chip>
-    <Chip
-      onRequestDelete={handleRequestDelete}
+
+const eventItem = (props) => {
+  const event = {
+    eventId: props.eventId,
+    isOwner: props.isOwner
+  }
+
+  return (
+  <Chip className="eventItem" key = {props.eventId}
+    onRequestDelete={() => props.handleRequestDelete(props.eventId)}
+    onClick={() => props.onClick(event)}
     >
-      <Avatar color="#444" icon={<SvgIconFace />} />
-      This is the name of the event 2
+    <Avatar color="#444" icon={<SvgIconFace />} />
+      {props.eventName}
   </Chip>
+  );
+}
 
+const eventItems = (props) => {
+  const userId = props.userId;
+  const events = props.events;
+  const onClick = props.onClick;
+  const handleRequestDelete = props.handleRequestDelete;
 
-    <div id="eventListBtnDiv">
-      <RaisedButton 
-      label="Create a new event" 
-      backgroundColor={orange100}
-      className="eventListBtn"
-      style={{ fontSize: '1.5rem' }}
-      /> 
-    
+  let params = {
+    onClick: onClick,
+    handleRequestDelete: handleRequestDelete
+  }
 
-    </div>
-
+  return (
+  <div id="eventItems">
+    {
+      _.map(events, (e) => {
+        //TODO: event name attribute?
+        // console.log(JSON.stringify(e))
+        params.eventName = e.eventName;
+        params.eventId = e._id;
+        params.isOwner = e.ownerID === userId ? true:false;
+        // console.log(props)
+        // console.log(userId)
+        return eventItem(params);
+      })
+    }
   </div>
-);
+  );
+}
 
-const EventList = () => (
-  <Paper id="eventListContainer">
-    <Grid id="EventListGrid">
-    <Row id="menuOptionsRow">
-      {menuOptions()}
-    </Row>
-    <Row id="eventListRow">
-      {eventList()}
-    </Row>
-  </Grid>
-  </Paper>
-);
+class EventList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ongoingEvents: [],
+      finishedEvents: []
+    }
+  }
+
+  componentDidMount() {
+    // console.log(this.props.userId)
+    //TODO: add userId check
+    // if (this.props.userId !== null) {
+      getOngoingEvents(this.props.userId)
+      .then(events => {
+        this.setState({
+          ongoingEvents: events
+        });
+      })
+    // }
+  }
+
+  render(){
+    const events = this.state.ongoingEvents;
+    const userId = this.props.userId;
+    const onClick = this.props.onClick;
+    const handleRequestDelete = this.props.handleRequestDelete;
+    
+    const props = {
+      events: events,
+      userId: userId,
+      onClick: onClick,
+      handleRequestDelete: handleRequestDelete
+    }
+
+    // console.log(JSON.stringify(this.state))
+    return (
+      <Paper id="eventListContainer">
+        <Grid id="EventListGrid">
+        <Row id="menuOptionsRow">
+          {menuOptions()}
+        </Row>
+        <Row id="eventListRow">
+          <div id="eventListDiv">
+            {eventItems(props)}
+          </div>
+        </Row>
+      </Grid>
+      </Paper>
+    );
+  }
+}
+
+EventList.propTypes = {
+  events: PropTypes.arrayOf(PropTypes.object),
+  userId: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+  handleRequestDelete: PropTypes.func.isRequired
+}
 
 export default EventList;
+
