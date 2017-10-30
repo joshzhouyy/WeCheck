@@ -12,12 +12,10 @@ import EventList from './EventList';
 const mapStateToProps = (state) => ({
   selectedEventId: appSelectors.getSelectedEventId(state),
   userId: authSelectors.getUserId(state),
-  selectedDeleteEventId: eventSelectors.getRemovedEventId(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onClick: bindActionCreators(selectEvent, dispatch),
-  handleRequestDelete: bindActionCreators(removeEvent, dispatch)
 });
 
 const EventListContainer = connect(

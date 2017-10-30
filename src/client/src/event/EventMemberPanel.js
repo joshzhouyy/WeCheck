@@ -165,13 +165,13 @@ class EventMemberPanel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props);
-    console.log(nextProps);
+    // console.log(this.props);
+    // console.log(nextProps);
     const eventId = nextProps.selectedEventId;
     const p1 = getBillSum(eventId);
     const p2 = getMemberList(eventId);
     Promise.all([p1,p2]).then(values => {
-      console.log(values[1])
+      // console.log(values[1])
       this.setState({
         billSum: values[0],
         members: values[1]
