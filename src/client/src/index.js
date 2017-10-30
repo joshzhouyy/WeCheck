@@ -5,10 +5,11 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
-import { BrowserRouter } from 'react-router-dom';
+import { browserHistory } from 'react-router';
+import { Router } from 'react-router';
 
-import AppContainer from './app/AppContainer'
 import rootReducer from './app/reducers'
+import Routes from './routes';
 
 const middleware = [ thunk ];
 if (process.env.NODE_ENV !== 'production') {
@@ -19,11 +20,9 @@ const store = createStore(rootReducer, applyMiddleware(...middleware));
 console.log(store.getState())
 
 const WeCheck = () => (
-  <BrowserRouter>
-    <Provider store={store}>
-      <AppContainer />
-    </Provider>
-  </BrowserRouter>
+  <Provider store={store}>
+    <Router children={Routes} history={browserHistory} />
+  </Provider>
 );
 
 // console.log(store.getState())

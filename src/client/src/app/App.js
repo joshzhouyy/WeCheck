@@ -1,11 +1,12 @@
 import React from 'react'
 import {Grid, Row, Col} from 'react-bootstrap'
 
-import Topbar from "../utilities/Topbar"
 import SidebarContainer from "../utilities/SidebarContainer"
 import FinanceManagerPanel from '../finance-manager/FinanceManagerPanel'
 import SplitterPanel from '../splitter-containers/SplitterPanel'
 import {SPLITTER, FINANCE_MANAGER} from '../constants/Names'
+import TopbarContainer from "../utilities/TopbarContainer"
+
 import './App.css'
 
 
@@ -21,7 +22,7 @@ class App extends React.Component {
       return (
         <Grid id="outerContainer">
           <Row id="topRow">
-            <Topbar />
+            <TopbarContainer />
           </Row>
           <Row id="btmRow">
             <Col md={1} id="sideBar">
@@ -38,7 +39,7 @@ class App extends React.Component {
       return (
         <Grid id="outerContainer">
           <Row id="topRow">
-            <Topbar />
+            <TopbarContainer />
           </Row>
           <Row id="btmRow">
             <Col md={1} id="sideBar">

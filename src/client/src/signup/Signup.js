@@ -58,17 +58,18 @@ class Signup extends Component {
     }
 
     validateUsername() {
-        return 'success';
+      return 'success';
     }
 
     validateUserEmail() {
-        return 'success';
+      //TODO: add email format checking
+      return 'success';
     }
 
     showError() {
         if (this.props.failedToSignUp) {
             return (
-                <p style={{color: 'red'}}>Username already exists</p>
+                <p style={{color: 'red'}}>User Account already exists</p>
             );
         }
     }
