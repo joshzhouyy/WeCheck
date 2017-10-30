@@ -30,9 +30,30 @@ module.exports = function loadEventRoutes(router){
 				res.status(500).send("Error: " + error);
 				return;
 			}
-			res.json(newEvent);
+			user.findOne({'_id':req.body.ownerID}, (error, user) => {
+				if(error){
+					console.log("Error: " + error);
+					res.status(500).send("Error: " + error);
+				}
+				else if(user === undefined || user === null){
+					console.log("user not found");
+					res.status(404).send("user not found");
+				}
+				else{
+					user.eventList.push(newEvent._id);
+					user.save((error) => {
+						if(error){
+							console.log(error);
+							res.status(500).send("Error: " + error);
+							return;
+						}
+					});
+					res.status(200).json(newEvent);
+				}
+			}
 			
 		});
+			//res.json(newEvent);
 
 	});
 
