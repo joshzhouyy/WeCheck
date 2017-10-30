@@ -1,4 +1,11 @@
+// Panels
 export const SELECT_ACTIVE_PANEL = "SELECT_ACTIVE_PANEL"
+export const SELECT_EVENT = "SELECT_EVENT"
+
+// Page
+export const SELECT_ACTIVE_PAGE = "SELECT_ACTIVE_PAGE"
+
+// Auth
 export const AUTH_SIGNUP = "AUTH_SIGNUP"
 export const AUTH_SIGNUP_SUCCESS = "AUTH_SIGNUP_SUCCESS"
 export const AUTH_SIGNUP_FAIL = "AUTH_SIGNUP_FAIL"
@@ -9,3 +16,7 @@ export const AUTH_SIGNIN_FAIL = "AUTH_SIGNIN_FAIL"
 export const AUTH_SIGNOUT = "AUTH_SIGNOUT"
 export const AUTH_SIGNOUT_SUCCESS = "AUTH_SIGNOUT_SUCCESS"
 export const RECEIVE_SOCKET = "RECEIVE_SOCKET"
+
+
+// Event
+export const REMOVE_EVENT = "REMOVE_EVENT"

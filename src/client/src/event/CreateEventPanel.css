@@ -1,9 +1,16 @@
-body {
-    font-family: 'Alegreya Sans SC';
-    background-color: #dddddd;
-    
-    margin: 0 auto !important;
-    width: 250px;
-    padding-top: 50px;
-    
+#pageDiv {
+  
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin: auto;
+}
+
+
+
+#splitType {
+  color: indigo900;
 }

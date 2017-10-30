@@ -4,63 +4,44 @@ import FlatButton from 'material-ui/FlatButton';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Switch, Route,Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-import Sidebar from './Sidebar';
-import Signup from '../signup/Signup';
-import Login from '../login/Login';
+import App from '../app/App';
+import WelcomePage from '../event/WelcomePage';
 
 
 
-
-function handleTouchTap() {
-  alert('onClick triggered on the title component');
-}
 
 const styles = {
   title: {
     cursor: 'pointer',
+    postion: 'relative'
   },
   buttonStyle: {
     backgroundColor: 'transparent',
     color: 'white',
-    fontSize: '100px',
-    width:'100px'
+    fontSize: '1em',
+    height:'2em',
   },
 };
 
-const rightButtons = (
+const rightButtons = (onClick) => (
     <div>
-      <FlatButton label="Sign up"  style={styles.buttonStyle} containerElement={<Link to="/Signup"/>} />
-      <FlatButton label="Sign in"  style={styles.buttonStyle} containerElement={<Link to="/Login"/>}/>
-
-
-      <Switch>
-          <Route path='/Signup' component={Signup} />
-          <Route path='/Login' component={Login} />     
-      </Switch>
-
-    
+      <FlatButton label="Sign Out"  style={styles.buttonStyle} onClick={() => onClick()}/>
     </div>
   );
 
 
 
-
-
-
-const Topbar = () => (
+const Topbar = ({onClick}) => (
   <MuiThemeProvider>
-    <div>
+    <div id="topBar">
       <AppBar
         title={<span style={styles.title}>WeCheck</span>}
-        onTitleTouchTap={handleTouchTap}
-        iconElementRight={rightButtons}
+        iconElementRight={rightButtons(onClick)}
       />
     </div>
   </MuiThemeProvider>
-
 );
 
 export default Topbar;

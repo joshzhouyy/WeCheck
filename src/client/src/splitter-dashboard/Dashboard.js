@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Paper from 'material-ui/Paper';
 import Subheader from 'material-ui/Subheader';
@@ -10,15 +10,19 @@ import ActionGrade from 'material-ui/svg-icons/action/grade';
 import './Dashboard.css';
 
 
-const Dashboard = ({handleTouchTap}) => (
+const Dashboard = ({handleTouchTap, activePanel}) => {
+  // console.log(activePanel)
+  return (
   <Paper id="dashboardContainer">
     <List>
       <Subheader>Dashboard</Subheader>
-      <ListItem primaryText="Message Box" rightIcon={<ContentInbox />} onClick={(e) => handleTouchTap("MESSAGE_BOX")} />
-      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={(e) => handleTouchTap("BALANCE")} />
+      <ListItem primaryText="Message Box" rightIcon={<ContentInbox />} onClick={() => handleTouchTap("MESSAGE_BOX")} />
+      <ListItem primaryText="Your Balance" rightIcon={<ActionGrade />} onClick={() => {
+        console.log("user clicked")
+        handleTouchTap("BALANCE")}} />
     </List>
   </Paper>
-);
+);}
 
 Dashboard.propTypes = {
   handleTouchTap: PropTypes.func.isRequired

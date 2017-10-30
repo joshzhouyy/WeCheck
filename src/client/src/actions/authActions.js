@@ -11,10 +11,10 @@ function requestSignUp() {
 }
 
 // helper action receiveUser
-function receiveUser(username) {
+function receiveUser(user) {
     const newUser = {
-        username,
-        id: Symbol(username)
+        userAccount: user.userAccount,
+        id: user.id
     }
     return {
         type: types.AUTH_SIGNUP_SUCCESS,
@@ -39,18 +39,28 @@ export function resetFailedToSignUp() {
 export function signUp(user) {
     return dispatch => {
         dispatch(requestSignUp());
-
+        // console.log(0)
         return axios.post('/signup', user)
                .then((response) => {
+                  // console.log("cxaxcsafgsja" + JSON.stringify(user))
+                  // console.log("m")
+                  // console.log("@@@@@@@@@@@@@@@@@@@@@ " + JSON.stringify(response))
                    if (response.data != null && response.data != "") {
-                       console.log(response);
-                       dispatch(receiveUser(user.username));
-                       browserHistory.push('/');
+                      console.log(response);
+                      let data = {};
+                      data.userAccount = response.data.userAccount;
+                      data.id = response.data._id;
+                      dispatch(receiveUser(data));
+                      browserHistory.push('/app');
                    } else {
+                       // console.log("m")
                        dispatch(notReceiveUser());
                    }
                })
                .catch((error) => {
+                  console.log("n")
+                  
+                  dispatch(notReceiveUser());
                   console.log("error: ", error);
                });
     };
@@ -64,11 +74,12 @@ function requestSignIn(username) {
 }
 
 //helper action receiveSignIn
-function receiveSignIn(username) {
+function receiveSignIn(data) {
     const user = {
-        username,
-        id: Symbol(username)
+        userAccount: data.userAccount,
+        id: data.id
     }
+    // console.log(user)
     return {
         type: types.AUTH_SIGNIN_SUCCESS,
         user
@@ -87,14 +98,17 @@ export function signIn(user) {
 
         return axios.put('/login', user).then((response) => {
             if(response.data != null && response.data != "") {
-                console.log(response);
-                dispatch(receiveSignIn(user.userAccount));
-                browserHistory.push('/');
+                let data = {};
+                data.userAccount = response.data.userAccount;
+                data.id = response.data._id;
+                dispatch(receiveSignIn(data));
+                browserHistory.push('/app');
             } else {
                 dispatch(notReceiveSignIn());
             }
         })
         .catch((error) => {
+            dispatch(notReceiveSignIn());
             console.log("error: ", error);
         });
     };
@@ -115,20 +129,19 @@ function receiveSignOut() {
 }
 
 export function signOut() {
-    return dispatch => {
-        dispatch(requestSignOut());
-
-        return axios.get('/api/logout').then((response) => {
-            if(response.statusText == "OK") {
-                console.log(response);
-                dispatch(receiveSignOut());
-                browserHistory.push('/');
-            }
-        })
-        .catch((error) => {
-            console.log("error: ", error);
-        });
-    };
+    // return dispatch => {
+        // return axios.get('/api/logout').then((response) => {
+        //     if(response.statusText == "OK") {
+        //         console.log(response);
+        //         dispatch(receiveSignOut());
+        //         browserHistory.push('/');
+        //     }
+        // })
+        // .catch((error) => {
+        //     console.log("error: ", error);
+        // });
+    // };
+     browserHistory.push('/');
 }
 
 export function receiveSocket(socketId) {

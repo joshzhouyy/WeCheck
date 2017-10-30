@@ -4,53 +4,23 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-
 import TextField from 'material-ui/TextField';
-import {orange500, blue500, indigo900, black, orange800} from 'material-ui/styles/colors';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import './CreateEventPanel.css';
-
-const styles = {
-  block: {
-    maxWidth: 250,
-  },
-  checkbox: {
-    marginBottom: 3,
-  },
-
-
-  errorStyle: {
-    color: orange500,
-  },
-  underlineStyle: {
-    borderColor: black,
-  },
-  
-  underlineFocusStyle: {
-    borderColor: indigo900,
-  },
-  floatingLabelStyle2: {
-    color: orange800,
-  },
-  floatingLabelStyle: {
-    color: indigo900,
-  },
-  floatingLabelFocusStyle: {
-    color: blue500,
-  },
-
-  labelStyle: {
-    width: 230   
-  },
-
-  buttonStyle: {    
-    margin: 6
-  }
-
-};
+import {styles} from './CreateEventPanelStyle'
 
 class CreateEventPanel extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {value: 1};
+  }
+
+  handleChange = (event, index, value) => this.setState({value});
+
   state = {
     checked: false,
   }
@@ -63,15 +33,21 @@ class CreateEventPanel extends React.Component {
     });
   }
 
+  buttonClicked() {
+    alert('You clicked the button.');
+    console.log('works fine');
+  }
+
   render() {
     return ( 
 
       
       
-      <div>
+      <div id = "pageDiv">
         <h1>CREATE PAGE</h1>
         <h2>Start a New Event</h2>
-        
+        <br />
+
         <TextField  
             hintText="Event Name"
             hintStyle={styles.floatingLabelStyle}
@@ -96,58 +72,21 @@ class CreateEventPanel extends React.Component {
             underlineStyle={styles.underlineStyle}
         />
         <br />
-        <TextField  
-            hintText="Split Type"
-            hintStyle={styles.floatingLabelStyle}
-            underlineStyle={styles.underlineStyle}
-        /><br />
-        <br />
+        
+        <p id="splitType" style={styles.floatingLabelStyle} >
+          Split Type: 
+        
       
 
-        Select Group Members: 
-
-        
-
-        <div style={styles.block}>
-        
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            label="Izzy (luo123@purdue.edu)"
-            style={styles.checkbox}
-          />
-
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            label="Josh (zhou123@purdue.edu)"
-            style={styles.checkbox}
-          />
-
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            label="Xiaohua (shi249@purdue.edu)"
-            style={styles.checkbox}
-          />
-
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            label="Dongji (cui123@purdue.edu)"
-            style={styles.checkbox}
-          />
-
-          <Checkbox
-            checkedIcon={<ActionFavorite />}
-            uncheckedIcon={<ActionFavoriteBorder />}
-            label="Moonsun (hwang123@purdue.edu)"
-            style={styles.checkbox}
+          <DropDownMenu value={this.state.value} onChange={this.handleChange} style={styles.dropdown} >
+            <MenuItem value={1} primaryText="Restaurant" />
+            <MenuItem value={2} primaryText="Hotel" />
+            <MenuItem value={3} primaryText="Flight" />
             
-          />
+          </DropDownMenu>
 
-        </div>
-
+        </p>
+        <br />
 
         <TextField  
             hintText="Type an email address to add"
@@ -159,14 +98,20 @@ class CreateEventPanel extends React.Component {
         /><br />
         <br />
         
-        <FlatButton 
-          label="+Add a person to the list"
-          style = {styles.labelStyle}
+        <div>
 
-         />
+          <FlatButton id="FlatButtonSize"        
+            label="+Add a person to the list"
+            style = {styles.buttonStyle}
+            onClick={this.buttonClicked.bind(this)}
+
+          />
+        </div>    
+
+         <br />
         
-        <RaisedButton label="Cancel" style={styles.buttonStyle} />
-        <RaisedButton label="Create" style={styles.buttonStyle} />
+        <RaisedButton label="Cancel" style={styles.buttonStyle} onClick={this.buttonClicked.bind(this)} />
+        <RaisedButton label="Create" style={styles.buttonStyle} onClick={this.buttonClicked.bind(this)} />
         
          
        </div>

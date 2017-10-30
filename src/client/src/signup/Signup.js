@@ -58,17 +58,18 @@ class Signup extends Component {
     }
 
     validateUsername() {
-        return 'success';
+      return 'success';
     }
 
     validateUserEmail() {
-        return 'success';
+      //TODO: add email format checking
+      return 'success';
     }
 
     showError() {
         if (this.props.failedToSignUp) {
             return (
-                <p style={{color: 'red'}}>Username already exists</p>
+                <p style={{color: 'red'}}>User Account already exists</p>
             );
         }
     }
@@ -125,7 +126,7 @@ class Signup extends Component {
                                 onChange={this.handleChange}
                                 />
                         </section>
-                        {this.showError()}
+                      {this.showError()}
                         <Button
                             disabled={this.validateUsername() === 'error' && true}
                             bsStyle="success"
@@ -142,6 +143,7 @@ class Signup extends Component {
 }
 
 function mapStateToProps(state) {
+    // console.log(JSON.stringify(state));
     return {
         failedToSignUp: state.authReducer.failedToSignUp
     }

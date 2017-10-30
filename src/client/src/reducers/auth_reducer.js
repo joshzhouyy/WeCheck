@@ -14,14 +14,20 @@ import {
 const initialState = {
     loaded: false,
     user: {
-        username: null,
+        userAccount: null,
         id: null,
         socketID: null
     },
     failedToSignIn: false,
-    failedToSignUp: false
+    failedToSignUp: false,
 };
 
+// Getters
+export const getUserId = (state) => {
+  return state.authReducer.user.id;
+} 
+
+// Setters
 export default function authReducer(state = initialState, action = {}) {
     switch(action.type) {
         case AUTH_SIGNUP:
@@ -31,12 +37,12 @@ export default function authReducer(state = initialState, action = {}) {
                 isSigningUp: true
             };
         case AUTH_SIGNUP_SUCCESS:
-            console.log("sign up successfully!");
+            console.log(action.newUser.username + " sign up successfully!");
             return {
                 ...state,
                 isSigningUp: false,
                 user: {
-                    username: action.newUser.username,
+                    username: action.newUser.userName,
                     id: action.newUser.id,
                     socketID: null
                 }
@@ -64,7 +70,7 @@ export default function authReducer(state = initialState, action = {}) {
                 ...state,
                 isSigningIn: false,
                 user: {
-                    username: action.user.userAccount,
+                    userAccount: action.user.userAccount,
                     id: action.user.id,
                     socketID: null
                 }
@@ -86,7 +92,7 @@ export default function authReducer(state = initialState, action = {}) {
                 ...state,
                 isSigningOut: false,
                 user: {
-                    username: null,
+                    userAccount: null,
                     id: null,
                 }
             };

@@ -1,0 +1,22 @@
+#CustomizedCategoryBoxContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#CustomizedCategoryBoxGrid {
+  height: 100%;
+  width: 100%;
+}
+
+#CustomizedCategoryRow {
+  height: 100%
+}
+
+#customizedCategoryDiv {
+  height: 100%;
+}
+
+
+.submitBtn {
+  width: 10%;
+}

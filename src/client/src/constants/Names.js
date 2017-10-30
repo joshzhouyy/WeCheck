@@ -1,2 +1,6 @@
 export const MESSAGE_BOX = "MESSAGE_BOX"
 export const BALANCE = "BALANCE"
+export const EVENT_PANEL = "EVENT_PANEL"
+export const CREATE_BOX = "CREATE_BOX"
+export const SPLITTER = "SPLITTER"
+export const FINANCE_MANAGER = "FINANCE_MANAGER"

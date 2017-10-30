@@ -1,11 +1,11 @@
 #sidebar
 { 
-    position:absolute;
-    top:0px;
-    left:0px;
-    bottom:0px;
-    width:180px;
-    min-height:700px;
+    position:relative;
+    top:0em;
+    left:0em;
+    bottom:0em;
+    width:1.8em;
+    min-height:7em;
     background-color: rgb(249, 250, 252);
 }
 
@@ -13,5 +13,5 @@
 {
     position:relative;
 
-    min-height:700px;
+    min-height:7em;
 }

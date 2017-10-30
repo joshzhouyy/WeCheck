@@ -26,7 +26,7 @@ const styles = {
 };
 
 
-const Sidebar = () => (
+const Sidebar = ({onClick}) => (
   <MuiThemeProvider>
     <div >
     <nav id="parentDiv">
@@ -38,9 +38,9 @@ const Sidebar = () => (
       <ActionHome />
     </IconButton>
     <br />
-    <RaisedButton label="Split" primary={true} style={styles.margin} />
+    <RaisedButton label="Splitter" primary={true} style={styles.margin} onClick={() => onClick("SPLITTER")}/>
     <br />
-    <RaisedButton label="Finance" primary={true} style={styles.margin} />
+    <RaisedButton label="Finance" primary={true} style={styles.margin} onClick={() => onClick("FINANCE_MANAGER")}/>
     </div>
     </nav>
   </div>

@@ -1,33 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
+
 import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
-import { BrowserRouter } from 'react-router-dom';
+import { browserHistory } from 'react-router';
+import { Router } from 'react-router';
 
-
-import App from './app/App'
 import rootReducer from './app/reducers'
+import Routes from './routes';
 
 const middleware = [ thunk ];
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger());
 }
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
-
-
-  // let store = createStore(actions);
-
+const store = createStore(rootReducer, applyMiddleware(...middleware));
+console.log(store.getState())
 
 const WeCheck = () => (
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>
+  <Provider store={store}>
+    <Router children={Routes} history={browserHistory} />
+  </Provider>
 );
+
+// console.log(store.getState())
 
 ReactDOM.render(
     <WeCheck />,
