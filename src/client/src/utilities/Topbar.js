@@ -47,7 +47,7 @@
 
 // export default Topbar;
 
-// buggy code #25
+// buggy code #25 #12
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
@@ -59,7 +59,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import App from '../app/App';
 import WelcomePage from '../event/WelcomePage';
 
-
+function handleTouchTap() {
+  alert('onClick triggered on the title component');
+}
 
 
 const styles = {
@@ -88,6 +90,7 @@ const Topbar = ({onClick}) => (
     <div id="topBar">
       <AppBar
         title={<span style={styles.title}>WeCheck</span>}
+        onTitleTouchTap={handleTouchTap}
         iconElementRight={rightButtons(onClick)}
       />
     </div>
@@ -95,3 +98,6 @@ const Topbar = ({onClick}) => (
 );
 
 export default Topbar;
+
+
+
