@@ -129,5 +129,3 @@ export const getBillSum = (eventId) => {
       });
   });
 }
-
-// export 
