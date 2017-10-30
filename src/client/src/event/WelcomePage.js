@@ -12,7 +12,7 @@ class WelcomePage extends Component {
         return (
           <div style={{height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
             <header style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                <p style={{fontSize: '2em'}}>Welcome to Hi Classmates!</p>
+                <p style={{fontSize: '2em'}}>Welcome to WeCheck!</p>
             </header>
             <main style={{display: 'flex'}}>
                 <section style={{width: '100%', height: '3.5em', display: 'flex'}}>

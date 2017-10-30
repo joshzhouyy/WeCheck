@@ -22,7 +22,7 @@ var eventSchema = new mongoose.Schema({
     invitationList:[{ type: Schema.Types.ObjectId, ref: 'user'}],
     eventStatus: {
         type: String,
-        enum: ['in process', 'completed']
+        enum: ['in process', 'completed', 'deleted']
     },
     totalAmount: Number,
     memberAccount:[{ type: Schema.Types.ObjectId, ref: 'user'}]
