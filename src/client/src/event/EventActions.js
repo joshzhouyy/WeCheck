@@ -130,4 +130,28 @@ export const getBillSum = (eventId) => {
   });
 }
 
+//TODO: add eventTime
+export const createEvent = (event) => {
+  return new Promise ((resolve, reject) => {
+    axios.post('event/createEvent', {
+      ownerID: event.userId,
+      eventName: event.eventName,
+      eventType: event.eventType,
+      eventCategory: event.eventCategory,
+      eventLocation: event.eventLocation,
+      splitType: event.splitType
+    })
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    })
+  });
+}
+
 // export 

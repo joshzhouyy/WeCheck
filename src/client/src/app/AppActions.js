@@ -17,7 +17,7 @@
 
 
 // Defect 11, 25
-export const selectActivePanel = (selectedPanel) => {
+export const selectActivePanel = (selectedPanel) => ({
     type: "SELECT_ACTIVE_PANEL",
     selectedPanel
-}
+})

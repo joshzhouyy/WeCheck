@@ -6,7 +6,7 @@ import EventPanelContainer from '../event/EventPanelContainer';
 import BalancePanel from '../balance-panel/BalancePanel';
 import MessageBox from '../message-box/MessageBox';
 import {MESSAGE_BOX, BALANCE, EVENT_PANEL, CREATE_BOX} from '../constants/Names';
-import CreateEventPanel from '../event/CreateEventPanel';
+import CreateEventPanelContainer from '../event/CreateEventPanelContainer';
 
 
 const muiTheme = getMuiTheme({
@@ -37,7 +37,7 @@ const ActivePanel = (props)=> {
     case  CREATE_BOX:
       return (
         <MuiThemeProvider muiTheme={muiTheme}>
-          <CreateEventPanel />
+          <CreateEventPanelContainer />
         </MuiThemeProvider>
       );
     default:
