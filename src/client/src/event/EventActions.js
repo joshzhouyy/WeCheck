@@ -149,9 +149,29 @@ export const deleteEvent = (eventId) => {
 
 export const addTotal = (eventId, userId, totalAmount) => {
   return new Promise ((resolve, reject) => {
-    console.log(typeof totalAmount);
+    // console.log(typeof totalAmount);
     axios.put('event/updateTotal/' + userId + '/' + eventId, {
       totalAmount: totalAmount
+    })
+    .then((response) => {
+      // console.log(response)
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
+  })
+}
+
+export const inputIndividualExpense = (eventId, userId, individualAmount) => {
+  return new Promise ((resolve, reject) => {
+    console.log(typeof individualAmount);
+    axios.post('event/individualAmount/' + eventId + '/' + userId, {
+      individualAmount: individualAmount
     })
     .then((response) => {
       // console.log(response)

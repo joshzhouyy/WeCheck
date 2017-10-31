@@ -14,7 +14,13 @@ import EventBillSumChart from './EventBillSumChart';
 import DialogBox from './DialogBox';
 import InputDialogBox from './InputDialogBox';
 import CreateEventPanel from './CreateEventPanel';
-import {getMemberList, getBillSum, deleteEvent, addTotal} from './EventActions';
+import {
+  getMemberList, 
+  getBillSum, 
+  deleteEvent, 
+  addTotal,
+  inputIndividualExpense
+   } from './EventActions';
 import './EventMemberPanel.css'
 
 
@@ -36,7 +42,8 @@ const BtnGroup = (props) => {
         title: "Delete Event",
         info: DeleteEMsg,
         onClick: deleteEvent,
-        eventId: eventId
+        eventId: eventId,
+        id: "deleteId"
   }
 
   const addBtnProps = {
@@ -45,16 +52,18 @@ const BtnGroup = (props) => {
     title: "Add Total Amount",
     onClick: addTotal,
     eventId: eventId,
-    userId: userId
+    userId: userId,
+    id: "addBtn"
   }
 
   const inputBtnProps = {
     type: "primary",
     label: "Input",
     title: "Input Individual Expense",
-    onClick: addTotal,
+    onClick: inputIndividualExpense,
     eventId: eventId,
-    userId: userId
+    userId: userId,
+    id: "inputBtn"
   }
 
   const editBtnProps = {
@@ -63,7 +72,8 @@ const BtnGroup = (props) => {
     title: "Edit Event",
     info: () => (CreateEventPanel),
     onClick: addTotal,
-    eventId: eventId
+    eventId: eventId,
+    id: "editBtn"
   }
 
   if (!isCreator) {
