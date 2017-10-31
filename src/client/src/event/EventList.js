@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import autoBind from 'react-autobind';
 
 import Paper from 'material-ui/Paper'
 import {Grid, Row, Col} from 'react-bootstrap'
@@ -14,19 +15,21 @@ import {getOngoingEvents} from './EventActions';
 
 import "./EventList.css"
 
-const menuOptions = () => (
+const menuOptions = (clickOngoing, clickFinished) => (
   <div id="menuOptionsDiv">
     <RaisedButton 
       label="ongoing" 
       backgroundColor={colors.teal100}
       className="menuOptionBtns"
       style={{ fontSize: '1.5rem' }}
+      onClick={clickOngoing}
     /> 
     <RaisedButton 
       label="finished" 
       backgroundColor={colors.indigo100} 
       className="menuOptionBtns"
       style={{ fontSize: '1.5rem' }}
+      onClick={clickFinished}
     />
   </div>
 );
@@ -81,10 +84,24 @@ const eventItems = (props) => {
 class EventList extends React.Component {
   constructor(props) {
     super(props);
+    autoBind(this);
     this.state = {
       ongoingEvents: [],
-      finishedEvents: []
+      finishedEvents: [],
     }
+  }
+
+  clickOngoing() {
+    getOngoingEvents(this.props.userId)
+      .then(events => {
+        this.setState({
+          ongoingEvents: events
+        });
+      })
+  }
+
+  clickFinished() {
+    //TODO
   }
 
   componentDidMount() {
@@ -113,7 +130,7 @@ class EventList extends React.Component {
       <Paper id="eventListContainer">
         <Grid id="EventListGrid">
         <Row id="menuOptionsRow">
-          {menuOptions()}
+          {menuOptions(this.clickOngoing, this.clickFinished)}
         </Row>
         <Row id="eventListRow">
           <div id="eventListDiv">
