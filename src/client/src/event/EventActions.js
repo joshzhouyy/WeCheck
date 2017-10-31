@@ -186,3 +186,11 @@ export const inputIndividualExpense = (eventId, userId, individualAmount) => {
     });
   })
 }
+
+export const inviteMember = () => {
+  //TODO
+}
+
+export const deleteMember = () => {
+  //TODO
+}

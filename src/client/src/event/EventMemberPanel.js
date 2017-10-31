@@ -70,7 +70,7 @@ const BtnGroup = (props) => {
     type: "default",
     label: "Edit",
     title: "Edit Event",
-    info: () => (CreateEventPanel),
+    info: () => ("Edit Panel"),
     onClick: addTotal,
     eventId: eventId,
     id: "editBtn"
@@ -102,35 +102,64 @@ const BillSum = (totalSum) => {
 }
 
 
-const CreatorMemberListBtns = () => {
+const CreatorMemberListBtns = ({eventId, userId}) => {
+  const inviteMemberBtnProps = {
+    type: "default",
+    label: "+",
+    title: "Invite a Member",
+    onClick: inputIndividualExpense,
+    eventId: eventId,
+    userId: userId,
+    id: "inviteMemberBtn",
+    backgroundColor:colors.teal100,
+    style:{ fontSize: '1.5rem' }
+  };
+
+  const deleteMemberBtnProps = {
+    type: "default",
+    label: "-",
+    title: "Delete a Member",
+    onClick: inputIndividualExpense,
+    eventId: eventId,
+    userId: userId,
+    id: "deleteMemberBtn",
+    backgroundColor:colors.indigo100,
+    style:{ fontSize: '1.5rem' }
+  };
+
   return (
   <div id="memberListButtonDiv">
-    <RaisedButton 
-      label="+" 
-      backgroundColor={colors.teal100}
+    <InputDialogBox 
       className="creatorMemberListBtns"
-      style={{ fontSize: '1.5rem' }}
+      {...inviteMemberBtnProps}
     /> 
-    <RaisedButton 
-      label="-" 
-      backgroundColor={colors.indigo100} 
+    <InputDialogBox 
       className="creatorMemberListBtns"
-      style={{ fontSize: '1.5rem' }}
+      {...deleteMemberBtnProps}
     />
   </div>
   );
 }
 
-const MemberListBtns = () => {
+const MemberListBtns = ({eventId, userId}) => {
+  const inviteMemberBtnProps = {
+    type: "default",
+    label: "+",
+    title: "Invite a Member",
+    onClick: inputIndividualExpense,
+    eventId: eventId,
+    userId: userId,
+    id: "inviteMemberBtn",
+    backgroundColor:colors.teal100,
+    style:{ fontSize: '1.5rem' }
+  };
+
   return (
     <div id="memberListButtonDiv">
-      <RaisedButton 
-        label="+" 
-        backgroundColor={colors.teal100}
-        className="memberAddBtn"
-        style={{ fontSize: '1.5rem' }}
+      <InputDialogBox 
+        className="memberListBtns"
+        {...inviteMemberBtnProps}
       /> 
-      
     </div>
   );
 }
@@ -148,6 +177,13 @@ const Member = (memberName) => {
 const EventMemberList = (memberListProps) => {
   const isCreator = memberListProps.isCreator;
   const members = memberListProps.members;
+  const eventId = memberListProps.eventId;
+  const userId = memberListProps.userId;
+
+  const btnProps = {
+    eventId: eventId,
+    userId: userId
+  }
 
   if (!isCreator) {
     return (
@@ -158,7 +194,7 @@ const EventMemberList = (memberListProps) => {
             return Member(m.userAccount);
           })
         }
-        <MemberListBtns />
+        <MemberListBtns {...btnProps}/>
       </List>
       );
   } else {
@@ -170,7 +206,7 @@ const EventMemberList = (memberListProps) => {
             return Member(m.userAccount);
           })
         }
-        <CreatorMemberListBtns />
+        <CreatorMemberListBtns {...btnProps}/>
       </div>
     );
   }
@@ -224,7 +260,9 @@ class EventMemberPanel extends React.Component {
 
     const memberListProps = {
       isCreator: isCreator,
-      members: members
+      members: members,
+      eventId: eventId,
+      userId: userId
     }
 
     const btnGroupProps = {

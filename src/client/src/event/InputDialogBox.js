@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 
-const DialogBtn = (type, label, handleOpen) => {
+const DialogBtn = (type, label, handleOpen, backgroundColor, style) => {
   switch(type) {
     case "primary":
       return (
@@ -19,7 +19,11 @@ const DialogBtn = (type, label, handleOpen) => {
         );
     default:
       return (
-        <RaisedButton label={label} onClick={handleOpen} />
+        <RaisedButton 
+          label={label} 
+          backgroundColor={backgroundColor} 
+          style={style}
+          onClick={handleOpen} />
         );
   }
 }
@@ -66,6 +70,9 @@ class InputDialogBox extends React.Component {
     const onClick = this.props.onClick;
     const eventId = this.props.eventId;
     const userId = this.props.userId;
+    const backgroundColor = this.props.backgroundColor;
+    const style = this.props.style;
+    const id = this.props.id;
 
     const actions = [
       <FlatButton
@@ -83,7 +90,7 @@ class InputDialogBox extends React.Component {
 
     return (
       <div>
-        {DialogBtn(type, label, this.handleOpen)}
+        {DialogBtn(type, label, this.handleOpen, backgroundColor, style)}
         <Dialog
           title={title}
           actions={actions}
@@ -91,7 +98,7 @@ class InputDialogBox extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-        <TextField onChange={(event, input) => this.onChange(event, input)}/>
+        <TextField id={id} onChange={(event, input) => this.onChange(event, input)}/>
         </Dialog>
       </div>
     );

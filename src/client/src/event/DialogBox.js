@@ -55,6 +55,7 @@ class DialogBox extends React.Component {
     const info = this.props.info;
     const onClick = this.props.onClick;
     const eventId = this.props.eventId;
+    const id = this.props.id;
 
     const actions = [
       <FlatButton
