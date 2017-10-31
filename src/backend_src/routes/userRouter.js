@@ -4,7 +4,9 @@ var user = require('../models/user.js');
 var evt = require('../models/event_info.js');
 var assert = require('assert');
 
-//WORKING CODE
+//****************************************WORKING CODE**********************************************
+
+
 /*module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
@@ -125,23 +127,125 @@ var assert = require('assert');
 
 
     //when user join in an event, add that event to user's eventList
- 
-
-    router.put('/joinEvent/:userID', function(req, res){
-
-        var user_promise = user.findOne({'_id': req.params.userID}).exec();
+    router.put('/acceptInvitation/:receiverID', function(req, res){
+        var receiver_promise = user.findOne({'_id': req.params.receiverID}).exec();
         var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
-        assert.ok(user_promise instanceof require('mpromise'));
-        user_promise.then(function(user){
-            //console.log(error);
-            //console.log(user)
-            if(user === undefined || user === null){
-                console.log("user not found");
-                res.status(404).send("user not found");
+        assert.ok(receiver_promise instanceof require('mpromise'));
+        receiver_promise.then(function(receiver) 
+            {
+                if(receiver === undefined || receiver === null)
+                {
+                    console.log("receiver not found");
+                    res.status(404).send("receiver not found");
+                }
+                else 
+                {
+                    assert.ok(event_promise instanceof require('mpromise'));
+                    console.log("receiver found");
+                    event_promise.then(function(evt)
+                    {
+                            if(evt === undefined || evt === null){
+                                console.log("event not found");
+                                res.status(404).send("event not found");
+                            }
+                            else{
+                                console.log("event found");
+                                if(evt.memberAccount.indexOf(req.params.receiverID) === -1){
+                                    evt.memberAccount.push(req.params.receiverID);
+                                    evt.save((error) => {
+                                        if(error){
+                                            console.log("Error: " + error);
+                                            res.status(500).send("Error: " + error);
+                                        }
+                                    });
+                                }
+                                else{
+                                    console.log("user already in this event");
+                                    res.status(500).send("user already in this event");
+                                }
+
+                                receiverIndex = evt.invitationList.indexOf(req.params.receiverID);
+                                if(receiverIndex !== -1){
+                                    evt.invitationList.splice(receiverIndex, 1);
+                                    evt.save((error) => {
+                                        if(error){
+                                            console.log("Error: " + error);
+                                            res.status(500).send("Error: " + error);
+                                        }
+                                    });
+                                }
+                                else{
+                                    console.log("user is not invited");
+                                    res.status(500).send("user is not invited");
+                                }
+                            }
+
+                        }).catch((error) => {
+                            console.log(error);
+                            res.status(500).send("Error: " + error);
+                            }); // event_promise
+
+                        if(receiver.eventList.indexOf(req.body.eventID) === -1)
+                        {
+                            receiver.eventList.push(req.body.eventID);
+                            receiver.save((error) => {
+                                if(error){
+                                    console.log("Error: " + error);
+                                    res.status(500).send("Error: " + error);
+                                }
+                            });
+
+                            response = {
+                                receiverID: req.params.receiverID,
+                                eventID: req.body.eventID,
+                                message:"successfully joined event"
+                            };
+                            res.status(200).send(response);
+                        }
+                        else
+                        {
+                            console.log("user is already in this event");
+                            res.status(500).send("user is already in this event");
+                        }
+                        var eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
+                        if(eventIndex !== -1){
+                            receiver.pendingInvites.splice(eventIndex, 1);
+                            receiver.save((error) => {
+                                if(error){
+                                    console.log("Error: " + error);
+                                    res.status(500).send("Error: " + error);
+                                }
+                            });
+                        }
+                        else{
+                            console.log("user does not have pending invitation on this event");
+                            res.status(500).send("user does not have pending invitation on this event");
+                        }
+
+                } // outest else
+
+            }).catch((error) => {
+                console.log(error);
+                res.status(500).send("Error: " + error);
+            }); // receiver_promise
+
+    }); // put
+
+    //send invitation to other users
+    router.put('/sendInvitation', function(req, res){
+        var receiver_promise = user.findOne({'_id': req.params.userID}).exec();
+        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        assert.ok(receiver_promise instanceof require('mpromise'));
+        receiver_promise
+            .then(function(receiver)
+            {
+            if(receiver === undefined || receiver === null){
+                console.log("receiver not found");
+                res.status(404).send("receiver not found");
             }
             else {
                 assert.ok(event_promise instanceof require('mpromise'));
-                console.log("user found")
+                console.log("receiver found")
                 event_promise.then(function(evt){
                     if(evt === undefined || evt === null){
                         console.log("event not found");
@@ -149,8 +253,9 @@ var assert = require('assert');
                     }
                     else{
                         console.log("event found");
-                        if(evt.memberAccount.indexOf(req.params.userID) === -1){
-                            evt.memberAccount.push(req.params.userID);
+                        receiverIndex = evt.invitationList.indexOf(req.params.receiverID);
+                        if(receiverIndex === -1){
+                            evt.invitationList.push(receiverIndex);
                             evt.save((error) => {
                                 if(error){
                                     console.log("Error: " + error);
@@ -159,8 +264,8 @@ var assert = require('assert');
                             });
                         }
                         else{
-                            console.log("user already in this event");
-                            res.status(500).send("user already in this event");
+                            console.log("user is already invited");
+                            res.status(500).send("user is already invited");
                         }
                     }
                 }).catch((error) => {
@@ -168,28 +273,111 @@ var assert = require('assert');
                     res.status(500).send("Error: " + error);
                     });
 
-                if(user.eventList.indexOf(req.body.eventID) === -1){
-                    user.eventList.push(req.body.eventID);
-                    user.save((error) => {
+                var eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
+                if(eventIndex === -1){
+                    receiver.pendingInvites.push(eventIndex);
+                    receiver.save((error) => {
                         if(error){
                             console.log("Error: " + error);
                             res.status(500).send("Error: " + error);
+                            return;
                         }
                     });
-
                     response = {
-                        userID: req.params.userID,
+                        userID: req.body.userID,
                         eventID: req.body.eventID,
-                        message:"successfully joined event"
+                        message: "successfully sent invitation to user " + req.body.userID + " for event " + req.body.eventID
                     };
                     res.status(200).send(response);
+                }
+                else{
+                    console.log("user does not have pending invitation on this event");
+                    res.status(500).send("user does not have pending invitation on this event");
                 }
  
             }
         }).catch((error) => {
             console.log(error);
             res.status(500).send("Error: " + error);
-            });
+        });
+    });
+
+    //user decline an invitation to an event
+    //request: userID, eventID
+    router.post('/declineInvitation', function(req, res) {
+        var user_promise = user.findOne({'_id': req.body.userID}).exec();
+        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        assert.ok(user_promise instanceof require('mpromise'));
+        user_promise.then(function(user){
+            if(user === undefined || user === null)
+            {
+                console.log("user not found");
+                res.status(404).send("user not found");
+                return;
+            }
+            else
+            {
+                console.log("user found");
+                assert.ok(event_promise instanceof require('mpromise'));
+                event_promise.then(function(evt){
+                    if(evt === undefined || evt === null)
+                    {
+                        console.log("event not found");
+                        res.status(404).send("event not found");
+                        return;
+                    }
+                    else
+                    {
+                        var userIndex = evt.invitationList.indexOf(req.body.userID);
+                        if(userIndex === -1)
+                        {
+                            console.log("user not invited");
+                            res.status(500).send("user not invited");
+                        }
+                        else
+                        {
+                            evt.invitationList.splice(userIndex, 1);
+                            evt.save((error) => {
+                                if(error){
+                                    console.log("Error: " + error);
+                                    res.status(500).send("Error: " + error);
+                                }
+                            });
+                        }  
+                    }
+                }).catch((error) => {
+                    console.log("Error: " + error);
+                    res.status(500).send("Error: " + error);
+                });
+
+                var eventIndex = user.pendingInvites.indexOf(req.body.eventID);
+                if(eventIndex === -1)
+                {
+                    console.log("user is not invited");
+                    res.status(500).send("user is not invited");
+
+                }
+                else
+                {
+                    user.pendingInvites.splice(eventIndex, 1);
+                    user.save((error) => {
+                        if(error){
+                            console.log("Error: " + error);
+                            res.status(500).send("Error: " + error);
+                        }
+                    });
+                    response = {
+                        userID: req.body.userID,
+                        eventID: req.body.eventID,
+                        message: "invitation to event " + req.body.eventID + " successfully decline"
+                    };
+                    res.status(200).send(response);
+                }
+            }
+        }).catch((error) => {
+            console.log("Error: " + error);
+            res.status(500).send("Error: " + error);
+        });
     });
 
 };*/
@@ -240,7 +428,41 @@ var assert = require('assert');
 
 
 
-//BUGGY CODE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//*****************************************BUGGY CODE***********************************************
+
+
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
@@ -261,7 +483,7 @@ module.exports = function loadUserRoutes(router) {
                 //console.log("here");
                 //var newUser = new user();
 
-                //BUG2(to fix, uncomment line 261  and line 277)
+                //BUG2(to fix, uncomment line 261  and line 277, and line 283 and line 284 line285)
                 //if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
                     var newUser = new user();
                     newUser.userAccount = req.body.userAccount;
@@ -280,9 +502,9 @@ module.exports = function loadUserRoutes(router) {
                     res.json(newUser);
                     });
                 //}
-                else{
-                    res.status(500).send("bad parameters");
-                }
+                //else{
+                  //  res.status(500).send("bad parameters");
+                //}
             }
         });
     });
@@ -360,35 +582,93 @@ module.exports = function loadUserRoutes(router) {
     });
 
 
-    //when user join in an event, add that event to user's eventList
  
 
-    router.put('/joinEvent/:userID', function(req, res){
-
-        var user_promise = user.findOne({'_id': req.params.userID}).exec();
-        //BUG8(to fix, uncomment line 382- 387 and line 402)
+//when user join in an event, add that event to user's eventList
+    router.put('/acceptInvitation/:receiverID', function(req, res){
+        var receiver_promise = user.findOne({'_id': req.params.receiverID}).exec();
         var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
-        assert.ok(user_promise instanceof require('mpromise'));
-        user_promise.then(function(user){
-            //console.log(error);
-            //console.log(user)
-            if(user === undefined || user === null){
-                console.log("user not found");
-                res.status(404).send("user not found");
-            }
-            else {
-                assert.ok(event_promise instanceof require('mpromise'));
-                console.log("user found")
-                event_promise.then(function(evt){
-                    /*if(evt === undefined || evt === null){
-                        console.log("event not found");
-                        res.status(404).send("event not found");
-                    }*/
-                    //else{
-                        console.log("event found");
-                        if(evt.memberAccount.indexOf(req.params.userID) === -1){
-                            evt.memberAccount.push(req.params.userID);
-                            evt.save((error) => {
+        assert.ok(receiver_promise instanceof require('mpromise'));
+        receiver_promise.then(function(receiver) 
+            {
+                if(receiver === undefined || receiver === null)
+                {
+                    console.log("receiver not found");
+                    res.status(404).send("receiver not found");
+                }
+                else 
+                {
+                    assert.ok(event_promise instanceof require('mpromise'));
+                    console.log("receiver found");
+                    event_promise.then(function(evt)
+                    {
+                            if(evt === undefined || evt === null){
+                                console.log("event not found");
+                                res.status(404).send("event not found");
+                            }
+                            else{
+                                console.log("event found");
+                                if(evt.memberAccount.indexOf(req.params.receiverID) === -1){
+                                    evt.memberAccount.push(req.params.receiverID);
+                                    evt.save((error) => {
+                                        if(error){
+                                            console.log("Error: " + error);
+                                            res.status(500).send("Error: " + error);
+                                        }
+                                    });
+                                }
+                                else{
+                                    console.log("user already in this event");
+                                    res.status(500).send("user already in this event");
+                                }
+
+                                receiverIndex = evt.invitationList.indexOf(req.params.receiverID);
+                                if(receiverIndex !== -1){
+                                    evt.invitationList.splice(receiverIndex, 1);
+                                    evt.save((error) => {
+                                        if(error){
+                                            console.log("Error: " + error);
+                                            res.status(500).send("Error: " + error);
+                                        }
+                                    });
+                                }
+                                else{
+                                    console.log("user is not invited");
+                                    res.status(500).send("user is not invited");
+                                }
+                            }
+
+                        }).catch((error) => {
+                            console.log(error);
+                            res.status(500).send("Error: " + error);
+                            }); // event_promise
+
+                        if(receiver.eventList.indexOf(req.body.eventID) === -1)
+                        {
+                            receiver.eventList.push(req.body.eventID);
+                            receiver.save((error) => {
+                                if(error){
+                                    console.log("Error: " + error);
+                                    res.status(500).send("Error: " + error);
+                                }
+                            });
+
+                            response = {
+                                receiverID: req.params.receiverID,
+                                eventID: req.body.eventID,
+                                message:"successfully joined event"
+                            };
+                            res.status(200).send(response);
+                        }
+                        else
+                        {
+                            console.log("user is already in this event");
+                            res.status(500).send("user is already in this event");
+                        }
+                        var eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
+                        if(eventIndex !== -1){
+                            receiver.pendingInvites.splice(eventIndex, 1);
+                            receiver.save((error) => {
                                 if(error){
                                     console.log("Error: " + error);
                                     res.status(500).send("Error: " + error);
@@ -396,37 +676,166 @@ module.exports = function loadUserRoutes(router) {
                             });
                         }
                         else{
-                            console.log("user already in this event");
-                            res.status(500).send("user already in this event");
+                            console.log("user does not have pending invitation on this event");
+                            res.status(500).send("user does not have pending invitation on this event");
                         }
-                    //}
+
+                } // outest else
+
+            }).catch((error) => {
+                console.log(error);
+                res.status(500).send("Error: " + error);
+            }); // receiver_promise
+
+    }); // put
+
+
+
+    //send invitation to other users
+    router.put('/sendInvitation', function(req, res){
+        var receiver_promise = user.findOne({'_id': req.body.receiverID}).exec();
+        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        assert.ok(receiver_promise instanceof require('mpromise'));
+        receiver_promise.then(function(receiver){
+            if(receiver === undefined || receiver === null){
+                console.log('receiver not found');
+                res.status(404).send('receiver not found');
+                return;
+            }
+            else{
+                assert.ok(event_promise instanceof require('mpromise'));
+                console.log('receiver found');
+                event_promise.then(function(evt){
+                    if(evt === undefined || evt === null){
+                        console.log("event not found");
+                        res.status(404).send("event not found");
+                    }
+                    else{
+                        console.log("event found");
+                        if(evt.invitationList.indexOf(req.body.receiverID) === -1){
+                            evt.invitationList.push(req.body.receiverID);
+                            evt.save((error) => {
+                                if(error){
+                                    console.log("Error: " + error);
+                                    res.statu(500).send("Error: " + error);
+                                }
+                            });
+                        }
+                        else{
+                            console.log("event already sent invitation");
+                            res.status(500).send("event already sent invitation");
+                        }
+                    }
                 }).catch((error) => {
-                    console.log(error);
+                    console.log("Error: " + error);
                     res.status(500).send("Error: " + error);
                     });
 
-                if(user.eventList.indexOf(req.body.eventID) === -1){
-                    user.eventList.push(req.body.eventID);
+                if(receiver.pendingInvites.indexOf(req.body.eventID) === -1){
+                    receiver.pendingInvites.push(req.body.eventID);
+                    receive.save((error) => {
+                        if(error){
+                            console.log("Error: " + error);
+                            res.status(500).send("Error: " + error);
+                            return;
+                        }  
+                    });
+                }
+                else{
+                    console.log("receiver already has this invitation");
+                    res.status(500).send("receiver already has this invitation");
+                }
+                response = {
+                    receiverID: req.body.userID,
+                    eventID: req.body.eventID,
+                    message: "invitation sent"
+                };
+                res.status(200).send(response);
+
+            }
+        }).catch((error) => {
+            console.log("Error: " + error);
+            res.status(500).send("Error: "  + error);
+        });
+    });
+
+
+    //user decline an invitation to an event
+    //request: userID, eventID
+    router.post('/declineInvitation', function(req, res) {
+        var user_promise = user.findOne({'_id': req.body.userID}).exec();
+        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        assert.ok(user_promise instanceof require('mpromise'));
+        user_promise.then(function(user){
+            if(user === undefined || user === null)
+            {
+                console.log("user not found");
+                res.status(404).send("user not found");
+                return;
+            }
+            else
+            {
+                console.log("user found");
+                assert.ok(event_promise instanceof require('mpromise'));
+                event_promise.then(function(evt){
+                    if(evt === undefined || evt === null)
+                    {
+                        console.log("event not found");
+                        res.status(404).send("event not found");
+                        return;
+                    }
+                    else
+                    {
+                        var userIndex = evt.invitationList.indexOf(req.body.userID);
+                        if(userIndex === -1)
+                        {
+                            console.log("user not invited");
+                            res.status(500).send("user not invited");
+                        }
+                        else
+                        {
+                            evt.invitationList.splice(userIndex, 1);
+                            evt.save((error) => {
+                                if(error){
+                                    console.log("Error: " + error);
+                                    res.status(500).send("Error: " + error);
+                                }
+                            });
+                        }  
+                    }
+                }).catch((error) => {
+                    console.log("Error: " + error);
+                    res.status(500).send("Error: " + error);
+                });
+
+                var eventIndex = user.pendingInvites.indexOf(req.body.eventID);
+                if(eventIndex === -1)
+                {
+                    console.log("user is not invited");
+                    res.status(500).send("user is not invited");
+
+                }
+                else
+                {
+                    user.pendingInvites.splice(eventIndex, 1);
                     user.save((error) => {
                         if(error){
                             console.log("Error: " + error);
                             res.status(500).send("Error: " + error);
                         }
                     });
-
                     response = {
-                        userID: req.params.userID,
+                        userID: req.body.userID,
                         eventID: req.body.eventID,
-                        message:"successfully joined event"
+                        message: "invitation to event " + req.body.eventID + " successfully decline"
                     };
                     res.status(200).send(response);
                 }
- 
             }
         }).catch((error) => {
-            console.log(error);
+            console.log("Error: " + error);
             res.status(500).send("Error: " + error);
-            });
+        });
     });
 
 };

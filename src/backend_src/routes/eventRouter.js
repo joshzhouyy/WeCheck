@@ -135,17 +135,33 @@ var assert = require('assert');
 				res.status(500).send('Error: ' + error);
 				return;
 			}
-			if(!toRemoved){
+			else if(!toRemoved){
 				res.status(500).send('no such event found');
 				return;
 			}
-			response = {
+			else if(toRemoved.eventStatus === 'in process'){
+				res.status(403).send("unable to delete an ongoing event");
+				return;
+			}
+			else if(toRemoved.eventStatus === 'deleted'){
+				res.status(500).send("cannot delete an event more than once");
+				return;
+			}
+			else{
+				response = {
 				message: "event successfully deleted",
 				id: toRemoved._id
-			};
-			toRemoved.eventStatus = 'deleted';
-			res.status(200).send(response);
-			return;
+				};
+				toRemoved.eventStatus = 'deleted';
+				toRemoved.save((error)=> {
+					if(error){
+						res.status(500).send("Error: " + error);
+						return;
+					}
+				});
+				res.status(200).send(response);
+				return;
+			}
 		});
 	});
 
@@ -267,17 +283,25 @@ var assert = require('assert');
 				res.status(500).send("Update total error: " + error);
 				return;
 			}
-			if(req.body.totalAmount === undefined || req.body.totalAmount === null || req.body.totalAmount <= 0){
+			else if(req.body.totalAmount === undefined || req.body.totalAmount === null /*|| req.body.totalAmount <= 0*//*){
 				res.status(504).send('Error: invalid amount');
 				return;
 			}
-			if(req.params.userID != evt.ownerID){
+			else if(req.params.userID != evt.ownerID){
 				res.status(501).send('Error: unauthorized');
 				return;
 			}
-			evt.totalAmount = req.body.totalAmount;
+			else{
+				evt.totalAmount = req.body.totalAmount;
+				evt.save((error) => {
+					if(error){
+						res.status(500).send("Error:" + error);
+						return;
+					}
+				});
 			res.status(200).json(evt);
 			return;
+			}
 
 		});
 	});
@@ -502,7 +526,8 @@ module.exports = function loadEventRoutes(router){
 		newEvent.invitationList = req.body.invitationList;
 		newEvent.eventStatus = 'in process';
 		newEvent.totalAmount = 0;
-		newEvent.memberAccount.push(req.body.ownerID);
+		//BUG9 (to fix,  uncomment line530)
+		//newEvent.memberAccount.push(req.body.ownerID);
 
 		newEvent.save((error) => {
 			if(error){
@@ -611,22 +636,35 @@ module.exports = function loadEventRoutes(router){
 	//delete an event from database
 	router.post('/deleteEvent/:eventID', function(req, res){
 		console.log(req.params.eventID);
-		var toRemoved = evt.findOne({'_id':req.params.eventID}, (error, toRemoved) => {
+		evt.findOne({'_id':req.params.eventID}, (error, toRemoved) => {
 			if(error){
 				res.status(500).send('Error: ' + error);
 				return;
 			}
-			if(!toRemoved){
+			else if(toRemoved === null || toRemoved === undefined){
 				res.status(500).send('no such event found');
 				return;
 			}
-			response = {
-				message: "event successfully deleted",
-				id: toRemoved._id
-			};
-			toRemoved.eventStatus = 'deleted';
-			res.status(200).send(response);
-			return;
+			else if(toRemoved.eventStatus === 'deleted'){
+				res.status(500).send("cant delete an event more than once");
+				return;
+			}
+			//BUG14 (to fix, add 'else if(toRemoved.eventStatus === 'in process'){})
+			else{
+				response = {
+					message: "event successfully deleted",
+					id: toRemoved._id
+				};
+				toRemoved.eventStatus = 'deleted';
+				toRemoved.save((error)=> {
+					if(error){
+						res.status(500).send("Error: " + error);
+						return;
+					}
+				});
+				res.status(200).send(response);
+				return;
+			}
 		});
 	});
 
@@ -749,17 +787,25 @@ module.exports = function loadEventRoutes(router){
 				return;
 			}
 			//BUG4(to fix, uncomment the comment part in next line)
-			if(req.body.totalAmount === undefined || req.body.totalAmount === null /*|| req.body.totalAmount <= 0*/){
+			else if(req.body.totalAmount === undefined || req.body.totalAmount === null /*|| req.body.totalAmount <= 0*/){
 				res.status(504).send('Error: invalid amount');
 				return;
 			}
-			if(req.params.userID != evt.ownerID){
+			else if(req.params.userID != evt.ownerID){
 				res.status(501).send('Error: unauthorized');
 				return;
 			}
-			evt.totalAmount = req.body.totalAmount;
+			else{
+				evt.totalAmount = req.body.totalAmount;
+				evt.save((error) => {
+					if(error){
+						res.status(500).send("Error:" + error);
+						return;
+					}
+				});
 			res.status(200).json(evt);
 			return;
+			}
 
 		});
 	});
