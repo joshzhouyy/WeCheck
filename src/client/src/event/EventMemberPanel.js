@@ -12,27 +12,20 @@ import {orange500, blue500, indigo900, black, orange800, orange100, indigo100, t
 
 import EventBillSumChart from './EventBillSumChart'
 import {getMemberList, getBillSum} from './EventActions';
-import './EventMemberPanel.css'
+import CreateMemberDialog from './CreateMemberDialog'
+import autoBind from 'react-autobind';
+import Dialog from 'material-ui/Dialog';
 
+import './EventMemberPanel.css'
 
 const updateCheck = () => {
   
   this.setState((oldState) => {
     return {
       checked: !oldState.checked,
-
     };
   });
 }
-
-const buttonClicked = () => {
-  
-    alert('You clicked the button.');
-    console.log('works fine');
-    
-    //console.log('this is:', this);
-}
-
 
 const raisedBtn = (isCreator) => {
   if (!isCreator) {
@@ -82,19 +75,61 @@ const CreatorMemberListBtns = () => {
   );
 }
 
-const MemberListBtns = () => {
-  return (
-    <div id="memberListButtonDiv">
-      <RaisedButton 
-        label="+" 
-        backgroundColor={teal100}
-        className="memberAddBtn"
-        style={{ fontSize: '1.5rem' }}
-        onClick={buttonClicked.bind(this)}
-      /> 
-      
-    </div>
-  );
+class MemberListBtns extends React.Component {
+  state = {
+    open: false,
+  };
+
+  handleOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
+  render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.handleClose}
+      />,
+    ];
+  
+
+    return (
+      <div id="memberListButtonDiv">
+        <RaisedButton 
+          label="+" 
+          backgroundColor={teal100}
+          className="memberAddBtn"
+          style={{ fontSize: '1.5rem' }}
+          onClick= {this.handleOpen}
+        /> 
+
+        <Dialog
+          title="Create a New Member"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          autoScrollBodyContent={true}
+        >
+          <CreateMemberDialog />
+
+        </Dialog>
+        
+        
+      </div>
+    );
+  }  
 }
 
 const Member = (memberName) => {
