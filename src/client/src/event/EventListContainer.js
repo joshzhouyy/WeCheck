@@ -12,6 +12,7 @@ import EventList from './EventList';
 const mapStateToProps = (state) => ({
   selectedEventId: appSelectors.getSelectedEventId(state),
   userId: authSelectors.getUserId(state),
+  eventListDefaultValue: appSelectors.getEventListDefaultValue(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

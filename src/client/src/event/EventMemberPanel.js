@@ -270,6 +270,8 @@ class EventMemberPanel extends React.Component {
     const isCreator = this.props.isCreator;
     const eventId = this.props.selectedEventId;
     const userId = this.props.userId;
+    const eventName = this.props.eventName;
+
     const members = this.state.members;
     const billSum = this.state.billSum;
 
@@ -292,6 +294,9 @@ class EventMemberPanel extends React.Component {
     return (
       <Paper id="eventPanelContainer">
         <Grid id="eventGrid">
+          <Row id="eventNameRow">
+            <strong id="eventName">{eventName}</strong>
+          </Row>
           <Row id="eventOuterRow">
             <Col md={9} id="eventInfoCol">
               <Row id="eventBtnRow" className="eventInnerRows">
