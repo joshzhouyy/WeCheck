@@ -47,7 +47,7 @@
 
 // export default Topbar;
 
-// buggy code #25 #12
+// // buggy code #25 #12
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';

@@ -1,53 +1,94 @@
 import React from 'react';
+
 import Paper from 'material-ui/Paper';
 import {Grid, Row, Col} from 'react-bootstrap'
+import {List, ListItem} from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
-import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Subheader from 'material-ui/Subheader';
-import {orange500, blue500, indigo900, black, orange800, orange100, indigo100, teal100, amberA400, red200} from 'material-ui/styles/colors'
+import * as colors from 'material-ui/styles/colors';
 
-import EventBillSumChart from './EventBillSumChart'
-import {getMemberList, getBillSum} from './EventActions';
+import EventBillSumChart from './EventBillSumChart';
+import DialogBox from './DialogBox';
+import InputDialogBox from './InputDialogBox';
+import CreateEventPanel from './CreateEventPanel';
+import {
+  getMemberList, 
+  getBillSum, 
+  deleteEvent, 
+  addTotal,
+  inputIndividualExpense
+   } from './EventActions';
 import './EventMemberPanel.css'
 
 
-const updateCheck = () => {
-  
-  this.setState((oldState) => {
-    return {
-      checked: !oldState.checked,
 
-    };
-  });
+const DeleteEMsg = () => {
+  return "Are you sure you want to delete this event?";
 }
 
-const buttonClicked = () => {
-  
-    alert('You clicked the button.');
-    console.log('works fine');
-    
-    //console.log('this is:', this);
-}
+const BtnGroup = (props) => {
+  const isCreator = props.isCreator;
+  const deleteEvent = props.deleteEvent;
+  const addTotal = props.addTotal;
+  const eventId = props.eventId;
+  const userId = props.userId;
 
+  const deleteBtnProps = {
+        type: "secondary",
+        label: "Delete",
+        title: "Delete Event",
+        info: DeleteEMsg,
+        onClick: deleteEvent,
+        eventId: eventId,
+        id: "deleteId"
+  }
 
-const raisedBtn = (isCreator) => {
+  const addBtnProps = {
+    type: "primary",
+    label: "Add",
+    title: "Add Total Amount",
+    onClick: addTotal,
+    eventId: eventId,
+    userId: userId,
+    id: "addBtn"
+  }
+
+  const inputBtnProps = {
+    type: "primary",
+    label: "Input",
+    title: "Input Individual Expense",
+    onClick: inputIndividualExpense,
+    eventId: eventId,
+    userId: userId,
+    id: "inputBtn"
+  }
+
+  const editBtnProps = {
+    type: "default",
+    label: "Edit",
+    title: "Edit Event",
+    info: () => ("Edit Panel"),
+    onClick: addTotal,
+    eventId: eventId,
+    id: "editBtn"
+  }
+
   if (!isCreator) {
     return (
       <div id="memberBtnsDiv">
-        <RaisedButton label={'Input Expense'} primary={true} className="raisedBtns" />
+        <InputDialogBox className="raisedBtns" {...inputBtnProps}/>
+        <DialogBox className="creatorBtns" {...deleteBtnProps} />
       </div>  
     );
   } else {
       return (
-      
         <div id="creatorBtnsDiv">
-          <RaisedButton label={'Add'} primary={true} className="creatorBtns" />
-          <RaisedButton label={'Verify'} secondary={true} className="creatorBtns" />
-          <RaisedButton label={'Edit'} primary={true} className="creatorBtns" />
+          <InputDialogBox className="creatorBtns" {...addBtnProps} />
+          <DialogBox className="creatorBtns" {...editBtnProps} />
+          <DialogBox className="creatorBtns" {...deleteBtnProps} />
         </div>
 
       );  
@@ -61,68 +102,100 @@ const BillSum = (totalSum) => {
 }
 
 
-const CreatorMemberListBtns = () => {
+const CreatorMemberListBtns = ({eventId, userId}) => {
+  const inviteMemberBtnProps = {
+    type: "default",
+    label: "+",
+    title: "Invite a Member",
+    onClick: inputIndividualExpense,
+    eventId: eventId,
+    userId: userId,
+    id: "inviteMemberBtn",
+    backgroundColor:colors.teal100,
+    style:{ fontSize: '1.5rem' }
+  };
+
+  const deleteMemberBtnProps = {
+    type: "default",
+    label: "-",
+    title: "Delete a Member",
+    onClick: inputIndividualExpense,
+    eventId: eventId,
+    userId: userId,
+    id: "deleteMemberBtn",
+    backgroundColor:colors.indigo100,
+    style:{ fontSize: '1.5rem' }
+  };
+
   return (
   <div id="memberListButtonDiv">
-    <RaisedButton 
-      label="+" 
-      backgroundColor={teal100}
+    <InputDialogBox 
       className="creatorMemberListBtns"
-      style={{ fontSize: '1.5rem' }}
-      onClick={buttonClicked.bind(this)}
+      {...inviteMemberBtnProps}
     /> 
-    <RaisedButton 
-      label="-" 
-      backgroundColor={indigo100} 
+    <InputDialogBox 
       className="creatorMemberListBtns"
-      style={{ fontSize: '1.5rem' }}
-      onClick={buttonClicked.bind(this)}
+      {...deleteMemberBtnProps}
     />
   </div>
   );
 }
 
-const MemberListBtns = () => {
+const MemberListBtns = ({eventId, userId}) => {
+  const inviteMemberBtnProps = {
+    type: "default",
+    label: "+",
+    title: "Invite a Member",
+    onClick: inputIndividualExpense,
+    eventId: eventId,
+    userId: userId,
+    id: "inviteMemberBtn",
+    backgroundColor:colors.teal100,
+    style:{ fontSize: '1.5rem' }
+  };
+
   return (
     <div id="memberListButtonDiv">
-      <RaisedButton 
-        label="+" 
-        backgroundColor={teal100}
-        className="memberAddBtn"
-        style={{ fontSize: '1.5rem' }}
-        onClick={buttonClicked.bind(this)}
+      <InputDialogBox 
+        className="memberListBtns"
+        {...inviteMemberBtnProps}
       /> 
-      
     </div>
   );
 }
 
 const Member = (memberName) => {
   return (
-    <Checkbox
-      key = {memberName}
-      checkedIcon={<ActionFavorite />}
-      uncheckedIcon={<ActionFavoriteBorder />}
-      label={memberName}
-      defaultChecked={false}
-      onCheck={updateCheck}
+    <ListItem 
+      key={memberName}
+      primaryText={memberName}
     />
   );
 }
 
 
-const EventMemberList = (isCreator, members) => {
+const EventMemberList = (memberListProps) => {
+  const isCreator = memberListProps.isCreator;
+  const members = memberListProps.members;
+  const eventId = memberListProps.eventId;
+  const userId = memberListProps.userId;
+
+  const btnProps = {
+    eventId: eventId,
+    userId: userId
+  }
+
   if (!isCreator) {
     return (
-      <div id="memberListContainerDiv">
-      <Subheader>Member List</Subheader>
+      <List id="memberListContainerDiv">
+        <Subheader>Member List</Subheader>
         {
           _.map(members, (m) => {
             return Member(m.userAccount);
           })
         }
-        <MemberListBtns />
-      </div>
+        <MemberListBtns {...btnProps}/>
+      </List>
       );
   } else {
     return (  
@@ -133,7 +206,7 @@ const EventMemberList = (isCreator, members) => {
             return Member(m.userAccount);
           })
         }
-        <CreatorMemberListBtns />
+        <CreatorMemberListBtns {...btnProps}/>
       </div>
     );
   }
@@ -159,20 +232,47 @@ class EventMemberPanel extends React.Component {
       this.setState({
         billSum: values[0],
         members: values[1]
-
       });
     });
   }
 
-  componentWillReceiveProps() {
-    // console.log(this.props);
+  componentWillReceiveProps(nextProps) {
+    const eventId = nextProps.selectedEventId;
+    const p1 = getBillSum(eventId);
+    const p2 = getMemberList(eventId);
+    Promise.all([p1,p2]).then(values => {
+      // console.log(values[1])
+      this.setState({
+        billSum: values[0],
+        members: values[1]
+      });
+    });
   }
 
   render (){
     // console.log("in render" + JSON.stringify(this.props));
     const isCreator = this.props.isCreator;
+    const eventId = this.props.selectedEventId;
+    const userId = this.props.userId;
     const members = this.state.members;
     const billSum = this.state.billSum;
+
+
+    const memberListProps = {
+      isCreator: isCreator,
+      members: members,
+      eventId: eventId,
+      userId: userId
+    }
+
+    const btnGroupProps = {
+      isCreator: isCreator,
+      deleteEvent: deleteEvent,
+      addTotal: addTotal,
+      eventId: eventId,
+      userId: userId
+    }
+
     return (
       <Paper id="eventPanelContainer">
         <Grid id="eventGrid">
@@ -180,7 +280,7 @@ class EventMemberPanel extends React.Component {
             <Col md={9} id="eventInfoCol">
               <Row id="eventBtnRow" className="eventInnerRows">
                 <div id="eventBtnContainer">                
-                    {raisedBtn(isCreator)}                
+                    {BtnGroup(btnGroupProps)}                
                 </div>
               </Row>
               <Row id="eventBillSumRow" className="eventInnerRows">
@@ -191,7 +291,7 @@ class EventMemberPanel extends React.Component {
               </Row>
             </Col>
             <Col md={3} id="eventMemberListCol">
-                {EventMemberList(isCreator, members)}
+                {EventMemberList(memberListProps)}
             </Col>
           </Row>
         </Grid> 

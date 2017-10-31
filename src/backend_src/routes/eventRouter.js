@@ -4,7 +4,8 @@ var user = require('../models/user.js');
 var evt_user = require('../models/event_expense.js');
 var assert = require('assert');
 
-//WORKING CODE
+//********************************WORKING CODE**************************************
+
 /*module.exports = function loadEventRoutes(router){
 	router.use(bodyParser.json());
 
@@ -303,8 +304,34 @@ var assert = require('assert');
 			return;
 			}
 
-		});
-	});
+  router.put('/event/updateTotal/:userID/:eventID', function(req, res){
+    evt.findOne({'_id': req.params.eventID}, (error, evt) => {
+      if(error){
+        res.status(500).send("Update total error: " + error);
+        return;
+      }
+      else if(req.body.totalAmount === undefined || req.body.totalAmount === null || req.body.totalAmount <= 0){
+        res.status(504).send('Error: invalid amount');
+        return;
+      }
+      else if(req.params.userID != evt.ownerID){
+        res.status(501).send('Error: unauthorized');
+        return;
+      }
+      else{
+        evt.totalAmount = req.body.totalAmount;
+        evt.save((error) => {
+          if(error){
+            res.status(500).send("Error:" + error);
+            return;
+          }
+        });
+      res.status(200).json(evt);
+      return;
+      }
+
+    });
+  });
 
 
 	//individual enters their own amount in an event
@@ -508,7 +535,8 @@ var assert = require('assert');
 
 
 
-//BUGGY CODE
+//***********************************BUGGY CODE*******************************************
+
 module.exports = function loadEventRoutes(router){
 	router.use(bodyParser.json());
 
