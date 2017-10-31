@@ -19,7 +19,9 @@ import {
   getBillSum, 
   deleteEvent, 
   addTotal,
-  inputIndividualExpense
+  inputIndividualExpense,
+  deleteMember,
+  inviteMember
    } from './EventActions';
 import './EventMemberPanel.css'
 
@@ -43,7 +45,9 @@ const BtnGroup = (props) => {
         info: DeleteEMsg,
         onClick: deleteEvent,
         eventId: eventId,
-        id: "deleteId"
+        id: "deleteId",
+        successMsg: "Event deleted!",
+        failMsg: "Fail to delete this event..."
   }
 
   const addBtnProps = {
@@ -53,7 +57,9 @@ const BtnGroup = (props) => {
     onClick: addTotal,
     eventId: eventId,
     userId: userId,
-    id: "addBtn"
+    id: "addBtn",
+    successMsg: "Updated total amount!",
+    failMsg: "Fail to update total amount..."
   }
 
   const inputBtnProps = {
@@ -63,7 +69,9 @@ const BtnGroup = (props) => {
     onClick: inputIndividualExpense,
     eventId: eventId,
     userId: userId,
-    id: "inputBtn"
+    id: "inputBtn",
+    successMsg: "Input successfully",
+    failMsg: "Fail to input expense..."
   }
 
   const editBtnProps = {
@@ -73,7 +81,9 @@ const BtnGroup = (props) => {
     info: () => ("Edit Panel"),
     onClick: addTotal,
     eventId: eventId,
-    id: "editBtn"
+    id: "editBtn",
+    successMsg: "Updated event successfully!",
+    failMsg: "Fail to update event..."
   }
 
   if (!isCreator) {
@@ -112,19 +122,23 @@ const CreatorMemberListBtns = ({eventId, userId}) => {
     userId: userId,
     id: "inviteMemberBtn",
     backgroundColor:colors.teal100,
-    style:{ fontSize: '1.5rem' }
+    style:{ fontSize: '1.5rem' },
+    successMsg: "Invitation sent!",
+    failMsg: "Failed to send invitation..."
   };
 
   const deleteMemberBtnProps = {
     type: "default",
     label: "-",
     title: "Delete a Member",
-    onClick: inputIndividualExpense,
+    onClick: deleteMember,
     eventId: eventId,
     userId: userId,
     id: "deleteMemberBtn",
     backgroundColor:colors.indigo100,
-    style:{ fontSize: '1.5rem' }
+    style:{ fontSize: '1.5rem' },
+    successMsg: "Member removed!",
+    failMsg: "Fail to remove this member..."
   };
 
   return (
@@ -151,7 +165,9 @@ const MemberListBtns = ({eventId, userId}) => {
     userId: userId,
     id: "inviteMemberBtn",
     backgroundColor:colors.teal100,
-    style:{ fontSize: '1.5rem' }
+    style:{ fontSize: '1.5rem' },
+    successMsg: "Invitation sent!",
+    failMsg: "Failed to send invitation..."
   };
 
   return (
@@ -164,10 +180,10 @@ const MemberListBtns = ({eventId, userId}) => {
   );
 }
 
-const Member = (memberName) => {
+const Member = (memberName, userId) => {
   return (
     <ListItem 
-      key={memberName}
+      key={userId}
       primaryText={memberName}
     />
   );
@@ -185,31 +201,31 @@ const EventMemberList = (memberListProps) => {
     userId: userId
   }
 
-  if (!isCreator) {
-    return (
-      <List id="memberListContainerDiv">
-        <Subheader>Member List</Subheader>
-        {
-          _.map(members, (m) => {
-            return Member(m.userAccount);
-          })
-        }
-        <MemberListBtns {...btnProps}/>
-      </List>
-      );
-  } else {
+  // if (!isCreator) {
+  //   return (
+  //     <List id="memberListContainerDiv">
+  //       <Subheader>Member List</Subheader>
+  //       {
+  //         _.map(members, (m) => {
+  //           return Member(m.userAccount, m._id);
+  //         })
+  //       }
+  //       <MemberListBtns {...btnProps}/>
+  //     </List>
+  //     );
+  // } else {
     return (  
       <div id="memberListContainerDiv">
         <Subheader>Member List</Subheader>
         {
           _.map(members, (m) => {
-            return Member(m.userAccount);
+            return Member(m.userAccount, m._id);
           })
         }
         <CreatorMemberListBtns {...btnProps}/>
       </div>
     );
-  }
+  // }
 
 }
   

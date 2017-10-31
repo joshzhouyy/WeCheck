@@ -151,10 +151,11 @@ export const addTotal = (eventId, userId, totalAmount) => {
   return new Promise ((resolve, reject) => {
     // console.log(typeof totalAmount);
     axios.put('event/updateTotal/' + userId + '/' + eventId, {
-      totalAmount: totalAmount
+      totalAmount: Number(totalAmount)
     })
     .then((response) => {
-      // console.log(response)
+      const data = response.data;
+      resolve(data);
     })
     .catch((err) => {
       console.log(err);
@@ -168,7 +169,7 @@ export const inputIndividualExpense = (eventId, userId, individualAmount) => {
   return new Promise ((resolve, reject) => {
     console.log(typeof individualAmount);
     axios.post('event/individualAmount/' + eventId + '/' + userId, {
-      individualAmount: individualAmount
+      individualAmount: Number(individualAmount)
     })
     .then((response) => {
       // console.log(response)
@@ -188,8 +189,25 @@ export const inviteMember = () => {
   //TODO
 }
 
-export const deleteMember = () => {
-  //TODO
+// TODO: use userAccount instead
+export const deleteMember = (eventId, userId, input) => {
+  return new Promise ((resolve, reject) => {
+    axios.put('removeUser/' + eventId, {
+      userId: input
+    })
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      // console.log(err);
+      reject(err);
+      // throw err;
+    })
+  })
+
 }
 
 //TODO: add eventTime
