@@ -12,45 +12,72 @@ import * as colors from 'material-ui/styles/colors';
 
 import EventBillSumChart from './EventBillSumChart';
 import DialogBox from './DialogBox';
-import {getMemberList, getBillSum, deleteEvent} from './EventActions';
+import InputDialogBox from './InputDialogBox';
+import CreateEventPanel from './CreateEventPanel';
+import {getMemberList, getBillSum, deleteEvent, addTotal} from './EventActions';
 import './EventMemberPanel.css'
 
 
 
-
-// const buttonClicked = () => {
-  
-//     alert('You clicked the button.');
-//     console.log('works fine');
-    
-//     //console.log('this is:', this);
-// }
-
+const DeleteEMsg = () => {
+  return "Are you sure you want to delete this event?";
+}
 
 const BtnGroup = (props) => {
   const isCreator = props.isCreator;
   const deleteEvent = props.deleteEvent;
+  const addTotal = props.addTotal;
   const eventId = props.eventId;
+  const userId = props.userId;
+
+  const deleteBtnProps = {
+        type: "secondary",
+        label: "Delete",
+        title: "Delete Event",
+        info: DeleteEMsg,
+        onClick: deleteEvent,
+        eventId: eventId
+  }
+
+  const addBtnProps = {
+    type: "primary",
+    label: "Add",
+    title: "Add Total Amount",
+    onClick: addTotal,
+    eventId: eventId,
+    userId: userId
+  }
+
+  const inputBtnProps = {
+    type: "primary",
+    label: "Input",
+    title: "Input Individual Expense",
+    onClick: addTotal,
+    eventId: eventId,
+    userId: userId
+  }
+
+  const editBtnProps = {
+    type: "default",
+    label: "Edit",
+    title: "Edit Event",
+    info: () => (CreateEventPanel),
+    onClick: addTotal,
+    eventId: eventId
+  }
 
   if (!isCreator) {
     return (
       <div id="memberBtnsDiv">
-        <RaisedButton label={'Input Expense'} primary={true} className="raisedBtns" />
+        <InputDialogBox className="raisedBtns" {...inputBtnProps}/>
+        <DialogBox className="creatorBtns" {...deleteBtnProps} />
       </div>  
     );
   } else {
-      const deleteBtnProps = {
-        type: "secondary",
-        label: "Delete",
-        title: "Delete Event",
-        info: "Are you sure you want to delete this event?",
-        onClick: deleteEvent,
-        eventId: eventId
-      }
       return (
         <div id="creatorBtnsDiv">
-          <RaisedButton label={'Add'} primary={true} className="creatorBtns" />
-          <RaisedButton label={'Edit'} default={true} className="creatorBtns" />
+          <InputDialogBox className="creatorBtns" {...addBtnProps} />
+          <DialogBox className="creatorBtns" {...editBtnProps} />
           <DialogBox className="creatorBtns" {...deleteBtnProps} />
         </div>
 
@@ -180,6 +207,7 @@ class EventMemberPanel extends React.Component {
     // console.log("in render" + JSON.stringify(this.props));
     const isCreator = this.props.isCreator;
     const eventId = this.props.selectedEventId;
+    const userId = this.props.userId;
     const members = this.state.members;
     const billSum = this.state.billSum;
 
@@ -192,7 +220,9 @@ class EventMemberPanel extends React.Component {
     const btnGroupProps = {
       isCreator: isCreator,
       deleteEvent: deleteEvent,
-      eventId: eventId
+      addTotal: addTotal,
+      eventId: eventId,
+      userId: userId
     }
 
     return (

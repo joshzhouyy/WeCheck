@@ -4,6 +4,8 @@ import autoBind from 'react-autobind';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
 
 const DialogBtn = (type, label, handleOpen) => {
   switch(type) {
@@ -23,14 +25,22 @@ const DialogBtn = (type, label, handleOpen) => {
 }
 
 
-class DialogBox extends React.Component {
+class InputDialogBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+      input: ""
     }
     autoBind(this);
   }
+
+  onChange = (event, input) => {
+    // console.log(input);
+    this.setState({
+      input: input
+    });
+  };
 
   handleOpen = () => {
     this.setState({open: true})
@@ -40,10 +50,11 @@ class DialogBox extends React.Component {
     this.setState({open: false})
   };
 
-  handleSubmit = (onClick, eventId) => {
+  handleSubmit = (onClick, eventId, userId) => {
     this.setState({open: false});
-    onClick(eventId).then(value => {
-      alert(value.message);
+    // console.log(this.state.input);
+    onClick(eventId, userId, Number(this.state.input)).then(value => {
+      alert("Total amount updated successfully");
     })
   }
 
@@ -52,9 +63,9 @@ class DialogBox extends React.Component {
     const type = this.props.type;
     const label = this.props.label;
     const title = this.props.title;
-    const info = this.props.info;
     const onClick = this.props.onClick;
     const eventId = this.props.eventId;
+    const userId = this.props.userId;
 
     const actions = [
       <FlatButton
@@ -66,7 +77,7 @@ class DialogBox extends React.Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={() => this.handleSubmit(onClick, eventId)}
+        onClick={() => this.handleSubmit(onClick, eventId, userId)}
       />
     ];
 
@@ -80,7 +91,7 @@ class DialogBox extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-        {info()}
+        <TextField onChange={(event, input) => this.onChange(event, input)}/>
         </Dialog>
       </div>
     );
@@ -88,4 +99,4 @@ class DialogBox extends React.Component {
 
 }
 
-export default DialogBox
+export default InputDialogBox

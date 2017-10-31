@@ -240,26 +240,35 @@ module.exports = function loadEventRoutes(router){
 	});
 
 	//owner update total amount of an event
-	router.put('/event/updateTotal/:userID/:eventID', function(req, res){
-		evt.findOne({'_id': req.params.eventID}, (error, evt) => {
-			if(error){
-				res.status(500).send("Update total error: " + error);
-				return;
-			}
-			if(req.body.totalAmount === undefined || req.body.totalAmount === null || req.body.totalAmount <= 0){
-				res.status(504).send('Error: invalid amount');
-				return;
-			}
-			if(req.params.userID != evt.ownerID){
-				res.status(501).send('Error: unauthorized');
-				return;
-			}
-			evt.totalAmount = req.body.totalAmount;
-			res.status(200).json(evt);
-			return;
+  router.put('/event/updateTotal/:userID/:eventID', function(req, res){
+    evt.findOne({'_id': req.params.eventID}, (error, evt) => {
+      if(error){
+        res.status(500).send("Update total error: " + error);
+        return;
+      }
+      else if(req.body.totalAmount === undefined || req.body.totalAmount === null || req.body.totalAmount <= 0){
+        res.status(504).send('Error: invalid amount');
+        return;
+      }
+      else if(req.params.userID != evt.ownerID){
+        res.status(501).send('Error: unauthorized');
+        return;
+      }
+      else{
+        evt.totalAmount = req.body.totalAmount;
+        evt.save((error) => {
+          if(error){
+            res.status(500).send("Error:" + error);
+            return;
+          }
+        });
+      res.status(200).json(evt);
+      return;
+      }
 
-		});
-	});
+    });
+  });
+
 
 	/*check if total amount matches with sum of individual amount
 	router.get('event/amountCheck/:eventID', function(req, res){
