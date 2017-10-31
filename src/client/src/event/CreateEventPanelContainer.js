@@ -1,12 +1,24 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import * as authSelectors from '../reducers/auth_reducer';
-
 import CreateEventPanel from './CreateEventPanel';
+import { bindActionCreators } from 'redux';
+import {selectActivePanel} from '../app/AppActions';
+import * as appSelectors from '../app/appReducer';
 
 const mapStateToProps = (state) => ({
   userId: authSelectors.getUserId(state),
+  activePanel: appSelectors.getActivePanel(state)
 });
 
-export default connect(mapStateToProps)(CreateEventPanel);
+
+const mapDispatchToProps = (dispatch) => ({
+  onClick: bindActionCreators(selectActivePanel, dispatch)
+});
+
+const CreateNewEventbtnContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateEventPanel);
+
+
+export default CreateNewEventbtnContainer;
