@@ -54,12 +54,26 @@ class InputDialogBox extends React.Component {
     this.setState({open: false})
   };
 
-  handleSubmit = (onClick, eventId, userId) => {
-    this.setState({open: false});
+  handleSubmit = (props) => {
+    const onClick = props.onClick;
+    const eventId = props.eventId;
+    const userId = props.userId;
+    const successMsg = props.successMsg;
+    const failMsg = props.failMsg;
+
     // console.log(this.state.input);
-    onClick(eventId, userId, Number(this.state.input)).then(value => {
-      alert("Total amount updated successfully");
+    onClick(eventId, userId, this.state.input)
+    .then(value => {
+      alert(successMsg);
     })
+    .catch((err) => {
+      // console.log(JSON.stringify(err));
+      const status = err.response.status;
+      const statusText = err.response.statusText;
+      alert(failMsg + "\n" + status + " " + statusText);
+    });
+
+    this.setState({open: false});
   }
 
   render () {
@@ -73,6 +87,16 @@ class InputDialogBox extends React.Component {
     const backgroundColor = this.props.backgroundColor;
     const style = this.props.style;
     const id = this.props.id;
+    const successMsg = this.props.successMsg;
+    const failMsg = this.props.failMsg;
+
+    const handleSubmitProps = {
+      onClick: onClick,
+      eventId: eventId,
+      userId: userId,
+      successMsg: successMsg,
+      failMsg: failMsg
+    }
 
     const actions = [
       <FlatButton
@@ -84,7 +108,7 @@ class InputDialogBox extends React.Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={() => this.handleSubmit(onClick, eventId, userId)}
+        onClick={() => this.handleSubmit(handleSubmitProps)}
       />
     ];
 

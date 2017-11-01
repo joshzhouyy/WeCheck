@@ -14,6 +14,8 @@ const mapDispatchToProps = (dispatch) => ({
   onClick: bindActionCreators(selectActivePanel, dispatch)
 });
 
+
+
 const CreateNewEventbtnContainer = connect(
   mapStateToProps,
   mapDispatchToProps

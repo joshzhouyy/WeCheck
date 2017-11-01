@@ -14,30 +14,29 @@ import {styles} from './CreateEventPanelStyle'
 import autoBind from 'react-autobind';
 import {createEvent} from './EventActions';
 
+
 const splitType = ["even", "separate"];
 const eventType = ["public", "private"];
 const eventCategory = ["hotel", "restaurant", "flight"];
 
 class CreateEventPanel extends React.Component {
   
-  constructor(props, context) {
-        super(props, context);
+  constructor(props) {
+        console.log(props)
+        super(props);
         this.state = {
             eventName: '',
             eventTime: '',
             eventLocation: '',
-            splitTypeVal: 1,
-            eventTypeVal: 1,
-            eventCategoryVal: 1,
-            splitType: "even",
-            eventType: "public",
-            eventCategory: "hotel"
+            splitType:1,
+            eventType: 1,
+            eventCategory:1
         };
         autoBind(this);
     }
 
 
- 
+
 
   inputEventName(name) {
     // console.log(name);
@@ -61,39 +60,39 @@ class CreateEventPanel extends React.Component {
   }
 
 
+  inputEventSplitType(event, index, splitType){
+  this.setState({
+      splitType: splitType
+    });
 
-   inputEventSplitType(value) {
-    // console.log(value);
+
+ }
+
+
+  inputEventType(event, index, eventType) {
     this.setState({
-      splitTypeVal: value,
-      splitType: splitType[value-1]
+      eventType: eventType
     });
   }
 
-  inputEventType(value) {
+  inputEventCategory(event, index, eventCategory) {
     this.setState({
-      eventTypeVal: value,
-      eventType: eventType[value-1]
+      eventCategory: eventCategory
     });
-  }
-
-  inputEventCategory(value) {
-    this.setState({
-      eventCategoryVal: value,
-      eventCategory: eventCategory[value-1]
-    })
   }
 
   handleCreate() {
     const event = {
       userId: this.props.userId,
       eventName: this.state.eventName,
-      eventType: this.state.eventType,
-      eventCategory: this.state.eventCategory,
+      eventType: eventType[this.state.eventType-1],
+      eventCategory: eventCategory[this.state.eventCategory-1],
       eventLocation: this.state.eventLocation,
-      splitType: this.state.splitType,
-      eventCategory: this.state.eventCategory
+      splitType: splitType[this.state.splitType-1]
     }
+
+
+
 
     createEvent(event)
       .then(data => {
@@ -106,6 +105,7 @@ class CreateEventPanel extends React.Component {
 
   render() {
     // console.log(JSON.stringify(this.state));
+    const onClick = this.props.onClick;
     
     return (       
       <div id = "pageDiv">
@@ -146,8 +146,7 @@ class CreateEventPanel extends React.Component {
               Split Type: 
             </p>
           
-
-              <DropDownMenu id="splitType" value={this.state.splitTypeVal} onChange={(event, input) => this.inputEventSplitType(input)}  style={styles.dropdown} >
+              <DropDownMenu value={this.state.splitType} onChange={this.inputEventSplitType}  style={styles.dropdown} >
                 <MenuItem value={1} primaryText="even" />
                 <MenuItem value={2} primaryText="separate" />
               </DropDownMenu>
@@ -159,7 +158,7 @@ class CreateEventPanel extends React.Component {
               </p>
           
 
-                  <DropDownMenu value={this.state.eventTypeVal} onChange={(event, input) => this.inputEventType(input)} style={styles.dropdown} >
+                  <DropDownMenu value={this.state.eventType}  onChange={this.inputEventType} style={styles.dropdown} >
                     <MenuItem value={1} primaryText="public" />
                     <MenuItem value={2} primaryText="private" />
                    
@@ -175,10 +174,10 @@ class CreateEventPanel extends React.Component {
               </p>
           
 
-                  <DropDownMenu value={this.state.eventCategoryVal} onChange={(event, input) => this.inputEventCategory(input)} style={styles.dropdown} >
-                    <MenuItem value={1} primaryText={eventCategory[0]} />
-                    <MenuItem value={2} primaryText={eventCategory[1]} />
-                    <MenuItem value={3} primaryText={eventCategory[2]} />
+                  <DropDownMenu value={this.state.eventCategory} onChange={this.inputEventCategory} style={styles.dropdown} >
+                    <MenuItem value={1} primaryText="hotel" />
+                    <MenuItem value={2} primaryText="restaurant" />
+                    <MenuItem value={3} primaryText="flight" />
                    
         
                   </DropDownMenu>
@@ -188,14 +187,11 @@ class CreateEventPanel extends React.Component {
 
              <br />
             
-            <RaisedButton label="Cancel" style={styles.buttonStyle} />
-            <RaisedButton label="Create" style={styles.buttonStyle} onClick={() => {this.handleCreate()}}/>
+            <RaisedButton label="Cancel" style={styles.buttonStyle} onClick={() => onClick("MESSAGE_BOX")}/>
+            <RaisedButton label="Create" style={styles.buttonStyle} onClick={() => {this.handleCreate()}} />
             
              
       </div>
-
-
-
 
       
     );

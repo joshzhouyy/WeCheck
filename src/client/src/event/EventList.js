@@ -13,7 +13,7 @@ import ActionAssignment from 'material-ui/svg-icons/action/assignment';
 
 import {getOngoingEvents} from './EventActions';
 
-import "./EventList.css"
+import './EventList.css';
 
 const menuOptions = (clickOngoing, clickFinished) => (
   <div id="menuOptionsDiv">
@@ -34,17 +34,19 @@ const menuOptions = (clickOngoing, clickFinished) => (
   </div>
 );
 
-
 const eventItem = (props) => {
   const event = {
     eventId: props.eventId,
-    isOwner: props.isOwner
+    isOwner: props.isOwner,
+    value: props.value,
+    eventName: props.eventName
   }
 
   return (
     <ListItem
       className="eventItem"
       key={props.eventId}
+      value={props.value}
       leftAvatar={<Avatar icon={<ActionAssignment />} />}
       primaryText={props.eventName}
       secondaryText={props.eventTime.split("T")[0]}
@@ -57,21 +59,24 @@ const eventItems = (props) => {
   const userId = props.userId;
   const events = props.events;
   const onClick = props.onClick;
+  const defaultValue = props.defaultValue
 
   let params = {
     onClick: onClick
   }
 
   return (
-  <List id="eventItems">
+  <List defaultValue={defaultValue} id="eventItems">
     {
-      _.map(events, (e) => {
+      _.map(events, (e, i) => {
+        // console.log(i)
         //TODO: event name attribute?
         // console.log(JSON.stringify(e))
         params.eventName = e.eventName;
         params.eventId = e._id;
         params.isOwner = e.ownerID === userId ? true:false;
         params.eventTime = e.eventTime;
+        params.value = i
         // console.log(props)
         // console.log(userId)
         return eventItem(params);
@@ -118,11 +123,13 @@ class EventList extends React.Component {
     const events = this.state.ongoingEvents;
     const userId = this.props.userId;
     const onClick = this.props.onClick;
+    const defaultValue = this.props.eventListDefaultValue;
     
     const props = {
       events: events,
       userId: userId,
       onClick: onClick,
+      defaultValue: defaultValue
     }
 
     // console.log(JSON.stringify(this.state))

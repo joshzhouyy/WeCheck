@@ -24,12 +24,22 @@ export const getActivePage = (state) => {
   return state.panels.selectedPage;
 }
 
+export const getEventListDefaultValue = (state) => {
+  return state.panels.eventListDefaultValue;
+}
+
+export const getSelectedEventName = (state) => {
+  return state.panels.selectedEventName;
+}
+
 const initialState = {
     selectedPanel: "MESSAGE_BOX",
     activePanel: "MESSAGE_BOX",
     selectedEventId: "",
     isOwner: false,
-    selectedPage: "SPLITTER"
+    selectedPage: "SPLITTER",
+    eventListDefaultValue: -1,
+    selectedEventName: ""
 };
 
 
@@ -41,7 +51,8 @@ const panels = (state = initialState, action) => {
       return {
         ...state,
         selectedPanel: action.selectedPanel,
-        activePanel: action.selectedPanel
+        activePanel: action.selectedPanel,
+        eventListDefaultValue: -1
       }
     case SELECT_EVENT:
       // console.log(action.event.eventId + " was selected")
@@ -49,7 +60,9 @@ const panels = (state = initialState, action) => {
         ...state,
         selectedEventId: action.event.eventId,
         isOwner: action.event.isOwner,
-        activePanel: EVENT_PANEL
+        activePanel: EVENT_PANEL,
+        eventListDefaultValue: action.event.value,
+        selectedEventName: action.event.eventName
       }
     case SELECT_ACTIVE_PAGE:
       return {

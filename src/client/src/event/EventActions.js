@@ -70,6 +70,7 @@ export const getOngoingEvents = (userId) => {
   })
 }
 
+//TODO
 const getFinishedEvents = () => {
 
 }
@@ -149,14 +150,16 @@ export const addTotal = (eventId, userId, totalAmount) => {
   return new Promise ((resolve, reject) => {
     // console.log(typeof totalAmount);
     axios.put('event/updateTotal/' + userId + '/' + eventId, {
-      totalAmount: totalAmount
+      totalAmount: Number(totalAmount)
     })
     .then((response) => {
-      // console.log(response)
+      const data = response.data;
+      resolve(data);
     })
     .catch((err) => {
       console.log(err);
-      throw err;
+      reject(err);
+      // throw err;
     });
   });
 }
@@ -166,7 +169,7 @@ export const inputIndividualExpense = (eventId, userId, individualAmount) => {
   return new Promise ((resolve, reject) => {
     console.log(typeof individualAmount);
     axios.post('event/individualAmount/' + eventId + '/' + userId, {
-      individualAmount: individualAmount
+      individualAmount: Number(individualAmount)
     })
     .then((response) => {
       // console.log(response)
@@ -177,7 +180,8 @@ export const inputIndividualExpense = (eventId, userId, individualAmount) => {
     })
     .catch((err) => {
       console.log(err);
-      throw err;
+      reject(err);
+      // throw err;
     });
   })
 }
@@ -186,8 +190,25 @@ export const inviteMember = () => {
   //TODO
 }
 
-export const deleteMember = () => {
-  //TODO
+// TODO: use userAccount instead
+export const deleteMember = (eventId, userAccount, input) => {
+  return new Promise ((resolve, reject) => {
+    axios.put('removeUser/' + eventId, {
+      userAccount: input
+    })
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+      // throw err;
+    })
+  })
+
 }
 
 //TODO: add eventTime
@@ -202,6 +223,7 @@ export const createEvent = (event) => {
       splitType: event.splitType
     })
     .then((response) => {
+      console.log(response);
       const data = response.data;
       if (data !== null) {
         resolve(data);
@@ -211,5 +233,56 @@ export const createEvent = (event) => {
       console.log(err);
       throw err;
     });
+  })
+}
+
+
+export const getEvent = (eventId) => {
+  return new Promise((resolve, reject) => {
+    axios.get('api/event/' + eventId)
+      .then((response) => {
+        const data = response.data;
+        if (data !== null) {
+          resolve(data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      })
+  })
+}
+
+export const updateEvent = (event, userId) => {
+  // console.log("called updated event")
+  return new Promise((resolve, reject) => {
+    const eventName = event.eventName;
+    const eventType = event.eventType;
+    const eventCategory = event.eventCategory;
+    const eventLocation = event.eventLocation;
+    const splitType = event.splitType;
+    const eventTime = event.eventTime;
+
+    const eventId = event.eventId;
+    
+    axios.put('editEvent/' + eventId, {
+      eventTime: eventTime,
+      eventLocation: eventLocation,
+      eventName: eventName,
+      eventType: eventType,
+      eventCategory: eventCategory,
+      splitType: splitType,
+      userId: userId
+    })
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+    })
   })
 }

@@ -27,6 +27,10 @@ export const getUserId = (state) => {
   return state.authReducer.user.id;
 } 
 
+export const getUserAccount = (state) => {
+  return state.authReducer.user.userAccount;
+}
+
 // Setters
 export default function authReducer(state = initialState, action = {}) {
     switch(action.type) {

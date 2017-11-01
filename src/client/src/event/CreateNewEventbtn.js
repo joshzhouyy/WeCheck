@@ -17,7 +17,7 @@ const CreateNewEventbtn = ({onClick, activePanel}) => {
           style={{ fontSize: '1.5rem' }}
           onClick={() => onClick("CREATE_BOX")}
           /> 
-      </div>
+        </div>
     );} 
 
 

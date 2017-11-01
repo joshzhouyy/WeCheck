@@ -9,7 +9,8 @@ import EventMemberPanel from './EventMemberPanel';
 const mapStateToProps = (state) => ({
   isCreator: appSelectors.getUserIdentity(state),
   selectedEventId: appSelectors.getSelectedEventId(state),
-  userId: authSelectors.getUserId(state)
+  userId: authSelectors.getUserId(state),
+  eventName: appSelectors.getSelectedEventName(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

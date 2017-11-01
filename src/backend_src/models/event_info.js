@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 
 var eventSchema = new mongoose.Schema({
     ownerID: { type: Schema.Types.ObjectId, ref: 'user'},
-    eventName: {type: String, unique: true},
+    ownerAccount: {type: String, unique: true},
+    eventName: {type: String, unique: false},
     eventType: {
     	type: String,
     	enum: ['public','private']

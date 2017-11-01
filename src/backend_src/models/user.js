@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new mongoose.Schema({
-   	userName: String,
+    userName: String,
     userAccount: {type: String, unique: true},
     password: String,
     //list that contains all event that a user owns or in
