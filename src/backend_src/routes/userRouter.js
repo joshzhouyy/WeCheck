@@ -1,8 +1,8 @@
-var hash = require('object-hash');
-var bodyParser = require('body-parser');
-var user = require('../models/user.js');
-var evt = require('../models/event_info.js');
-var assert = require('assert');
+let hash = require('object-hash');
+let bodyParser = require('body-parser');
+let user = require('../models/user.js');
+let evt = require('../models/event_info.js');
+let assert = require('assert');
 
 //****************************************WORKING CODE**********************************************
 
@@ -13,7 +13,7 @@ var assert = require('assert');
 
     router.post('/signup', (req, res) => {
         //create a variable name different than 'user'
-        var userCheck = user.findOne({'userAccount':req.body.userAccount}, (error, userCheck) => {
+        let userCheck = user.findOne({'userAccount':req.body.userAccount}, (error, userCheck) => {
             if(userCheck){
                 console.log('user exists');
                 message = {
@@ -25,9 +25,9 @@ var assert = require('assert');
             }
             else{
                 //console.log("here");
-                //var newUser = new user();
+                //let newUser = new user();
                 if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
-                    var newUser = new user();
+                    let newUser = new user();
                     newUser.userAccount = req.body.userAccount;
                     newUser.password = hash(req.body.password);
                     if(req.body.userName.length > 15){
@@ -103,7 +103,7 @@ var assert = require('assert');
 
     //delete user
     router.post('/deleteUser', function(req, res){
-        var toRemoved = user.findOne({'userAccount': req.body.userAccount}, (error, toRemoved) =>{
+        let toRemoved = user.findOne({'userAccount': req.body.userAccount}, (error, toRemoved) =>{
             console.log(req.body.email);
             if(error){
                 res.send('Error: ' + error);
@@ -128,8 +128,8 @@ var assert = require('assert');
 
     //when user join in an event, add that event to user's eventList
     router.put('/acceptInvitation/:receiverID', function(req, res){
-        var receiver_promise = user.findOne({'_id': req.params.receiverID}).exec();
-        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        let receiver_promise = user.findOne({'_id': req.params.receiverID}).exec();
+        let event_promise = evt.findOne({'_id': req.body.eventID}).exec();
         assert.ok(receiver_promise instanceof require('mpromise'));
         receiver_promise.then(function(receiver) 
             {
@@ -207,7 +207,7 @@ var assert = require('assert');
                             console.log("user is already in this event");
                             res.status(500).send("user is already in this event");
                         }
-                        var eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
+                        let eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
                         if(eventIndex !== -1){
                             receiver.pendingInvites.splice(eventIndex, 1);
                             receiver.save((error) => {
@@ -233,8 +233,8 @@ var assert = require('assert');
 
     //send invitation to other users
     router.put('/sendInvitation', function(req, res){
-        var receiver_promise = user.findOne({'_id': req.params.userID}).exec();
-        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        let receiver_promise = user.findOne({'userAccount': req.body.userAccount}).exec();
+        let event_promise = evt.findOne({'_id': req.body.eventID}).exec();
         assert.ok(receiver_promise instanceof require('mpromise'));
         receiver_promise
             .then(function(receiver)
@@ -253,9 +253,10 @@ var assert = require('assert');
                     }
                     else{
                         console.log("event found");
-                        receiverIndex = evt.invitationList.indexOf(req.params.receiverID);
+                        let userID = receiver._id;
+                        receiverIndex = evt.invitationList.indexOf(receiver._id);
                         if(receiverIndex === -1){
-                            evt.invitationList.push(receiverIndex);
+                            evt.invitationList.push(userID);
                             evt.save((error) => {
                                 if(error){
                                     console.log("Error: " + error);
@@ -273,9 +274,9 @@ var assert = require('assert');
                     res.status(500).send("Error: " + error);
                     });
 
-                var eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
+                let eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
                 if(eventIndex === -1){
-                    receiver.pendingInvites.push(eventIndex);
+                    receiver.pendingInvites.push(req.body.eventID);
                     receiver.save((error) => {
                         if(error){
                             console.log("Error: " + error);
@@ -284,7 +285,7 @@ var assert = require('assert');
                         }
                     });
                     response = {
-                        userID: req.body.userID,
+                        receiverAccount: req.body.userAccount,
                         eventID: req.body.eventID,
                         message: "successfully sent invitation to user " + req.body.userID + " for event " + req.body.eventID
                     };
@@ -305,8 +306,8 @@ var assert = require('assert');
     //user decline an invitation to an event
     //request: userID, eventID
     router.post('/declineInvitation', function(req, res) {
-        var user_promise = user.findOne({'_id': req.body.userID}).exec();
-        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        let user_promise = user.findOne({'_id': req.body.userID}).exec();
+        let event_promise = evt.findOne({'_id': req.body.eventID}).exec();
         assert.ok(user_promise instanceof require('mpromise'));
         user_promise.then(function(user){
             if(user === undefined || user === null)
@@ -328,7 +329,7 @@ var assert = require('assert');
                     }
                     else
                     {
-                        var userIndex = evt.invitationList.indexOf(req.body.userID);
+                        let userIndex = evt.invitationList.indexOf(req.body.userID);
                         if(userIndex === -1)
                         {
                             console.log("user not invited");
@@ -350,7 +351,7 @@ var assert = require('assert');
                     res.status(500).send("Error: " + error);
                 });
 
-                var eventIndex = user.pendingInvites.indexOf(req.body.eventID);
+                let eventIndex = user.pendingInvites.indexOf(req.body.eventID);
                 if(eventIndex === -1)
                 {
                     console.log("user is not invited");
@@ -469,7 +470,7 @@ module.exports = function loadUserRoutes(router) {
 
     router.post('/signup', (req, res) => {
         //create a variable name different than 'user'
-        var userCheck = user.findOne({'userAccount':req.body.userAccount}, (error, userCheck) => {
+        let userCheck = user.findOne({'userAccount':req.body.userAccount}, (error, userCheck) => {
             if(userCheck){
                 console.log('user exists');
                 message = {
@@ -481,11 +482,11 @@ module.exports = function loadUserRoutes(router) {
             }
             else{
                 //console.log("here");
-                //var newUser = new user();
+                //let newUser = new user();
 
                 //BUG2(to fix, uncomment line 261  and line 277, and line 283 and line 284 line285)
                 //if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
-                    var newUser = new user();
+                    let newUser = new user();
                     newUser.userAccount = req.body.userAccount;
                     newUser.password = hash(req.body.password);
                     //BUG6(to fix, add username length check)
@@ -559,7 +560,7 @@ module.exports = function loadUserRoutes(router) {
 
     //delete user
     router.post('/deleteUser', function(req, res){
-        var toRemoved = user.findOne({'userAccount': req.body.userAccount}, (error, toRemoved) =>{
+        let toRemoved = user.findOne({'userAccount': req.body.userAccount}, (error, toRemoved) =>{
             console.log(req.body.email);
             if(error){
                 res.send('Error: ' + error);
@@ -586,8 +587,8 @@ module.exports = function loadUserRoutes(router) {
 
 //when user join in an event, add that event to user's eventList
     router.put('/acceptInvitation/:receiverID', function(req, res){
-        var receiver_promise = user.findOne({'_id': req.params.receiverID}).exec();
-        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        let receiver_promise = user.findOne({'_id': req.params.receiverID}).exec();
+        let event_promise = evt.findOne({'_id': req.body.eventID}).exec();
         assert.ok(receiver_promise instanceof require('mpromise'));
         receiver_promise.then(function(receiver) 
             {
@@ -665,7 +666,7 @@ module.exports = function loadUserRoutes(router) {
                             console.log("user is already in this event");
                             res.status(500).send("user is already in this event");
                         }
-                        var eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
+                        let eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
                         if(eventIndex !== -1){
                             receiver.pendingInvites.splice(eventIndex, 1);
                             receiver.save((error) => {
@@ -693,8 +694,8 @@ module.exports = function loadUserRoutes(router) {
 
     //send invitation to other users
     router.put('/sendInvitation', function(req, res){
-        var receiver_promise = user.findOne({'_id': req.body.receiverID}).exec();
-        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        let receiver_promise = user.findOne({'userAccount': req.body.userAccount}).exec();
+        let event_promise = evt.findOne({'_id': req.body.eventID}).exec();
         assert.ok(receiver_promise instanceof require('mpromise'));
         receiver_promise.then(function(receiver){
             if(receiver === undefined || receiver === null){
@@ -712,8 +713,9 @@ module.exports = function loadUserRoutes(router) {
                     }
                     else{
                         console.log("event found");
-                        if(evt.invitationList.indexOf(req.body.receiverID) === -1){
-                            evt.invitationList.push(req.body.receiverID);
+                        let userID = receiver._id;
+                        if(evt.invitationList.indexOf(userID) === -1){
+                            evt.invitationList.push(userID);
                             evt.save((error) => {
                                 if(error){
                                     console.log("Error: " + error);
@@ -733,7 +735,7 @@ module.exports = function loadUserRoutes(router) {
 
                 if(receiver.pendingInvites.indexOf(req.body.eventID) === -1){
                     receiver.pendingInvites.push(req.body.eventID);
-                    receive.save((error) => {
+                    receiver.save((error) => {
                         if(error){
                             console.log("Error: " + error);
                             res.status(500).send("Error: " + error);
@@ -746,7 +748,7 @@ module.exports = function loadUserRoutes(router) {
                     res.status(500).send("receiver already has this invitation");
                 }
                 response = {
-                    receiverID: req.body.userID,
+                    receiverAccount: req.body.userAccount,
                     eventID: req.body.eventID,
                     message: "invitation sent"
                 };
@@ -763,8 +765,8 @@ module.exports = function loadUserRoutes(router) {
     //user decline an invitation to an event
     //request: userID, eventID
     router.post('/declineInvitation', function(req, res) {
-        var user_promise = user.findOne({'_id': req.body.userID}).exec();
-        var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
+        let user_promise = user.findOne({'_id': req.body.userID}).exec();
+        let event_promise = evt.findOne({'_id': req.body.eventID}).exec();
         assert.ok(user_promise instanceof require('mpromise'));
         user_promise.then(function(user){
             if(user === undefined || user === null)
@@ -786,7 +788,7 @@ module.exports = function loadUserRoutes(router) {
                     }
                     else
                     {
-                        var userIndex = evt.invitationList.indexOf(req.body.userID);
+                        let userIndex = evt.invitationList.indexOf(req.body.userID);
                         if(userIndex === -1)
                         {
                             console.log("user not invited");
@@ -808,7 +810,7 @@ module.exports = function loadUserRoutes(router) {
                     res.status(500).send("Error: " + error);
                 });
 
-                var eventIndex = user.pendingInvites.indexOf(req.body.eventID);
+                let eventIndex = user.pendingInvites.indexOf(req.body.eventID);
                 if(eventIndex === -1)
                 {
                     console.log("user is not invited");
@@ -825,7 +827,7 @@ module.exports = function loadUserRoutes(router) {
                         }
                     });
                     response = {
-                        userID: req.body.userID,
+                        userID: req.body.userAccount,
                         eventID: req.body.eventID,
                         message: "invitation to event " + req.body.eventID + " successfully decline"
                     };
