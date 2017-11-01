@@ -2,7 +2,9 @@ let hash = require('object-hash');
 let bodyParser = require('body-parser');
 let user = require('../models/user.js');
 let evt = require('../models/event_info.js');
+let evt_user = require('../models/event_expense.js');
 let assert = require('assert');
+
 
 //****************************************WORKING CODE**********************************************
 
@@ -383,7 +385,111 @@ module.exports = function loadUserRoutes(router) {
 
 
     //user paid their individual amount
-    router.put('/paidIndividual/')
+    /*router.put('/paidIndividual/'){
+
+    }*/
+
+
+    //for event owner to verify that 
+    //the individual input amounts add up to total amount
+    router.get('/verifyAmount/:eventID', function(req, res){
+        let sum = 0;
+        //let individualAmountList = [];
+        let evt_promise = evt.findOne({'_id': req.params.eventID}).exec();
+        let evt_user_promise = evt_user.find({'_id': req.params.eventID}).exec();
+        assert.ok(evt_promise instanceof require('mpromise'));
+        evt_promise.then(function(evt){
+            if(evt === undefined || evt === null)
+            {
+                console.log("Event not found");
+                res.status(500).send("event not found");
+                return;
+            }
+            else
+            {
+                console.log("event found");
+                assert.ok(evt_user_promise instanceof require('mpromise'));
+                evt_user_promise.then(function(evt_users){
+                    if(evt_users === undefined || evt_users === null)
+                    {
+                        console.log("event individual amount not found");
+                        res.status(404).send("event individual amount not found");
+                        return;
+                    }
+                    else if(evt_users.length !== evt.memberList.length)
+                    {
+                        console.log("number of event member and individual amount number not match");
+                        res.status(500).send("number of event member and individual amount number not match");
+                        return;
+                    }
+                    else
+                    {
+                        evt_users.forEach(function(element){
+                        sum += element.individualAmount;
+                        });
+
+                        if(sum !== evt.totalAmount)
+                        {
+                            console.log("amount incorrect, need to re-verify");
+                            let inputList = [];
+                            evt_users.forEach(function(element){
+                                inputList.push(element);
+                                element.individualAmount = 0;
+                                element.save((error) => {
+                                    if(error){
+                                        console.log("Error: " + error);
+                                        res.status(500).send("Error: " + error);
+                                    }
+                                });
+                            });
+                            res.status(200).json(inputList);
+                            return;
+                        }
+                    }
+
+
+
+
+                }).catch((error) => {
+                    console.log("Error: " + error);
+                    res.status(500).send("Error: " + error);
+                    return;
+                    });
+
+            }//outest else
+        }).catch((error) => {
+            console.log("Error: " + error);
+            res.status(500).send("Error: " + error);
+            return;
+            });
+    });
+
+
+    //get all pending invitations of an user
+   /* router.get('/allInvitations/:userID', function(req, res){
+        user.findOne({'_id': req.params.userID}, (error, user) => {
+            if(error)
+            {
+                console.log("Error: " + error);
+                res.status(500).send("Error: " + error);
+                return;
+            }
+            else if(user === undefined || user === null)
+            {
+                console.log("user not found");
+                res.status(404).send("user not found");
+                return;
+            }
+            else
+            {
+                let invitations = user.pendingInvites;
+                evt.find({'_id': {$in: invitations}}, (error, evts) => {
+
+                })
+            }
+
+        })
+    })*/
 
 };
 

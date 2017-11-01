@@ -105,6 +105,7 @@ module.exports = function loadEventRoutes(router){
 				res.send('you do not have the authority to edit this event');
 				return;
 			}
+			
 			evt.ownerID = req.body.ownerID;
 			evt.eventName = req.body.eventName;
 			evt.eventType = req.body.eventType;
