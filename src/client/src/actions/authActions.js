@@ -42,7 +42,7 @@ export function signUp(user) {
         // console.log(0)
         return axios.post('/signup', user)
                .then((response) => {
-                  // console.log("cxaxcsafgsja" + JSON.stringify(user))
+                  console.log("user's information" + JSON.stringify(user))
                   // console.log("m")
                   // console.log("@@@@@@@@@@@@@@@@@@@@@ " + JSON.stringify(response))
                    if (response.data != null && response.data != "") {

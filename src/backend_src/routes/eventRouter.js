@@ -6,8 +6,9 @@ let assert = require('assert');
 
 //********************************WORKING CODE**************************************
 
-/*module.exports = function loadEventRoutes(router){
+module.exports = function loadEventRoutes(router){
   router.use(bodyParser.json());
+
   //create an event
   router.post('/event/createEvent', (req, res) => {
     let newEvent = new evt();
@@ -22,7 +23,9 @@ let assert = require('assert');
     newEvent.invitationList = req.body.invitationList;
     newEvent.eventStatus = 'in process';
     newEvent.totalAmount = 0;
+    newEvent.paidAmount = 0;
     newEvent.memberAccount.push(req.body.ownerID);
+
     newEvent.save((error) => {
       if(error){
         console.log(error);
@@ -55,6 +58,7 @@ let assert = require('assert');
       
     });
       //res.json(newEvent);
+
   //an user creates an event, then the user becomes the event owner
   router.post('api/user/:userid/createEvent', (req, res) => {
     let newEvent = new evt();
@@ -71,6 +75,7 @@ let assert = require('assert');
     newEvent.totalAmount = 0;
     //TODO: possible defect: event member list not include owner
     newEvent.memberAccount.push(req.body.ownerID);
+
     newEvent.save((error) => {
       if(error){
         console.log(error);
@@ -81,6 +86,7 @@ let assert = require('assert');
       return;
     });
   });
+
   //edit detail of an existing event
   router.put('/editEvent/:eventID', (req, res) => {
     evt.findOne({'_id': req.params.eventID}, (error, evt) => {
@@ -99,6 +105,7 @@ let assert = require('assert');
         res.send('you do not have the authority to edit this event');
         return;
       }
+      
       evt.ownerID = req.body.ownerID;
       evt.eventName = req.body.eventName;
       evt.eventType = req.body.eventType;
@@ -109,6 +116,7 @@ let assert = require('assert');
       evt.invitationList = req.body.invitationList;
       //evt.eventStatus = req.body.eventStatus; //should not be allowed to edit event status
       //evt.totalAmount = req.body.totalAmount;
+
       evt.save((error) => {
         if(error){
           console.log(error);
@@ -121,6 +129,7 @@ let assert = require('assert');
       });
     });
   })
+
   //delete an event from database
   router.post('/deleteEvent/:eventID', function(req, res){
     console.log(req.params.eventID);
@@ -158,6 +167,8 @@ let assert = require('assert');
       }
     });
   });
+
+
   //When a event is complete
   router.put('/completeEvent/:eventID', function(req, res){
     console.log("event id = " + req.params.eventID);
@@ -178,8 +189,11 @@ let assert = require('assert');
         res.status(200).send("event " + req.params.eventID + " is complete!" );
         return;
       });
+
     });
   });
+
+
   //get the member list for a event
   router.get('/api/event/eventMember/:eventID', function(req, res){
     evt.findOne({'_id':req.params.eventID}, (error, evt) => {
@@ -207,6 +221,7 @@ let assert = require('assert');
       }
     });
   });
+
   //get all event that a user owns
     router.get('/event/:userid', function(req, res){
         evt.find({'ownerID':req.params.userid}, (error, evt) => {
@@ -218,6 +233,8 @@ let assert = require('assert');
           return;
         });
     });
+
+
     //get one event by eventID
     router.get('/api/event/:eventID', function(req, res){
       evt.findOne({'_id':req.params.eventID}, (error, evt) => {
@@ -239,6 +256,7 @@ let assert = require('assert');
       res.json(data);
     });
   });
+
   //add a user into an event
   router.put('/event/addMember/:eventID', function(req, res){
     let oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
@@ -260,32 +278,8 @@ let assert = require('assert');
       });
     });
   });
-  //owner update total amount of an event
-  router.put('/event/updateTotal/:userID/:eventID', function(req, res){
-    evt.findOne({'_id': req.params.eventID}, (error, evt) => {
-      if(error){
-        res.status(500).send("Update total error: " + error);
-        return;
-      }
-      else if(req.body.totalAmount === undefined || req.body.totalAmount === null /*|| req.body.totalAmount <= 0*//*){
-        res.status(504).send('Error: invalid amount');
-        return;
-      }
-      else if(req.params.userID != evt.ownerID){
-        res.status(501).send('Error: unauthorized');
-        return;
-      }
-      else{
-        evt.totalAmount = req.body.totalAmount;
-        evt.save((error) => {
-          if(error){
-            res.status(500).send("Error:" + error);
-            return;
-          }
-        });
-      res.status(200).json(evt);
-      return;
-      }
+
+
   router.put('/event/updateTotal/:userID/:eventID', function(req, res){
     evt.findOne({'_id': req.params.eventID}, (error, evt) => {
       if(error){
@@ -311,8 +305,11 @@ let assert = require('assert');
       res.status(200).json(evt);
       return;
       }
+
     });
   });
+
+
   //individual enters their own amount in an event
   router.post('/event/individualAmount/:eventID/:userID', function(req, res){
     let est = evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
@@ -348,6 +345,7 @@ let assert = require('assert');
       });
     });
   });
+
   //get all 'in process' event that an user is in or owns
   router.get('/getAllOnGoingEvent/:userID', function(req, res){
     
@@ -356,26 +354,60 @@ let assert = require('assert');
         res.status(500).send("Error: " + error);
         return;
       }
-      if(!user){
+      else if(user === undefined || user === null){
         res.status(404).send("user not found");
         return;
       }
-      const eventList = user.eventList;
-      evt.find({
-        '_id': {$in: eventList},
-        'eventStatus':'in process'
-      }, function(error, events){
-        if(error){
-          res.status(500).send("Error: " + error);
+      else{
+        const eventList = user.eventList;
+        evt.find({
+          '_id': {$in: eventList},
+          'eventStatus':'in process'
+        }, function(error, events){
+          if(error){
+            res.status(500).send("Error: " + error);
+            return;
+          }
+          res.status(200).json(events);
           return;
-        }
-        res.status(200).json(events);
+        });
+      }
+    });
+    
+  });
+
+  //get all finished event
+  router.get('/getAllFinishedEvent/:userID', function(req, res){
+    
+    user.findOne({'_id': req.params.userID}, function(error, user) {
+      if(error){
+        res.status(500).send("Error: " + error);
         return;
-      });
+      }
+      else if(user === undefined || user === null){
+        res.status(404).send("user not found");
+        return;
+      }
+      else{
+        const eventList = user.eventList;
+        evt.find({
+          '_id': {$in: eventList},
+          'eventStatus':'completed'
+        }, function(error, events){
+          if(error){
+            res.status(500).send("Error: " + error);
+            return;
+          }
+          res.status(200).json(events);
+          return;
+        });
+      }
       
     });
     
   });
+
+
   
   //remove specific user from event's userList
   router.put('/removeUser/:eventID', function(req, res){
@@ -417,6 +449,7 @@ let assert = require('assert');
           console.log(error);
           res.status(500).send("Error: " + error);
         });
+
         //get index of the event from user's eventList
         indexToDelete = user.eventList.indexOf(req.params.eventID);
         if(indexToDelete !== -1){
@@ -444,7 +477,7 @@ let assert = require('assert');
       res.status(500).send("Error: " + error);
     });
   });
-}*/
+}
 
 
 
@@ -513,7 +546,7 @@ let assert = require('assert');
 
 //***********************************BUGGY CODE*******************************************
 
-module.exports = function loadEventRoutes(router){
+/*module.exports = function loadEventRoutes(router){
   router.use(bodyParser.json());
 
   //create an event
@@ -531,7 +564,7 @@ module.exports = function loadEventRoutes(router){
     newEvent.eventStatus = 'in process';
     newEvent.totalAmount = 0;
     //BUG9 (to fix,  uncomment line530)
-    newEvent.memberAccount.push(req.body.ownerID);
+    //newEvent.memberAccount.push(req.body.ownerID);
 
     newEvent.save((error) => {
       if(error){
@@ -791,7 +824,11 @@ module.exports = function loadEventRoutes(router){
         return;
       }
       //BUG4(to fix, uncomment the comment part in next line)
-      else if(req.body.totalAmount === undefined || req.body.totalAmount === null /*|| req.body.totalAmount <= 0*/){
+      else if(req.body.totalAmount === undefined || req.body.totalAmount === null /*|| req.body.totalAmount <= 0*//*){*/ 
+
+
+        /*
+
         res.status(504).send('Error: invalid amount');
         return;
       }
@@ -834,7 +871,7 @@ module.exports = function loadEventRoutes(router){
         return;
       }
       //BUG5(to fix, uncomment the comment part in the next line)
-      if(req.body.individualAmount === null /*|| req.body.individualAmount <= 0 */|| req.body.individualAmount === undefined){
+      if(req.body.individualAmount === null /*|| req.body.individualAmount <= 0 *//*|| req.body.individualAmount === undefined){
         res.status(500).send("invalid input amount");
         return;
       }
@@ -861,22 +898,56 @@ module.exports = function loadEventRoutes(router){
         res.status(500).send("Error: " + error);
         return;
       }
-      if(!user){
+      else if(user === undefined || user === null){
         res.status(404).send("user not found");
         return;
       }
-      const eventList = user.eventList;
-      evt.find({
-        '_id': {$in: eventList},
-        'eventStatus':'in process'
-      }, function(error, events){
-        if(error){
-          res.status(500).send("Error: " + error);
+      else{
+        const eventList = user.eventList;
+        evt.find({
+          '_id': {$in: eventList},
+          'eventStatus':'in process'
+        }, function(error, events){
+          if(error){
+            res.status(500).send("Error: " + error);
+            return;
+          }
+          res.status(200).json(events);
           return;
-        }
-        res.status(200).json(events);
+        });
+      }
+      
+    });
+    
+  });
+
+
+  //get all finished event
+  router.get('/getAllFinishedEvent/:userID', function(req, res){
+    
+    user.findOne({'_id': req.params.userID}, function(error, user) {
+      if(error){
+        res.status(500).send("Error: " + error);
         return;
-      });
+      }
+      else if(user === undefined || user === null){
+        res.status(404).send("user not found");
+        return;
+      }
+      else{
+        const eventList = user.eventList;
+        evt.find({
+          '_id': {$in: eventList},
+          'eventStatus':'completed'
+        }, function(error, events){
+          if(error){
+            res.status(500).send("Error: " + error);
+            return;
+          }
+          res.status(200).json(events);
+          return;
+        });
+      }
       
     });
     
@@ -952,4 +1023,5 @@ module.exports = function loadEventRoutes(router){
       res.status(500).send("Error: " + error);
     });
   });
-}
+}*/
+

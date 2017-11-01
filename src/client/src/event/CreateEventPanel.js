@@ -21,8 +21,9 @@ const eventCategory = ["hotel", "restaurant", "flight"];
 
 class CreateEventPanel extends React.Component {
   
-  constructor(props, context) {
-        super(props, context);
+  constructor(props) {
+        console.log(props)
+        super(props);
         this.state = {
             eventName: '',
             eventTime: '',
@@ -90,6 +91,9 @@ class CreateEventPanel extends React.Component {
       splitType: splitType[this.state.splitType-1]
     }
 
+
+
+
     createEvent(event)
       .then(data => {
         console.log(JSON.stringify(data))
@@ -100,7 +104,8 @@ class CreateEventPanel extends React.Component {
 
 
   render() {
-    console.log(JSON.stringify(this.state));
+    // console.log(JSON.stringify(this.state));
+    const onClick = this.props.onClick;
     
     return (       
       <div id = "pageDiv">
@@ -141,7 +146,6 @@ class CreateEventPanel extends React.Component {
               Split Type: 
             </p>
           
-
               <DropDownMenu value={this.state.splitType} onChange={this.inputEventSplitType}  style={styles.dropdown} >
                 <MenuItem value={1} primaryText="even" />
                 <MenuItem value={2} primaryText="separate" />
@@ -183,14 +187,11 @@ class CreateEventPanel extends React.Component {
 
              <br />
             
-            <RaisedButton label="Cancel" style={styles.buttonStyle} />
+            <RaisedButton label="Cancel" style={styles.buttonStyle} onClick={() => onClick("MESSAGE_BOX")}/>
             <RaisedButton label="Create" style={styles.buttonStyle} onClick={() => {this.handleCreate()}} />
             
              
       </div>
-
-
-
 
       
     );
