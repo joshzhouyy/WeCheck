@@ -208,19 +208,19 @@ const EventMemberList = (memberListProps) => {
     userId: userId
   }
 
-  // if (!isCreator) {
-  //   return (
-  //     <List id="memberListContainerDiv">
-  //       <Subheader>Member List</Subheader>
-  //       {
-  //         _.map(members, (m) => {
-  //           return Member(m.userAccount, m._id);
-  //         })
-  //       }
-  //       <MemberListBtns {...btnProps}/>
-  //     </List>
-  //     );
-  // } else {
+  if (!isCreator) {
+    return (
+      <List id="memberListContainerDiv">
+        <Subheader>Member List</Subheader>
+        {
+          _.map(members, (m) => {
+            return Member(m.userAccount, m._id);
+          })
+        }
+        <MemberListBtns {...btnProps}/>
+      </List>
+      );
+  } else {
     return (  
       <div id="memberListContainerDiv">
         <Subheader>Member List</Subheader>
@@ -232,7 +232,7 @@ const EventMemberList = (memberListProps) => {
         <CreatorMemberListBtns {...btnProps}/>
       </div>
     );
-  // }
+  }
 
 }
   

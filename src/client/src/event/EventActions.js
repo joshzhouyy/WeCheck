@@ -193,10 +193,10 @@ export const inviteMember = () => {
 }
 
 // TODO: use userAccount instead
-export const deleteMember = (eventId, userId, input) => {
+export const deleteMember = (eventId, userAccount, input) => {
   return new Promise ((resolve, reject) => {
     axios.put('removeUser/' + eventId, {
-      userId: input
+      userAccount: input
     })
     .then((response) => {
       const data = response.data;
