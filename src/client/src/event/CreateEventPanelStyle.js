@@ -46,7 +46,7 @@ export const styles = {
 };
 
 
-// //Buggy code
+//Buggy code
 // import {orange500, blue500, indigo900, black, orange800} from 'material-ui/styles/colors';
 
 // export const styles = {

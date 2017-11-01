@@ -72,6 +72,7 @@ export const getOngoingEvents = (userId) => {
   })
 }
 
+//TODO
 const getFinishedEvents = () => {
 
 }
@@ -130,6 +131,88 @@ export const getBillSum = (eventId) => {
   });
 }
 
+export const deleteEvent = (eventId) => {
+  return new Promise ((resolve, reject) => {
+    axios.post('deleteEvent/' + eventId)
+      .then((response) => {
+        const data = response.data;
+        // console.log(response)
+        if (data !== null) {
+          resolve(data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  })
+}
+
+export const addTotal = (eventId, userId, totalAmount) => {
+  return new Promise ((resolve, reject) => {
+    // console.log(typeof totalAmount);
+    axios.put('event/updateTotal/' + userId + '/' + eventId, {
+      totalAmount: Number(totalAmount)
+    })
+    .then((response) => {
+      const data = response.data;
+      resolve(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+      // throw err;
+    });
+  });
+}
+
+
+export const inputIndividualExpense = (eventId, userId, individualAmount) => {
+  return new Promise ((resolve, reject) => {
+    console.log(typeof individualAmount);
+    axios.post('event/individualAmount/' + eventId + '/' + userId, {
+      individualAmount: Number(individualAmount)
+    })
+    .then((response) => {
+      // console.log(response)
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+      // throw err;
+    });
+  })
+}
+
+export const inviteMember = () => {
+  //TODO
+}
+
+// TODO: use userAccount instead
+export const deleteMember = (eventId, userAccount, input) => {
+  return new Promise ((resolve, reject) => {
+    axios.put('removeUser/' + eventId, {
+      userAccount: input
+    })
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+      // throw err;
+    })
+  })
+
+}
+
 //TODO: add eventTime
 export const createEvent = (event) => {
   return new Promise ((resolve, reject) => {
@@ -150,8 +233,57 @@ export const createEvent = (event) => {
     .catch((err) => {
       console.log(err);
       throw err;
-    })
-  });
+    });
+  })
 }
 
-// export 
+
+export const getEvent = (eventId) => {
+  return new Promise((resolve, reject) => {
+    axios.get('api/event/' + eventId)
+      .then((response) => {
+        const data = response.data;
+        if (data !== null) {
+          resolve(data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      })
+  })
+}
+
+export const updateEvent = (event, userId) => {
+  // console.log("called updated event")
+  return new Promise((resolve, reject) => {
+    const eventName = event.eventName;
+    const eventType = event.eventType;
+    const eventCategory = event.eventCategory;
+    const eventLocation = event.eventLocation;
+    const splitType = event.splitType;
+    const eventTime = event.eventTime;
+
+    const eventId = event.eventId;
+    
+    axios.put('editEvent/' + eventId, {
+      eventTime: eventTime,
+      eventLocation: eventLocation,
+      eventName: eventName,
+      eventType: eventType,
+      eventCategory: eventCategory,
+      splitType: splitType,
+      userId: userId
+    })
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+    })
+  })
+}

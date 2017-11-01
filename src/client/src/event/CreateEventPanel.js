@@ -106,7 +106,7 @@ class CreateEventPanel extends React.Component {
 
 
   render() {
-    console.log(JSON.stringify(this.state));
+    // console.log(JSON.stringify(this.state));
     const onClick = this.props.onClick;
     
     return (       
@@ -148,8 +148,7 @@ class CreateEventPanel extends React.Component {
               Split Type: 
             </p>
           
-
-              <DropDownMenu id="splitType" value={this.state.splitType} onChange={this.inputEventSplitType}  style={styles.dropdown} >
+              <DropDownMenu value={this.state.splitType} onChange={this.inputEventSplitType}  style={styles.dropdown} >
                 <MenuItem value={1} primaryText="even" />
                 <MenuItem value={2} primaryText="separate" />
               </DropDownMenu>
