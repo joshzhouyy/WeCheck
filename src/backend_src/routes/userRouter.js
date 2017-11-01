@@ -213,7 +213,7 @@ module.exports = function loadUserRoutes(router) {
     }); // put
     //send invitation to other users
     router.put('/sendInvitation', function(req, res){
-        var receiver_promise = user.findOne({'_id': req.params.userID}).exec();
+        var receiver_promise = user.findOne({'_id': req.body.userID}).exec();
         var event_promise = evt.findOne({'_id': req.body.eventID}).exec();
         assert.ok(receiver_promise instanceof require('mpromise'));
         receiver_promise

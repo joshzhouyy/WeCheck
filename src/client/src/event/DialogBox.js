@@ -40,10 +40,20 @@ class DialogBox extends React.Component {
     this.setState({open: false})
   };
 
-  handleSubmit = (onClick, eventId) => {
+  handleSubmit = (props) => {
+    const onClick = props.onClick;
+    const eventId = props.eventId;
+    const successMsg = props.successMsg;
+    const failMsg = props.failMsg;
+    
     this.setState({open: false});
     onClick(eventId).then(value => {
-      alert(value.message);
+      alert(successMsg);
+    })
+    .catch((err) => {
+      const status = err.response.status;
+      const statusText = err.response.statusText;
+      alert(failMsg + "\n" + status + " " + statusText);
     })
   }
 
@@ -56,6 +66,15 @@ class DialogBox extends React.Component {
     const onClick = this.props.onClick;
     const eventId = this.props.eventId;
     const id = this.props.id;
+    const successMsg = this.props.successMsg;
+    const failMsg = this.props.failMsg;
+
+    const handleSubmitProps = {
+      onClick: onClick,
+      eventId: eventId,
+      successMsg: successMsg,
+      failMsg: failMsg
+    }
 
     const actions = [
       <FlatButton
@@ -67,7 +86,7 @@ class DialogBox extends React.Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={() => this.handleSubmit(onClick, eventId)}
+        onClick={() => this.handleSubmit(handleSubmitProps)}
       />
     ];
 

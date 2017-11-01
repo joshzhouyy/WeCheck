@@ -61,7 +61,6 @@ class InputDialogBox extends React.Component {
     const successMsg = props.successMsg;
     const failMsg = props.failMsg;
 
-    this.setState({open: false});
     // console.log(this.state.input);
     onClick(eventId, userId, this.state.input)
     .then(value => {
@@ -72,7 +71,9 @@ class InputDialogBox extends React.Component {
       const status = err.response.status;
       const statusText = err.response.statusText;
       alert(failMsg + "\n" + status + " " + statusText);
-    })
+    });
+
+    this.setState({open: false});
   }
 
   render () {
