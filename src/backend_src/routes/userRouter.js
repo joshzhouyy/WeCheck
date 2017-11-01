@@ -7,7 +7,7 @@ let assert = require('assert');
 //****************************************WORKING CODE**********************************************
 
 
-/*module.exports = function loadUserRoutes(router) {
+module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
 
@@ -381,7 +381,11 @@ let assert = require('assert');
         });
     });
 
-};*/
+
+    //user paid their individual amount
+    router.put('/paidIndividual/')
+
+};
 
 
 
@@ -464,6 +468,7 @@ let assert = require('assert');
 //*****************************************BUGGY CODE***********************************************
 
 
+/*
 module.exports = function loadUserRoutes(router) {
     router.use(bodyParser.json());
 
@@ -487,25 +492,33 @@ module.exports = function loadUserRoutes(router) {
                 //BUG2(to fix, uncomment line 261  and line 277, and line 283 and line 284 line285)
                 //if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
                     let newUser = new user();
-                    newUser.userAccount = req.body.userAccount;
-                    newUser.password = hash(req.body.password);
-                    //BUG6(to fix, add username length check)
-                    newUser.userName = req.body.userName;
-                    newUser.eventList = [];
-                    //newUser.password = req.body.password;
-
-                    newUser.save((error) => {
-                    if(error){
-                        console.log(error);
-                        res.status(500).send('Saving error: ' + error);
+                    let re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+                    if(re.test(req.body.userAccount) === false){
+                        console.log("invalid email");
+                        res.status(500).send("invalid email!");
                         return;
-                        }
-                    res.json(newUser);
-                    });
-                //}
-                //else{
-                  //  res.status(500).send("bad parameters");
-                //}
+                    }
+                    else{
+                        newUser.userAccount = req.body.userAccount;
+                        newUser.password = hash(req.body.password);
+                        //BUG6(to fix, add username length check)
+                        newUser.userName = req.body.userName;
+                        newUser.eventList = [];
+                        //newUser.password = req.body.password;
+
+                        newUser.save((error) => {
+                        if(error){
+                            console.log(error);
+                            res.status(500).send('Saving error: ' + error);
+                            return;
+                            }
+                        res.json(newUser);
+                        });
+                    //}
+                    //else{
+                    //  res.status(500).send("bad parameters");
+                    //}
+                }
             }
         });
     });
@@ -841,3 +854,5 @@ module.exports = function loadUserRoutes(router) {
     });
 
 };
+
+*/

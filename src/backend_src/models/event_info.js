@@ -25,6 +25,7 @@ var eventSchema = new mongoose.Schema({
         enum: ['in process', 'completed', 'deleted']
     },
     totalAmount: Number,
+    paidAmount:Number,
     memberAccount:[{ type: Schema.Types.ObjectId, ref: 'user'}]
 
 });
