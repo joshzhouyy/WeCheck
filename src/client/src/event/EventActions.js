@@ -232,7 +232,7 @@ export const createEvent = (event) => {
     })
     .catch((err) => {
       console.log(err);
-      throw err;
+      reject(err);
     });
   })
 }
