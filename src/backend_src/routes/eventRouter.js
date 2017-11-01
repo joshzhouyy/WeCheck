@@ -1,15 +1,16 @@
-var bodyParser = require ('body-parser');
-var evt = require('../models/event_info.js');
-var user = require('../models/user.js');
-var evt_user = require('../models/event_expense.js');
-var assert = require('assert');
+let bodyParser = require ('body-parser');
+let evt = require('../models/event_info.js');
+let user = require('../models/user.js');
+let evt_user = require('../models/event_expense.js');
+let assert = require('assert');
 
-//WORKING CODE
+//********************************WORKING CODE**************************************
+
 module.exports = function loadEventRoutes(router){
   router.use(bodyParser.json());
   //create an event
   router.post('/event/createEvent', (req, res) => {
-    var newEvent = new evt();
+    let newEvent = new evt();
     newEvent.ownerID = req.body.ownerID;
     console.log("ownerID = " + newEvent.ownerID);
     newEvent.eventName = req.body.eventName;
@@ -56,7 +57,7 @@ module.exports = function loadEventRoutes(router){
       //res.json(newEvent);
   //an user creates an event, then the user becomes the event owner
   router.post('api/user/:userid/createEvent', (req, res) => {
-    var newEvent = new evt();
+    let newEvent = new evt();
     newEvent.ownerID = req.params.userid;
     console.log("ownerID = " + newEvent.ownerID);
     newEvent.eventName = req.body.eventName;
@@ -123,7 +124,7 @@ module.exports = function loadEventRoutes(router){
   //delete an event from database
   router.post('/deleteEvent/:eventID', function(req, res){
     console.log(req.params.eventID);
-    var toRemoved = evt.findOne({'_id':req.params.eventID}, (error, toRemoved) => {
+    let toRemoved = evt.findOne({'_id':req.params.eventID}, (error, toRemoved) => {
       if(error){
         res.status(500).send('Error: ' + error);
         return;
@@ -240,7 +241,7 @@ module.exports = function loadEventRoutes(router){
   });
   //add a user into an event
   router.put('/event/addMember/:eventID', function(req, res){
-    var oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
+    let oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
       if(error){
         res.status(500).send('Error: ' + error);
         return;
@@ -260,6 +261,31 @@ module.exports = function loadEventRoutes(router){
     });
   });
   //owner update total amount of an event
+  router.put('/event/updateTotal/:userID/:eventID', function(req, res){
+    evt.findOne({'_id': req.params.eventID}, (error, evt) => {
+      if(error){
+        res.status(500).send("Update total error: " + error);
+        return;
+      }
+      else if(req.body.totalAmount === undefined || req.body.totalAmount === null /*|| req.body.totalAmount <= 0*//*){
+        res.status(504).send('Error: invalid amount');
+        return;
+      }
+      else if(req.params.userID != evt.ownerID){
+        res.status(501).send('Error: unauthorized');
+        return;
+      }
+      else{
+        evt.totalAmount = req.body.totalAmount;
+        evt.save((error) => {
+          if(error){
+            res.status(500).send("Error:" + error);
+            return;
+          }
+        });
+      res.status(200).json(evt);
+      return;
+      }
   router.put('/event/updateTotal/:userID/:eventID', function(req, res){
     evt.findOne({'_id': req.params.eventID}, (error, evt) => {
       if(error){
@@ -289,7 +315,7 @@ module.exports = function loadEventRoutes(router){
   });
   //individual enters their own amount in an event
   router.post('/event/individualAmount/:eventID/:userID', function(req, res){
-    var est = evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
+    let est = evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
       if(error){
         res.status(500).send("Error: " + error);
         return;
@@ -308,7 +334,7 @@ module.exports = function loadEventRoutes(router){
         res.status(500).send("invalid input amount");
         return;
       }
-      var event_user = new evt_user();
+      let event_user = new evt_user();
       event_user.eventID = req.params.eventID;
       event_user.userID = req.params.userID;
       event_user.individualAmount = req.body.individualAmount;
@@ -353,8 +379,8 @@ module.exports = function loadEventRoutes(router){
   
   //remove specific user from event's userList
   router.put('/removeUser/:eventID', function(req, res){
-    var user_promise = user.findOne({'_id':req.body.userID}).exec();
-    var event_promise = evt.findOne({'_id':req.params.eventID}).exec();
+    let user_promise = user.findOne({'userAccount':req.body.userAccount}).exec();
+    let event_promise = evt.findOne({'_id':req.params.eventID}).exec();
     assert.ok(user_promise instanceof require('mpromise'));
     user_promise.then(function(user){
       if(user === undefined || user === null){
@@ -371,7 +397,8 @@ module.exports = function loadEventRoutes(router){
           }
           else{
             console.log("event found");
-            var indexToRemove = evt.memberAccount.indexOf(req.body.userID);
+            let userID = user._id;
+            let indexToRemove = evt.memberAccount.indexOf(userID);
             if(indexToRemove !== -1){
               evt.memberAccount.splice(indexToRemove, 1);
               evt.save((error) => {
@@ -401,7 +428,7 @@ module.exports = function loadEventRoutes(router){
             }
           });
           response = {
-            userID: req.body.userID,
+            userAccount: req.body.userAccount,
             eventID: req.params.eventID,
             message: "user successfully removed from event"
           };
@@ -484,13 +511,14 @@ module.exports = function loadEventRoutes(router){
 
 
 
-//BUGGY CODE
+//***********************************BUGGY CODE*******************************************
+
 // module.exports = function loadEventRoutes(router){
 //   router.use(bodyParser.json());
 
 //   //create an event
 //   router.post('/event/createEvent', (req, res) => {
-//     var newEvent = new evt();
+//     let newEvent = new evt();
 //     newEvent.ownerID = req.body.ownerID;
 //     console.log("ownerID = " + newEvent.ownerID);
 //     newEvent.eventName = req.body.eventName;
@@ -540,7 +568,7 @@ module.exports = function loadEventRoutes(router){
 
 //   //an user creates an event, then the user becomes the event owner
 //   router.post('api/user/:userid/createEvent', (req, res) => {
-//     var newEvent = new evt();
+//     let newEvent = new evt();
 //     newEvent.ownerID = req.params.userid;
 //     console.log("ownerID = " + newEvent.ownerID);
 //     newEvent.eventName = req.body.eventName;
@@ -735,7 +763,7 @@ module.exports = function loadEventRoutes(router){
 
 //   //add a user into an event
 //   router.put('/event/addMember/:eventID', function(req, res){
-//     var oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
+//     let oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
 //       if(error){
 //         res.status(500).send('Error: ' + error);
 //         return;
@@ -790,7 +818,7 @@ module.exports = function loadEventRoutes(router){
 
 //   //individual enters their own amount in an event
 //   router.post('/event/individualAmount/:eventID/:userID', function(req, res){
-//     var est = evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
+//     let est = evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
 //       if(error){
 //         res.status(500).send("Error: " + error);
 //         return;
@@ -810,7 +838,7 @@ module.exports = function loadEventRoutes(router){
 //         res.status(500).send("invalid input amount");
 //         return;
 //       }
-//       var event_user = new evt_user();
+//       let event_user = new evt_user();
 //       event_user.eventID = req.params.eventID;
 //       event_user.userID = req.params.userID;
 //       event_user.individualAmount = req.body.individualAmount;
@@ -858,8 +886,8 @@ module.exports = function loadEventRoutes(router){
   
 //   //remove specific user from event's userList
 //   router.put('/removeUser/:eventID', function(req, res){
-//     var user_promise = user.findOne({'_id':req.body.userID}).exec();
-//     var event_promise = evt.findOne({'_id':req.params.eventID}).exec();
+//     let user_promise = user.findOne({'userAccount':req.body.userAccount}).exec();
+//     let event_promise = evt.findOne({'_id':req.params.eventID}).exec();
 //     assert.ok(user_promise instanceof require('mpromise'));
 //     user_promise.then(function(user){
 //       if(user === undefined || user === null){
@@ -876,7 +904,8 @@ module.exports = function loadEventRoutes(router){
 //           }
 //           else{
 //             console.log("event found");
-//             var indexToRemove = evt.memberAccount.indexOf(req.body.userID);
+//             let userID = user._id;
+//             let indexToRemove = evt.memberAccount.indexOf(userID);
 //             if(indexToRemove !== -1){
 //               evt.memberAccount.splice(indexToRemove, 1);
 //               evt.save((error) => {
@@ -907,7 +936,7 @@ module.exports = function loadEventRoutes(router){
 //             }
 //           });
 //           response = {
-//             userID: req.body.userID,
+//             userAccount: req.body.userAccount,
 //             eventID: req.params.eventID,
 //             message: "user successfully removed from event"
 //           };
@@ -924,3 +953,4 @@ module.exports = function loadEventRoutes(router){
 //     });
 //   });
 // }
+
