@@ -24,6 +24,9 @@ export const getActivePage = (state) => {
   return state.panels.selectedPage;
 }
 
+
+
+
 const initialState = {
     selectedPanel: "MESSAGE_BOX",
     activePanel: "MESSAGE_BOX",

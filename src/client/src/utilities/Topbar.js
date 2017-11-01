@@ -6,14 +6,12 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-
 import App from '../app/App';
 import WelcomePage from '../event/WelcomePage';
+import autoBind from 'react-autobind';
 
 
-
-
-const styles = {
+  const styles = {
   title: {
     cursor: 'pointer',
     postion: 'relative'
@@ -26,26 +24,42 @@ const styles = {
   },
 };
 
-const rightButtons = (onClick) => (
+const rightButtons = (onClick, userAccount) => (
     <div>
+      <FlatButton label={userAccount}  style={styles.buttonStyle} />
       <FlatButton label="Sign Out"  style={styles.buttonStyle} onClick={() => onClick()}/>
     </div>
   );
 
 
 
-const Topbar = ({onClick}) => (
+const Topbar = ({onClick, userAccount}) => (
   <MuiThemeProvider>
     <div id="topBar">
       <AppBar
         title={<span style={styles.title}>WeCheck</span>}
-        iconElementRight={rightButtons(onClick)}
+        iconElementRight={rightButtons(onClick, userAccount)}
       />
     </div>
   </MuiThemeProvider>
 );
 
 export default Topbar;
+
+
+
+
+
+
+
+//Working code version 1
+
+
+
+
+
+
+
 
 // // buggy code #25 #12
 // import React from 'react';

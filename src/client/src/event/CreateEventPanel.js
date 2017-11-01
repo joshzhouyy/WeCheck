@@ -22,6 +22,7 @@ const eventCategory = ["hotel", "restaurant", "flight"];
 class CreateEventPanel extends React.Component {
   
   constructor(props) {
+        console.log(props)
         super(props);
         this.state = {
             eventName: '',

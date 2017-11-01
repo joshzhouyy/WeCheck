@@ -6,8 +6,8 @@ import {selectActivePanel} from '../app/AppActions';
 import * as appSelectors from '../app/appReducer';
 
 const mapStateToProps = (state) => ({
-  userId: authSelectors.getUserId(state),
-  activePanel: appSelectors.getActivePanel(state)
+  userId: authSelectors.getUserId(state)
+  //activePanel: appSelectors.getActivePanel(state)
 });
 
 
