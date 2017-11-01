@@ -253,6 +253,11 @@ module.exports = function loadUserRoutes(router) {
                         console.log("event not found");
                         res.status(404).send("event not found");
                     }
+                    else if(evt.ownerID === receiver._id)
+                    {
+                        console.log("cannot invite self");
+                        return;
+                    }
                     else{
                         console.log("event found");
                         let userID = receiver._id;
@@ -262,18 +267,21 @@ module.exports = function loadUserRoutes(router) {
                             evt.save((error) => {
                                 if(error){
                                     console.log("Error: " + error);
-                                    res.status(500).send("Error: " + error);
+                                    return;
+                                    //res.status(500).send("Error: " + error);
                                 }
                             });
                         }
                         else{
                             console.log("user is already invited");
-                            res.status(500).send("user is already invited");
+                            return;
+                            //res.status(500).send("user is already invited");
                         }
                     }
                 }).catch((error) => {
                     console.log(error);
-                    res.status(500).send("Error: " + error);
+                    //res.status(500).send("Error: " + error);
+                    return;
                     });
 
                 let eventIndex = receiver.pendingInvites.indexOf(req.body.eventID);
@@ -282,27 +290,31 @@ module.exports = function loadUserRoutes(router) {
                     receiver.save((error) => {
                         if(error){
                             console.log("Error: " + error);
-                            res.status(500).send("Error: " + error);
+                            //res.status(500).send("Error: " + error);
                             return;
                         }
                     });
                     response = {
                         receiverAccount: req.body.userAccount,
                         eventID: req.body.eventID,
-                        message: "successfully sent invitation to user " + req.body.userID + " for event " + req.body.eventID
+                        message: "successfully sent invitation to user " + receiver.userAccount + " for event " + req.body.eventID
                     };
                     res.status(200).send(response);
                 }
                 else{
-                    console.log("user does not have pending invitation on this event");
-                    res.status(500).send("user does not have pending invitation on this event");
+                    //console.log(eventIndex);
+                    console.log("user already invited to this event");
+                    //res.status(500).send("user already invited to this event");
+                    return;
                 }
  
             }
         }).catch((error) => {
             console.log(error);
-            res.status(500).send("Error: " + error);
+            return;
+            //res.status(500).send("Error: " + error);
         });
+        res.status(500).send("unauthorized operation");
     });
 
     //user decline an invitation to an event
@@ -466,7 +478,7 @@ module.exports = function loadUserRoutes(router) {
 
 
     //get all pending invitations of an user
-   /* router.get('/allInvitations/:userID', function(req, res){
+    router.get('/allInvitations/:userID', function(req, res){
         user.findOne({'_id': req.params.userID}, (error, user) => {
             if(error)
             {
@@ -486,10 +498,28 @@ module.exports = function loadUserRoutes(router) {
                 evt.find({'_id': {$in: invitations}}, (error, evts) => {
 
                 })
+                let evt_promise = evt.find({'_id': {$in: invitations}}).exec();
+                assert.ok(evt_promise instanceof require('mpromise'));
+                evt_promise.then(function(evts){
+                    if(evts === null || evts === undefined)
+                    {
+                        console.log("invitations not found");
+                        res.status(500).send("invitations not found");
+                        return;
+                    }
+                    else
+                    {
+                        res.status(200).json(evts);
+                        return;
+                    }
+                }).catch((error) => {
+                    console.log("Error: " + error);
+                    res.status(500).send("Error: " + error);
+                });
             }
 
-        })
-    })*/
+        });
+    });
 
 };
 
