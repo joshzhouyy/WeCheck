@@ -155,7 +155,7 @@ export const addTotal = (eventId, userId, totalAmount) => {
 export const inputIndividualExpense = (eventId, userId, individualAmount) => {
   return new Promise ((resolve, reject) => {
     console.log(typeof individualAmount);
-    axios.post('event/individualAmount/' + eventId + '/' + userId, {
+    axios.put('event/individualAmount/' + eventId + '/' + userId, {
       individualAmount: Number(individualAmount)
     })
     .then((response) => {
