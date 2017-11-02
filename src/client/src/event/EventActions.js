@@ -12,7 +12,7 @@ export const removeEvent = (eventId) => ({
   eventId
 });
 
-// Helper functions
+// working version
 export const getOngoingEvents = (userId) => {
   return new Promise ((resolve, reject) => {
     axios.get('getAllOnGoingEvent/' + userId)
