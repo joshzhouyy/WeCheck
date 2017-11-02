@@ -50,6 +50,14 @@ module.exports = function loadEventRoutes(router){
         });
 
         user.eventList.push(newEvent._id);
+        user.save((error)=>{
+          if(error)
+          {
+            console.log(error);
+            res.status(500).send(error);
+            return;
+          }
+        });
         res.status(200).json(newEvent);
         return;
       }
