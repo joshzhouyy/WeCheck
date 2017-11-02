@@ -227,6 +227,24 @@ export const acceptInvitation = (receiverId, eventId) => {
 }
 
 
+export const declineInvitation = (receiverId, eventId) => {
+  return new Promise((resolve, reject) => {
+    axios.post('/declineInvitation', {
+      userID: receiverId,
+      eventID: eventId
+    }).then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+}
+
+
 export const deleteMember = (eventId, userId, input) => {
   return new Promise ((resolve, reject) => {
     axios.put('removeUser/' + eventId, {

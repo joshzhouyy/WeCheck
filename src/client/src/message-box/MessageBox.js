@@ -11,7 +11,7 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 
 import "./MessageBox.css"
-import {getInvitation, acceptInvitation} from '../event/EventActions';
+import {getInvitation, acceptInvitation, declineInvitation} from '../event/EventActions';
 
 const iconButtonElement = (
   <IconButton
@@ -25,8 +25,8 @@ const iconButtonElement = (
 
 const rightIconMenu = (confirmLabel, rejectLabel, userId, eventId) => (
   <IconMenu iconButtonElement={iconButtonElement}>
-    <MenuItem onClick={()=>{handleAcceptInvitation(userId, eventId)}}>{confirmLabel}</MenuItem>
-    <MenuItem>{rejectLabel}</MenuItem>
+    <MenuItem onClick={() => {handleAcceptInvitation(userId, eventId)}}>{confirmLabel}</MenuItem>
+    <MenuItem onClick={() => {handleDeclineInvitation(userId, eventId)}}>{rejectLabel}</MenuItem>
   </IconMenu>
 );
 
@@ -43,9 +43,23 @@ const InvitationListItem = (v, userId) => {
     />
   )};
 
-const print = (e) => {
-  e.preventDefault();
-  console.log("clicked")
+
+const handleDeclineInvitation = (userId, eventId) => {
+  console.log(userId)
+  console.log(eventId)
+  declineInvitation(userId, eventId)
+    .then(value => {
+      alert("Invitation Declined!");
+    })
+    .catch((err) => {
+      // console.log(JSON.stringify(err));
+      const response = err.response;
+      const status = response.status;
+      const statusText = response.statusText;
+      const data = response.data;
+
+      alert(status + ": " + statusText + "\n" + data);
+    })
 }
 
 const handleAcceptInvitation = (userId, eventId) => {
