@@ -215,14 +215,17 @@ export const deleteMember = (eventId, userAccount, input) => {
 
 //TODO: add eventTime
 export const createEvent = (event) => {
+  // console.log(JSON.stringify(event));
   return new Promise ((resolve, reject) => {
     axios.post('event/createEvent', {
-      ownerID: event.userId,
+      ownerID: event.ownerID,
       eventName: event.eventName,
       eventType: event.eventType,
+      eventTime: event.eventTime,
       eventCategory: event.eventCategory,
       eventLocation: event.eventLocation,
-      splitType: event.splitType
+      splitType: event.splitType,
+      invitationList: event.invitationList
     })
     .then((response) => {
       const data = response.data;

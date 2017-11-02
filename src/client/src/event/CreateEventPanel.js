@@ -28,9 +28,10 @@ const alertMsg = (fieldName) => {
 class CreateEventPanel extends React.Component {
   
   constructor(props) {
-        console.log(props)
+        // console.log(props)
         super(props);
         this.state = {
+            ownerID: props.userId,
             eventName: '',
             eventTime: new Date(),
             eventLocation: '',
@@ -93,14 +94,19 @@ class CreateEventPanel extends React.Component {
     const eventLocation = this.state.eventLocation;
 
     const event = {
-      userId: this.props.userId,
+      ownerID: this.state.ownerID,
       eventName: eventName,
       eventTime: eventTime,
       eventType: eventType[this.state.eventType-1],
       eventCategory: eventCategory[this.state.eventCategory-1],
       eventLocation: eventLocation,
-      splitType: splitType[this.state.splitType-1]
+      splitType: splitType[this.state.splitType-1],
+      invitationList: []
     }
+
+    console.log(event);
+    const failMsg = "Failed to create this event...";
+    const successMsg = "Event created!!";
 
 
     if (eventName === "") {
@@ -116,12 +122,14 @@ class CreateEventPanel extends React.Component {
       createEvent(event)
       .then(data => {
         // console.log(JSON.stringify(data))
-        alert("Created event successfully");
+        alert(successMsg);
       })
       .catch((err) => {
+        // console.log(JSON.stringify(err));
         const status = err.response.status;
         const statusText = err.response.statusText;
-        alert(failMsg + "\n" + status + " " + statusText);
+        const data = err.response.data
+        alert(failMsg + "\n" + status + " " + statusText + " " + data);
       });
     }
   }
@@ -131,7 +139,7 @@ class CreateEventPanel extends React.Component {
   render() {
     // console.log(JSON.stringify(this.state));
     const onClick = this.props.onClick;
-    
+    console.log(this.state);
     return (       
       <div id = "pageDiv">
             <h1>CREATE PAGE</h1>

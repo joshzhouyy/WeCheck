@@ -7,6 +7,7 @@ import * as appSelectors from '../app/appReducer';
 
 const mapStateToProps = (state) => ({
   userId: authSelectors.getUserId(state)
+  // userAccount: authSelectors.getUserAccount(state)
   //activePanel: appSelectors.getActivePanel(state)
 });
 
