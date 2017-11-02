@@ -13,78 +13,55 @@ module.exports = function loadEventRoutes(router){
   router.post('/event/createEvent', (req, res) => {
     let newEvent = new evt();
     newEvent.ownerID = req.body.ownerID;
-    console.log("ownerID = " + newEvent.ownerID);
-    newEvent.eventName = req.body.eventName;
-    newEvent.eventType = req.body.eventType;
-    newEvent.eventCategory = req.body.eventCategory;
-    newEvent.eventLocation = req.body.eventLocation;
-    newEvent.eventTime = req.body.eventTime;
-    newEvent.splitType = req.body.splitType;
-    newEvent.invitationList = req.body.invitationList;
-    newEvent.eventStatus = 'in process';
-    newEvent.totalAmount = 0;
-    newEvent.paidAmount = 0;
-    newEvent.memberAccount.push(req.body.ownerID);
-
-    newEvent.save((error) => {
-      if(error){
-        console.log(error);
-        res.status(500).send("Error: " + error);
+    let user_promise = user.findOne({'_id': req.body.ownerID}).exec();
+    assert.ok(user_promise instanceof require('mpromise'));
+    user_promise.then(function(user){
+      if(user === undefined || user === null)
+      {
+        console.log("invalid owner");
+        res.status(500).send("invalid owner");
         return;
       }
-    });
-      user.findOne({'_id':req.body.ownerID}, (error, user) => {
-        if(error){
-          console.log("Error: " + error);
-          res.status(500).send("Error: " + error);
-        }
-        else if(user === undefined || user === null){
-          console.log("user not found");
-          res.status(404).send("user not found");
-        }
-        else{
-          user.eventList.push(newEvent._id);
-          user.save((error) => {
-            if(error){
-              console.log(error);
-              res.status(500).send("Error: " + error);
-              return;
-            }
-          });
-          res.status(200).json(newEvent);
-        }
-      });
-      
-      
-    });
-      //res.json(newEvent);
+      else
+      {
+        console.log("valid owner");
+        let newEvent = new evt();
+        newEvent.ownerID = req.body.ownerID;
+        newEvent.ownerAccount = user.userAccount;
+        newEvent.eventName = req.body.eventName;
+        newEvent.eventType = req.body.eventType;
+        newEvent.eventCategory = req.body.eventCategory;
+        newEvent.eventLocation = req.body.eventLocation;
+        newEvent.eventTime = req.body.eventTime;
+        newEvent.splitType = req.body.splitType;
+        newEvent.invitationList = req.body.invitationList;
+        newEvent.eventStatus = 'in process';
+        newEvent.totalAmount = 0;
+        newEvent.paidAmount = 0;
+        newEvent.memberAccount.push(req.body.ownerID);
 
-  //an user creates an event, then the user becomes the event owner
-  router.post('api/user/:userid/createEvent', (req, res) => {
-    let newEvent = new evt();
-    newEvent.ownerID = req.params.userid;
-    console.log("ownerID = " + newEvent.ownerID);
-    newEvent.eventName = req.body.eventName;
-    newEvent.eventType = req.body.eventType;
-    newEvent.eventCategory = req.body.eventCategory;
-    newEvent.eventLocation = req.body.eventLocation;
-    newEvent.eventTime = req.body.eventTime;
-    newEvent.splitType = req.body.splitType;
-    newEvent.invitationList = req.body.invitationList;
-    newEvent.eventStatus = 'in process';
-    newEvent.totalAmount = 0;
-    //TODO: possible defect: event member list not include owner
-    newEvent.memberAccount.push(req.body.ownerID);
+        newEvent.save((error)=>{
+          if(error)
+          {
+            console.log(error);
+            res.status(500).send(error);
+            return;
+          }
+        });
 
-    newEvent.save((error) => {
-      if(error){
-        console.log(error);
-        res.status(500).send("event save error");
+        user.eventList.push(newEvent._id);
+        res.status(200).json(newEvent);
         return;
       }
-      res.json(200, newEvent);
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send(error);
       return;
     });
+
+
+      
+      
   });
 
   //edit detail of an existing event
@@ -257,8 +234,8 @@ module.exports = function loadEventRoutes(router){
     });
   });
 
-  //add a user into an event
-  router.put('/event/addMember/:eventID', function(req, res){
+  //add a user into an event(deprecated api)
+  /*router.put('/event/addMember/:eventID', function(req, res){
     let oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
       if(error){
         res.status(500).send('Error: ' + error);
@@ -277,7 +254,7 @@ module.exports = function loadEventRoutes(router){
         res.json(oldEvt);
       });
     });
-  });
+  });*/
 
 
   router.put('/event/updateTotal/:userID/:eventID', function(req, res){
@@ -312,7 +289,7 @@ module.exports = function loadEventRoutes(router){
 
   //individual enters their own amount in an event
   router.post('/event/individualAmount/:eventID/:userID', function(req, res){
-    let est = evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
+    evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
       if(error){
         res.status(500).send("Error: " + error);
         return;
@@ -415,6 +392,7 @@ module.exports = function loadEventRoutes(router){
     let event_promise = evt.findOne({'_id':req.params.eventID}).exec();
     assert.ok(user_promise instanceof require('mpromise'));
     user_promise.then(function(user){
+      let flag = 0; //flag to indicate if owner is trying to remove self
       if(user === undefined || user === null){
         console.log("user not found");
         res.status(404).send("user not found");
@@ -430,19 +408,33 @@ module.exports = function loadEventRoutes(router){
           else{
             console.log("event found");
             let userID = user._id;
-            let indexToRemove = evt.memberAccount.indexOf(userID);
-            if(indexToRemove !== -1){
-              evt.memberAccount.splice(indexToRemove, 1);
-              evt.save((error) => {
-                if(error){
-                  console.log("Error: " + error);
-                  res.status(500).send("Error: " + error);
-                }
-              })
+            if(userID === evt.ownerID)
+            {
+              console.log("cannot remove self");
+              res.status(403).send("cannot remove self");
+              flag = 1;
+              return;
             }
-            else{
-              console.log("event does not have user");
-              res.status(500).send("event does not have this user");
+            else
+            {
+
+              let indexToRemove = evt.memberAccount.indexOf(userID);
+              if(indexToRemove !== -1)
+              {
+                evt.memberAccount.splice(indexToRemove, 1);
+                evt.save((error) => {
+                  if(error){
+                    console.log("Error: " + error);
+                    res.status(500).send("Error: " + error);
+                  }
+                })
+              }
+              else
+              {
+                console.log("event does not have user");
+                res.status(500).send("event does not have this user");
+                return;
+              }
             }
           }
         }).catch((error) => {
@@ -450,26 +442,36 @@ module.exports = function loadEventRoutes(router){
           res.status(500).send("Error: " + error);
         });
 
-        //get index of the event from user's eventList
-        indexToDelete = user.eventList.indexOf(req.params.eventID);
-        if(indexToDelete !== -1){
-          user.eventList.splice(indexToDelete, 1);
-          user.save((error) => {
-            if(error){
-              console.log("Error: " + error);
-              res.status(500).send("Error: " + error);
-            }
-          });
-          response = {
-            userAccount: req.body.userAccount,
-            eventID: req.params.eventID,
-            message: "user successfully removed from event"
-          };
-          res.status(200).send(response);
+
+        if(flag === 1)
+        {
+          console.log("owner trying to remove self");
+          res.status(403).send("owner trying to remove self");
+          return;
         }
-        else{
-          console.log("user is not in this event");
-          res.status(500).send("user is not in this event");
+        else
+        {
+          //get index of the event from user's eventList
+          indexToDelete = user.eventList.indexOf(req.params.eventID);
+          if(indexToDelete !== -1){
+            user.eventList.splice(indexToDelete, 1);
+            user.save((error) => {
+              if(error){
+                console.log("Error: " + error);
+                res.status(500).send("Error: " + error);
+              }
+            });
+            response = {
+              userAccount: req.body.userAccount,
+              eventID: req.params.eventID,
+              message: "user successfully removed from event"
+            };
+            res.status(200).send(response);
+          }
+          else{
+            console.log("user is not in this event");
+            res.status(500).send("user is not in this event");
+          }
         }
       }
     }).catch((error) => {
@@ -1024,4 +1026,3 @@ module.exports = function loadEventRoutes(router){
     });
   });
 }*/
-

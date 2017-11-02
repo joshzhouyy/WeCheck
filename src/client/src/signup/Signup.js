@@ -31,6 +31,7 @@ class Signup extends Component {
         }
         
         if (event.target.name === 'userEmail') {
+          //console.log("event.target.name is " + event.target.name)
           this.setState({ userEmail: event.target.value});
         }
 

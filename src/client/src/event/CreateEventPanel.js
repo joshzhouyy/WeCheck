@@ -84,13 +84,16 @@ class CreateEventPanel extends React.Component {
   }
 
   handleCreate() {
-    const event = {
-      userId: this.props.userId,
-      eventName: this.state.eventName,
-      eventType: eventType[this.state.eventType-1],
-      eventCategory: eventCategory[this.state.eventCategory-1],
-      eventLocation: this.state.eventLocation,
-      splitType: splitType[this.state.splitType-1]
+
+  
+      const event = {
+        userId: this.props.userId,
+        eventName: this.state.eventName,
+        eventType: eventType[this.state.eventType-1],
+        eventCategory: eventCategory[this.state.eventCategory-1],
+        eventLocation: this.state.eventLocation,
+        splitType: splitType[this.state.splitType-1]
+      }
     }
 
 
