@@ -104,7 +104,7 @@ class MessageBox extends React.Component {
     const invitations = this.state.invitations;
     const userId = this.state.userId;
 
-    console.log(invitations)
+    // console.log(invitations)
     if (invitations === null) 
     {
       return (
