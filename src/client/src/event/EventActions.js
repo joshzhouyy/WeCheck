@@ -188,12 +188,27 @@ export const inputIndividualExpense = (eventId, userId, individualAmount) => {
   })
 }
 
-export const inviteMember = () => {
+export const inviteMember = (eventID, userId, input) => {
   //TODO
+  return new Promise ((resolve, reject) => {
+    axios.put('/sendInvitation', {
+      userAccount: input,
+      eventID: eventID
+    })
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+    })
+  })
 }
 
-// TODO: use userAccount instead
-export const deleteMember = (eventId, userAccount, input) => {
+export const deleteMember = (eventId, userId, input) => {
   return new Promise ((resolve, reject) => {
     axios.put('removeUser/' + eventId, {
       userAccount: input
@@ -213,7 +228,6 @@ export const deleteMember = (eventId, userAccount, input) => {
 
 }
 
-//TODO: add eventTime
 export const createEvent = (event) => {
   // console.log(JSON.stringify(event));
   return new Promise ((resolve, reject) => {

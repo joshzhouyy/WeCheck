@@ -274,13 +274,13 @@ module.exports = function loadUserRoutes(router) {
                         }
                         else{
                             console.log("user is already invited");
+                            throw new Error("user is already invited");
                             return;
-                            //res.status(500).send("user is already invited");
                         }
                     }
                 }).catch((error) => {
                     console.log(error);
-                    //res.status(500).send("Error: " + error);
+                    res.status(500).send("Error: " + error);
                     return;
                     });
 
@@ -311,10 +311,10 @@ module.exports = function loadUserRoutes(router) {
             }
         }).catch((error) => {
             console.log(error);
+            res.status(500).send("Error: " + error);
             return;
-            //res.status(500).send("Error: " + error);
         });
-        res.status(500).send("unauthorized operation");
+        // res.status(500).send("unauthorized operation");
     });
 
     //user decline an invitation to an event

@@ -64,10 +64,11 @@ class InputDialogBox extends React.Component {
     // console.log(this.state.input);
     onClick(eventId, userId, this.state.input)
     .then(value => {
+      console.log("success")
       alert(successMsg);
     })
     .catch((err) => {
-      // console.log(JSON.stringify(err));
+      console.log(JSON.stringify(err));
       const status = err.response.status;
       const statusText = err.response.statusText;
       alert(failMsg + "\n" + status + " " + statusText);
