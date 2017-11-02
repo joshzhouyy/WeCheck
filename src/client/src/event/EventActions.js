@@ -143,7 +143,7 @@ export const deleteEvent = (eventId) => {
       })
       .catch((err) => {
         console.log(err);
-        throw err;
+        reject(err);
       });
   })
 }

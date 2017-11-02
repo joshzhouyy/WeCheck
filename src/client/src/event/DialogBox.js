@@ -53,7 +53,8 @@ class DialogBox extends React.Component {
     .catch((err) => {
       const status = err.response.status;
       const statusText = err.response.statusText;
-      alert(failMsg + "\n" + status + " " + statusText);
+      const data = err.response.data;
+      alert(failMsg + "\n" + status + " " + statusText + "\n" + data);
     })
   }
 
