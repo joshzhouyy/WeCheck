@@ -71,7 +71,8 @@ class InputDialogBox extends React.Component {
       console.log(JSON.stringify(err));
       const status = err.response.status;
       const statusText = err.response.statusText;
-      alert(failMsg + "\n" + status + " " + statusText);
+      const data = err.response.data;
+      alert(failMsg + "\n" + status + " " + statusText + "\n" + data);
     });
 
     this.setState({open: false});

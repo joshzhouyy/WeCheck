@@ -161,7 +161,6 @@ export const addTotal = (eventId, userId, totalAmount) => {
     .catch((err) => {
       console.log(err);
       reject(err);
-      // throw err;
     });
   });
 }
