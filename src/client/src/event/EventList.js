@@ -11,7 +11,7 @@ import * as colors from 'material-ui/styles/colors'
 import Avatar from 'material-ui/Avatar'
 import ActionAssignment from 'material-ui/svg-icons/action/assignment';
 
-import {getOngoingEvents} from './EventActions';
+import {getOngoingEvents, getFinishedEvents} from './EventActions';
 
 import './EventList.css';
 
@@ -70,7 +70,6 @@ const eventItems = (props) => {
     {
       _.map(events, (e, i) => {
         // console.log(i)
-        //TODO: event name attribute?
         // console.log(JSON.stringify(e))
         params.eventName = e.eventName;
         params.eventId = e._id;
@@ -106,7 +105,10 @@ class EventList extends React.Component {
   }
 
   clickFinished() {
-    //TODO
+    getFinishedEvents(this.props.userId)
+      .then(events => {
+        finishedEvents: events
+      });
   }
 
   componentDidMount() {
@@ -132,7 +134,7 @@ class EventList extends React.Component {
       defaultValue: defaultValue
     }
 
-    // console.log(JSON.stringify(this.state))
+    console.log(JSON.stringify(this.state))
     return (
       <Paper id="eventListContainer">
         <Grid id="EventListGrid">
