@@ -460,12 +460,18 @@ module.exports = function loadUserRoutes(router) {
                             sum += element.individualAmount;
                             console.log("sum = " + sum);
                         });
+                        let inputList = [];
                         if(sum !== evt.totalAmount)
                         {
                             console.log("amount incorrect, need to re-verify");
-                            let inputList = [];
+                            //let inputList = [];
                             evt_users.forEach(function(element){
-                                inputList.push(element);
+                                entry = {
+                                    individualAmount:element.individualAmount,
+                                    userID: element.userID
+                                }
+                                //inputList.push(element);
+                                inputList.push(entry);
                                 element.individualAmount = 0;
                                 element.save((error) => {
                                     if(error){
@@ -474,19 +480,29 @@ module.exports = function loadUserRoutes(router) {
                                     }
                                 });
                             });
+                            console.log(inputList);
                             res.status(200).json(inputList);
                             //throw new Error("amount incorrect , need to re-verify");
                         }
                         else
                         {
-                            res.status(200).json("Amount verified");
+                            evt_users.forEach(function(element){
+                                entry = {
+                                    individualAmount: element.individualAmount,
+                                    userID: element.userID
+                                }
+                                inputList.push(entry);
+                                element.save((error) => {
+                                    if(error){
+                                        console.log("Error: " + error);
+                                        res.status(500).send("Error: " + error);
+                                    }
+                                });
+                            });
+                            res.status(200).json(inputList);
                             return;
                         }
                     }
-
-
-
-
                 }).catch((error) => {
                     console.log("Error: " + error);
                     res.status(500).send("Error: " + error);
