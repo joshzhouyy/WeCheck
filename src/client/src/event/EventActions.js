@@ -13,26 +13,9 @@ export const removeEvent = (eventId) => ({
 });
 
 // Helper functions
-export const getOngoingEvents = (userId) => {
-  return new Promise ((resolve, reject) => {
-    axios.get('getAllOnGoingEvent/' + userId)
-    .then((response) => {
-      const data = response.data;
-      if (data !== null) {
-          resolve(data);
-        }
-    })
-    .catch((err) => {
-      console.log(err);
-      throw err;
-    });
-  })
-}
-
-//Defect 15
 // export const getOngoingEvents = (userId) => {
 //   return new Promise ((resolve, reject) => {
-//     axios.get('api/all_event')
+//     axios.get('getAllOnGoingEvent/' + userId)
 //     .then((response) => {
 //       const data = response.data;
 //       if (data !== null) {
@@ -45,6 +28,23 @@ export const getOngoingEvents = (userId) => {
 //     });
 //   })
 // }
+
+//Defect 15
+export const getOngoingEvents = (userId) => {
+  return new Promise ((resolve, reject) => {
+    axios.get('api/all_event')
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+          resolve(data);
+        }
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
+  })
+}
 
 
 export const getFinishedEvents = (userId) => {
