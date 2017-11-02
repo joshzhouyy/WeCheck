@@ -72,10 +72,10 @@ export const getOngoingEvents = (userId) => {
   })
 }
 
-//TODO
-const getFinishedEvents = () => {
+// //TODO
+// const getFinishedEvents = () => {
 
-}
+// }
 
 export const getMemberList = (eventId) => {
   // console.log(eventId)
@@ -192,6 +192,39 @@ export const inviteMember = () => {
   //TODO
 }
 
+export const getInvitation = (userId) => {
+   return new Promise ((resolve, reject) => {
+    axios.get('allInvitations/' + userId)
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+          // console.log(data)
+          resolve(data);
+        }
+    })
+    .catch((err) => {
+      console.log(err);
+      throw error;
+    });
+  })
+}
+
+export const acceptInvitation = (receiverId, eventId) => {
+  return new Promise((resolve, reject) => {
+    axios.put('/acceptInvitation/' + receiverId, {
+      eventID: eventId
+    }).then((response) => {
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+    })
+  })
+}
+
 // TODO: use userAccount instead
 export const deleteMember = (eventId, userAccount, input) => {
   return new Promise ((resolve, reject) => {
@@ -215,14 +248,17 @@ export const deleteMember = (eventId, userAccount, input) => {
 
 //TODO: add eventTime
 export const createEvent = (event) => {
+  // console.log(JSON.stringify(event));
   return new Promise ((resolve, reject) => {
     axios.post('event/createEvent', {
-      ownerID: event.userId,
+      ownerID: event.ownerID,
       eventName: event.eventName,
       eventType: event.eventType,
+      eventTime: event.eventTime,
       eventCategory: event.eventCategory,
       eventLocation: event.eventLocation,
-      splitType: event.splitType
+      splitType: event.splitType,
+      invitationList: event.invitationList
     })
     .then((response) => {
       const data = response.data;
@@ -232,7 +268,7 @@ export const createEvent = (event) => {
     })
     .catch((err) => {
       console.log(err);
-      throw err;
+      reject(err);
     });
   })
 }
@@ -287,3 +323,4 @@ export const updateEvent = (event, userId) => {
     })
   })
 }
+

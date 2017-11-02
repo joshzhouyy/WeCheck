@@ -44,6 +44,7 @@ const BtnGroup = (props) => {
   const userId = props.userId;
   const event = props.event;
 
+  // delete the event
   const deleteBtnProps = {
         type: "secondary",
         label: "Delete",
@@ -55,7 +56,7 @@ const BtnGroup = (props) => {
         successMsg: "Event deleted!",
         failMsg: "Fail to delete this event..."
   }
-
+  // creator's total input
   const addBtnProps = {
     type: "primary",
     label: "Add",
@@ -67,7 +68,7 @@ const BtnGroup = (props) => {
     successMsg: "Updated total amount!",
     failMsg: "Fail to update total amount..."
   }
-
+  // member's input
   const inputBtnProps = {
     type: "primary",
     label: "Input",
@@ -80,6 +81,7 @@ const BtnGroup = (props) => {
     failMsg: "Fail to input expense..."
   }
 
+  //edit event
   const editBtnProps = {
     type: "default",
     label: "Edit",
@@ -118,7 +120,7 @@ const BillSum = (totalSum) => {
   return (<h3>{info}</h3>);
 }
 
-
+// creator's + and - members
 const CreatorMemberListBtns = ({eventId, userId}) => {
   const inviteMemberBtnProps = {
     type: "default",
@@ -162,6 +164,7 @@ const CreatorMemberListBtns = ({eventId, userId}) => {
   );
 }
 
+// memberlist's button
 const MemberListBtns = ({eventId, userId}) => {
   const inviteMemberBtnProps = {
     type: "default",
@@ -208,19 +211,19 @@ const EventMemberList = (memberListProps) => {
     userId: userId
   }
 
-  // if (!isCreator) {
-  //   return (
-  //     <List id="memberListContainerDiv">
-  //       <Subheader>Member List</Subheader>
-  //       {
-  //         _.map(members, (m) => {
-  //           return Member(m.userAccount, m._id);
-  //         })
-  //       }
-  //       <MemberListBtns {...btnProps}/>
-  //     </List>
-  //     );
-  // } else {
+  if (!isCreator) {
+    return (
+      <List id="memberListContainerDiv">
+        <Subheader>Member List</Subheader>
+        {
+          _.map(members, (m) => {
+            return Member(m.userAccount, m._id);
+          })
+        }
+        <MemberListBtns {...btnProps}/>
+      </List>
+      );
+  } else {
     return (  
       <div id="memberListContainerDiv">
         <Subheader>Member List</Subheader>
@@ -232,7 +235,7 @@ const EventMemberList = (memberListProps) => {
         <CreatorMemberListBtns {...btnProps}/>
       </div>
     );
-  // }
+  }
 
 }
   
