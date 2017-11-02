@@ -25,15 +25,20 @@ import {
   deleteMember,
   inviteMember,
   getEvent,
-  updateEvent
+  updateEvent,
+  verifyEvent
    } from './EventActions';
 
 import './EventMemberPanel.css'
 
 
 
-const DeleteEMsg = () => {
+const DeleteMsg = () => {
   return "Are you sure you want to delete this event?";
+}
+
+const VerifyMsg = () => {
+  return "Are you sure you want to verify this event?";
 }
 
 const BtnGroup = (props) => {
@@ -48,7 +53,7 @@ const BtnGroup = (props) => {
         type: "secondary",
         label: "Delete",
         title: "Delete Event",
-        info: DeleteEMsg,
+        info: DeleteMsg,
         onClick: deleteEvent,
         eventId: eventId,
         id: "deleteId",
@@ -93,19 +98,32 @@ const BtnGroup = (props) => {
     userId: userId
   }
 
+  const verifyBtnProps = {
+        type: "primary",
+        label: "Verify",
+        title: "Verify Event",
+        info: VerifyMsg,
+        onClick: verifyEvent,
+        eventId: eventId,
+        id: "deleteId",
+        successMsg: "Event Verifies!",
+        failMsg: "Fail to verify this event..."
+  }
+
   if (!isCreator) {
     return (
       <div id="memberBtnsDiv">
-        <InputDialogBox className="memberBtnDialog" {...inputBtnProps}/>
-        <DialogBox className="memberBtnDialog" {...deleteBtnProps} />
+        <InputDialogBox {...inputBtnProps}/>
+        <DialogBox {...deleteBtnProps} />
       </div>  
     );
   } else {
       return (
         <div id="creatorBtnsDiv">
-          <InputDialogBox className="creatorBtnDialog" {...addBtnProps} />
-          <EditDialogBox className="creatorBtnDialog" {...editBtnProps} />
-          <DialogBox className="creatorBtnDialog" {...deleteBtnProps} />
+          <InputDialogBox  {...addBtnProps} />
+          <EditDialogBox {...editBtnProps} />
+          <DialogBox {...verifyBtnProps} />
+          <DialogBox {...deleteBtnProps} />
         </div>
 
       );  
