@@ -50,6 +50,15 @@ module.exports = function loadEventRoutes(router){
 				});
 
 				user.eventList.push(newEvent._id);
+				user.save((error)=>{
+					if(error)
+					{
+						console.log(error);
+						res.status(500).send(error);
+						return;
+					}
+				});
+				//console.log(newEvent._id);
 				res.status(200).json(newEvent);
 				return;
 			}
@@ -78,8 +87,8 @@ module.exports = function loadEventRoutes(router){
 				return;
 			}
 			//check if user has authority to edit event
-			if(req.body.userID != req.body.ownerID){
-				res.send('you do not have the authority to edit this event');
+			if(req.body.userID !== req.body.ownerID){
+				res.status(500).send('you do not have the authority to edit this event');
 				return;
 			}
 			
@@ -228,7 +237,7 @@ module.exports = function loadEventRoutes(router){
 		evt.find({'eventName': {$exists:true}}, function(err, data){
 			if(err){
 				console.log(err);
-				return res.status(500).json({msg: 'internal server error'});
+				return res.status(500).json({msg: 'internal ser error'});
 			}
 			res.json(data);
 		});
@@ -288,39 +297,60 @@ module.exports = function loadEventRoutes(router){
 
 
 	//individual enters their own amount in an event
-	router.post('/event/individualAmount/:eventID/:userID', function(req, res){
-		evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
-			if(error){
-				res.status(500).send("Error: " + error);
-				return;
-			}
-			if(est != null){
-				res.status(500).send("entry existed");
-				return;
-			}
-		});
-		evt.findOne({'_id': req.params.eventID, memberAccount: {"$in":[req.params.userID]}}, (error, evt) => {
-			if(error){
-				res.status(500).send("Error in findOne: " + error);
-				return;
-			}
-			if(req.body.individualAmount === null || req.body.individualAmount <= 0 || req.body.individualAmount === undefined){
-				res.status(500).send("invalid input amount");
-				return;
-			}
-			let event_user = new evt_user();
-			event_user.eventID = req.params.eventID;
-			event_user.userID = req.params.userID;
-			event_user.individualAmount = req.body.individualAmount;
-			event_user.save((error) => {
+	router.put('/event/individualAmount/:eventID/:userID', function(req, res){
+		if(req.body.individualAmount === null || req.body.individualAmount <= 0 || req.body.individualAmount === undefined)
+				{
+					res.status(500).send("invalid input amount");
+					return;
+				}
+		else
+		{
+			evt_user.findOne({'eventID':req.params.eventID, 'userID':req.params.userID}, (error, est) => {
 				if(error){
-					console.log("Error: " + error);
 					res.status(500).send("Error: " + error);
 					return;
 				}
-				res.status(200).json(event_user);
+				else if(est != null){
+					console.log("entry found");
+
+					est.individualAmount = req.body.individualAmount;
+					est.save((error) => {
+						if(error){
+							console.log("Error: " + error);
+							res.status(500).send("Error: " + error);
+						}
+					});
+					res.status(200).json(est);
+					return;
+				}
+				else
+				{
+					evt.findOne({'_id': req.params.eventID, memberAccount: {"$in":[req.params.userID]}}, (error, evt) => {
+					if(error)
+					{
+						res.status(500).send("Error in findOne: " + error);
+						return;
+					}
+					let event_user = new evt_user();
+					event_user.eventID = req.params.eventID;
+					event_user.userID = req.params.userID;
+					//event_user.userAccount = 
+					event_user.individualAmount = req.body.individualAmount;
+					event_user.save((error) => {
+						if(error)
+						{
+							console.log("Error: " + error);
+							res.status(500).send("Error: " + error);
+							return;
+						}
+						res.status(200).json(event_user);
+						return;
+					});
+					});
+				}
 			});
-		});
+		}
+		
 	});
 
 	//get all 'in process' event that an user is in or owns
@@ -337,10 +367,12 @@ module.exports = function loadEventRoutes(router){
 			}
 			else{
 				const eventList = user.eventList;
+				//console.log(eventList);
 				evt.find({
 					'_id': {$in: eventList},
 					'eventStatus':'in process'
 				}, function(error, events){
+					console.log(events);
 					if(error){
 						res.status(500).send("Error: " + error);
 						return;

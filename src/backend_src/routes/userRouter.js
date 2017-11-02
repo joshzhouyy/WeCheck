@@ -29,25 +29,34 @@ module.exports = function loadUserRoutes(router) {
                 //console.log("here");
                 //let newUser = new user();
                 if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
-                    let newUser = new user();
-                    newUser.userAccount = req.body.userAccount;
-                    newUser.password = hash(req.body.password);
-                    if(req.body.userName.length > 15){
-                        console.log("username too long");
-                        res.status(500).send("username too long");
-                    }
-                    newUser.userName = req.body.userName;
-                    newUser.eventList = [];
-                    //newUser.password = req.body.password;
-
-                    newUser.save((error) => {
-                    if(error){
-                        console.log(error);
-                        res.status(500).send('Saving error: ' + error);
+                    let re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+                    if(re.test(req.body.userAccount) === false){
+                        console.log("invalid email");
+                        res.status(500).send("invalid email!");
                         return;
+                    }
+                    else
+                    {
+                        let newUser = new user();
+                        newUser.userAccount = req.body.userAccount;
+                        newUser.password = hash(req.body.password);
+                        if(req.body.userName.length > 15){
+                            console.log("username too long");
+                            res.status(500).send("username too long");
                         }
-                    res.json(newUser);
-                    });
+                        newUser.userName = req.body.userName;
+                        newUser.eventList = [];
+                        //newUser.password = req.body.password;
+
+                        newUser.save((error) => {
+                        if(error){
+                            console.log(error);
+                            res.status(500).send('Saving error: ' + error);
+                            return;
+                        }
+                        res.json(newUser);
+                        });
+                    }
                 }
                 else{
                     res.status(500).send("bad parameters");
@@ -241,9 +250,11 @@ module.exports = function loadUserRoutes(router) {
         receiver_promise
             .then(function(receiver)
             {
+            let flag
             if(receiver === undefined || receiver === null){
                 console.log("receiver not found");
-                res.status(404).send("receiver not found");
+                throw new Error("receiver not found");
+                return;
             }
             else {
                 assert.ok(event_promise instanceof require('mpromise'));
@@ -251,11 +262,14 @@ module.exports = function loadUserRoutes(router) {
                 event_promise.then(function(evt){
                     if(evt === undefined || evt === null){
                         console.log("event not found");
-                        res.status(404).send("event not found");
+                        throw new Error("event not found");
+                        return;
+
                     }
                     else if(evt.ownerID === receiver._id)
                     {
                         console.log("cannot invite self");
+                        throw new Error("cannot invite self");
                         return;
                     }
                     else{
@@ -274,6 +288,7 @@ module.exports = function loadUserRoutes(router) {
                         }
                         else{
                             console.log("user is already invited");
+                            throw new Error("user is already invited");
                             return;
                             //res.status(500).send("user is already invited");
                         }
@@ -304,17 +319,20 @@ module.exports = function loadUserRoutes(router) {
                 else{
                     //console.log(eventIndex);
                     console.log("user already invited to this event");
+                    throw new Error("user already invited to this event");
                     //res.status(500).send("user already invited to this event");
                     return;
                 }
  
             }
         }).catch((error) => {
-            console.log(error);
+            console.log("err")
+            //console.log(JSON.stringify(error));
+            res.status(500).send("Error: " + error);
             return;
             //res.status(500).send("Error: " + error);
         });
-        res.status(500).send("unauthorized operation");
+
     });
 
     //user decline an invitation to an event
@@ -404,11 +422,11 @@ module.exports = function loadUserRoutes(router) {
 
     //for event owner to verify that 
     //the individual input amounts add up to total amount
-    router.get('/verifyAmount/:eventID', function(req, res){
-        let sum = 0;
+    router.put('/verifyAmount/:eventID', function(req, res){
+        //let sum = 0;
         //let individualAmountList = [];
         let evt_promise = evt.findOne({'_id': req.params.eventID}).exec();
-        let evt_user_promise = evt_user.find({'_id': req.params.eventID}).exec();
+        let evt_user_promise = evt_user.find({'eventID': req.params.eventID}).exec();
         assert.ok(evt_promise instanceof require('mpromise'));
         evt_promise.then(function(evt){
             if(evt === undefined || evt === null)
@@ -422,13 +440,14 @@ module.exports = function loadUserRoutes(router) {
                 console.log("event found");
                 assert.ok(evt_user_promise instanceof require('mpromise'));
                 evt_user_promise.then(function(evt_users){
+                    let sum = 0;
                     if(evt_users === undefined || evt_users === null)
                     {
                         console.log("event individual amount not found");
                         res.status(404).send("event individual amount not found");
                         return;
                     }
-                    else if(evt_users.length !== evt.memberList.length)
+                    else if(evt_users.length !== evt.memberAccount.length)
                     {
                         console.log("number of event member and individual amount number not match");
                         res.status(500).send("number of event member and individual amount number not match");
@@ -437,9 +456,10 @@ module.exports = function loadUserRoutes(router) {
                     else
                     {
                         evt_users.forEach(function(element){
-                        sum += element.individualAmount;
+                            console.log(element);
+                            sum += element.individualAmount;
+                            console.log("sum = " + sum);
                         });
-
                         if(sum !== evt.totalAmount)
                         {
                             console.log("amount incorrect, need to re-verify");
@@ -455,6 +475,11 @@ module.exports = function loadUserRoutes(router) {
                                 });
                             });
                             res.status(200).json(inputList);
+                            //throw new Error("amount incorrect , need to re-verify");
+                        }
+                        else
+                        {
+                            res.status(200).json("Amount verified");
                             return;
                         }
                     }
@@ -515,6 +540,7 @@ module.exports = function loadUserRoutes(router) {
                 }).catch((error) => {
                     console.log("Error: " + error);
                     res.status(500).send("Error: " + error);
+                    return;
                 });
             }
 
