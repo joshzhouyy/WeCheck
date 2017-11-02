@@ -134,7 +134,7 @@ class EventList extends React.Component {
       defaultValue: defaultValue
     }
 
-    console.log(JSON.stringify(this.state))
+    // console.log(JSON.stringify(this.state))
     return (
       <Paper id="eventListContainer">
         <Grid id="EventListGrid">
