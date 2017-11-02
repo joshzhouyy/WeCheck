@@ -244,7 +244,7 @@ module.exports = function loadEventRoutes(router){
 		});
 	});
 
-	//add a user into an event(deprecated api)
+	//add a user into an event(do not use this deprecated api)
 	/*router.put('/event/addMember/:eventID', function(req, res){
 		let oldEvt = evt.findOne({'_id':req.params.eventID}, (error, oldEvt) => {
 			if(error){
@@ -272,7 +272,7 @@ module.exports = function loadEventRoutes(router){
         res.status(500).send("Update total error: " + error);
         return;
       }
-      else if(req.body.totalAmount === undefined || req.body.totalAmount === null || req.body.totalAmount <= 0){
+      else if(req.body.totalAmount === undefined || req.body.totalAmount === null || req.body.totalAmount < 0){
         res.status(504).send('Error: invalid amount');
         return;
       }
