@@ -8,6 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import DatePicker from 'material-ui/DatePicker';
 
 import {styles} from './CreateEventPanelStyle'
 
@@ -123,7 +124,7 @@ class EditDialogBox extends React.Component {
    inputEventTime(time) {
     // console.log(time);
     this.setState({
-      eventTime: time
+      eventTime: new Date(time)
     });
   }
 
@@ -191,7 +192,7 @@ class EditDialogBox extends React.Component {
     ];
 
     return (
-      <div>
+      <div className="eventPanelBtns">
         {DialogBtn(type, label, this.handleOpen)}
         <Dialog
           title={title}
@@ -206,18 +207,21 @@ class EditDialogBox extends React.Component {
             floatingLabelFixed={true}
             onChange={(event, input) => this.inputEventName(input)}
           /><br />
-          <TextField
-            hintText={this.state.eventTime}
-            floatingLabelText="Event Time"
-            floatingLabelFixed={true}
-            onChange={(event, input) => this.inputEventTime(input)}
-          /><br />
+          
           <TextField
             hintText={this.state.eventLocation}
             floatingLabelText="Event Location"
             floatingLabelFixed={true}
             onChange={(event, input) => this.inputEventLocation(input)} 
           /><br />
+
+          <DatePicker 
+              hintText="Event Date" 
+              mode="landscape" 
+              defaultDate={new Date(this.state.eventTime)}
+              onChange={(event, input) => this.inputEventTime(input)}
+            />
+            <br />
 
           <p id="splitType" style={styles.floatingLabelStyle} >
             Split Type: 

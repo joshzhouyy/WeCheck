@@ -25,15 +25,20 @@ import {
   deleteMember,
   inviteMember,
   getEvent,
-  updateEvent
+  updateEvent,
+  verifyEvent
    } from './EventActions';
 
 import './EventMemberPanel.css'
 
 
 
-const DeleteEMsg = () => {
+const DeleteMsg = () => {
   return "Are you sure you want to delete this event?";
+}
+
+const VerifyMsg = () => {
+  return "Are you sure you want to verify this event?";
 }
 
 const BtnGroup = (props) => {
@@ -44,18 +49,19 @@ const BtnGroup = (props) => {
   const userId = props.userId;
   const event = props.event;
 
+  // delete the event
   const deleteBtnProps = {
         type: "secondary",
         label: "Delete",
         title: "Delete Event",
-        info: DeleteEMsg,
+        info: DeleteMsg,
         onClick: deleteEvent,
         eventId: eventId,
         id: "deleteId",
         successMsg: "Event deleted!",
         failMsg: "Fail to delete this event..."
   }
-
+  // creator's total input
   const addBtnProps = {
     type: "primary",
     label: "Add",
@@ -67,7 +73,7 @@ const BtnGroup = (props) => {
     successMsg: "Updated total amount!",
     failMsg: "Fail to update total amount..."
   }
-
+  // member's input
   const inputBtnProps = {
     type: "primary",
     label: "Input",
@@ -80,6 +86,7 @@ const BtnGroup = (props) => {
     failMsg: "Fail to input expense..."
   }
 
+  //edit event
   const editBtnProps = {
     type: "default",
     label: "Edit",
@@ -93,19 +100,31 @@ const BtnGroup = (props) => {
     userId: userId
   }
 
+  const verifyBtnProps = {
+        type: "primary",
+        label: "Verify",
+        title: "Verify Event",
+        info: VerifyMsg,
+        onClick: verifyEvent,
+        eventId: eventId,
+        id: "deleteId",
+        successMsg: "Event Verifies!",
+        failMsg: "Fail to verify this event..."
+  }
+
   if (!isCreator) {
     return (
       <div id="memberBtnsDiv">
-        <InputDialogBox className="raisedBtns" {...inputBtnProps}/>
-        <DialogBox className="creatorBtns" {...deleteBtnProps} />
+        <InputDialogBox {...inputBtnProps}/>
       </div>  
     );
   } else {
       return (
         <div id="creatorBtnsDiv">
-          <InputDialogBox className="creatorBtns" {...addBtnProps} />
-          <EditDialogBox className="creatorBtns" {...editBtnProps} />
-          <DialogBox className="creatorBtns" {...deleteBtnProps} />
+          <InputDialogBox  {...addBtnProps} />
+          <EditDialogBox {...editBtnProps} />
+          <DialogBox {...verifyBtnProps} />
+          <DialogBox {...deleteBtnProps} />
         </div>
 
       );  
@@ -118,13 +137,13 @@ const BillSum = (totalSum) => {
   return (<h3>{info}</h3>);
 }
 
-
+// creator's + and - members
 const CreatorMemberListBtns = ({eventId, userId}) => {
   const inviteMemberBtnProps = {
     type: "default",
     label: "+",
     title: "Invite a Member",
-    onClick: inputIndividualExpense,
+    onClick: inviteMember,
     eventId: eventId,
     userId: userId,
     id: "inviteMemberBtn",
@@ -162,12 +181,13 @@ const CreatorMemberListBtns = ({eventId, userId}) => {
   );
 }
 
+// memberlist's button
 const MemberListBtns = ({eventId, userId}) => {
   const inviteMemberBtnProps = {
     type: "default",
     label: "+",
     title: "Invite a Member",
-    onClick: inputIndividualExpense,
+    onClick: inviteMember,
     eventId: eventId,
     userId: userId,
     id: "inviteMemberBtn",
@@ -208,19 +228,19 @@ const EventMemberList = (memberListProps) => {
     userId: userId
   }
 
-  // if (!isCreator) {
-  //   return (
-  //     <List id="memberListContainerDiv">
-  //       <Subheader>Member List</Subheader>
-  //       {
-  //         _.map(members, (m) => {
-  //           return Member(m.userAccount, m._id);
-  //         })
-  //       }
-  //       <MemberListBtns {...btnProps}/>
-  //     </List>
-  //     );
-  // } else {
+  if (!isCreator) {
+    return (
+      <List id="memberListContainerDiv">
+        <Subheader>Member List</Subheader>
+        {
+          _.map(members, (m) => {
+            return Member(m.userAccount, m._id);
+          })
+        }
+        <MemberListBtns {...btnProps}/>
+      </List>
+      );
+  } else {
     return (  
       <div id="memberListContainerDiv">
         <Subheader>Member List</Subheader>
@@ -232,7 +252,7 @@ const EventMemberList = (memberListProps) => {
         <CreatorMemberListBtns {...btnProps}/>
       </div>
     );
-  // }
+  }
 
 }
   

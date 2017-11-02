@@ -14,6 +14,7 @@ function requestSignUp() {
 function receiveUser(user) {
     const newUser = {
         userAccount: user.userAccount,
+        userName: user.userName,
         id: user.id
     }
     return {
@@ -42,13 +43,14 @@ export function signUp(user) {
         // console.log(0)
         return axios.post('/signup', user)
                .then((response) => {
-                  console.log("user's information" + JSON.stringify(user))
+                  // console.log("user's information" + JSON.stringify(user))
                   // console.log("m")
                   // console.log("@@@@@@@@@@@@@@@@@@@@@ " + JSON.stringify(response))
                    if (response.data != null && response.data != "") {
                       console.log(response);
                       let data = {};
                       data.userAccount = response.data.userAccount;
+                      data.userName = response.data.userName;
                       data.id = response.data._id;
                       dispatch(receiveUser(data));
                       browserHistory.push('/app');
@@ -77,6 +79,7 @@ function requestSignIn(username) {
 function receiveSignIn(data) {
     const user = {
         userAccount: data.userAccount,
+        userName: data.userName,
         id: data.id
     }
     // console.log(user)

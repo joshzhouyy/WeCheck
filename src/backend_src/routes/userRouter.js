@@ -272,6 +272,11 @@ module.exports = function loadUserRoutes(router) {
                         throw new Error("cannot invite self");
                         return;
                     }
+                    else if(evt.ownerID === receiver._id)
+                    {
+                        console.log("cannot invite self");
+                        return;
+                    }
                     else{
                         console.log("event found");
                         let userID = receiver._id;
@@ -332,7 +337,6 @@ module.exports = function loadUserRoutes(router) {
             return;
             //res.status(500).send("Error: " + error);
         });
-
     });
 
     //user decline an invitation to an event

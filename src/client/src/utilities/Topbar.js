@@ -25,11 +25,13 @@ import autoBind from 'react-autobind';
 };
 
 const rightButtons = (onClick, userAccount) => (
+
     <div>
       <FlatButton label={userAccount}  style={styles.buttonStyle} />
       <FlatButton label="Sign Out"  style={styles.buttonStyle} onClick={() => onClick()}/>
     </div>
   );
+
 
 
 

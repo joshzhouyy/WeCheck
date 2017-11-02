@@ -232,6 +232,7 @@ module.exports = function loadEventRoutes(router){
     		return;
     	});
     });
+
 	//get all stored event
 	router.get('/api/all_event', function(req, res){
 		evt.find({'eventName': {$exists:true}}, function(err, data){
@@ -264,7 +265,6 @@ module.exports = function loadEventRoutes(router){
 			});
 		});
 	});*/
-
 
   router.put('/event/updateTotal/:userID/:eventID', function(req, res){
     evt.findOne({'_id': req.params.eventID}, (error, evt) => {
@@ -1058,4 +1058,3 @@ module.exports = function loadEventRoutes(router){
 		});
 	});
 }*/
-

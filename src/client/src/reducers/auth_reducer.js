@@ -15,6 +15,7 @@ const initialState = {
     loaded: false,
     user: {
         userAccount: null,
+        userName: null,
         id: null,
         socketID: null
     },
@@ -41,12 +42,13 @@ export default function authReducer(state = initialState, action = {}) {
                 isSigningUp: true
             };
         case AUTH_SIGNUP_SUCCESS:
-            console.log(action.newUser.username + " sign up successfully!");
+            console.log(action.newUser.userName + " sign up successfully!");
             return {
                 ...state,
                 isSigningUp: false,
                 user: {
                     username: action.newUser.userName,
+                    userAccount: action.newUser.userAccount,
                     id: action.newUser.id,
                     socketID: null
                 }
@@ -75,6 +77,7 @@ export default function authReducer(state = initialState, action = {}) {
                 isSigningIn: false,
                 user: {
                     userAccount: action.user.userAccount,
+                    userName: action.user.userName,
                     id: action.user.id,
                     socketID: null
                 }

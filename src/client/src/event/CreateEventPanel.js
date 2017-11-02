@@ -9,6 +9,8 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import DatePicker from 'material-ui/DatePicker';
+
 import './CreateEventPanel.css';
 import {styles} from './CreateEventPanelStyle'
 import autoBind from 'react-autobind';
@@ -19,14 +21,21 @@ const splitType = ["even", "separate"];
 const eventType = ["public", "private"];
 const eventCategory = ["hotel", "restaurant", "flight"];
 
+const alertMsg = (fieldName) => {
+  alert(fieldName + " cannot be empty!!");
+}
+
 class CreateEventPanel extends React.Component {
   
   constructor(props) {
-        console.log(props)
+
         super(props);
+        console.log("what is props");
+        console.log(props);
         this.state = {
+            ownerID: props.userId,
             eventName: '',
-            eventTime: '',
+            eventTime: new Date(),
             eventLocation: '',
             splitType:1,
             eventType: 1,
@@ -46,9 +55,9 @@ class CreateEventPanel extends React.Component {
   }
 
    inputEventTime(time) {
-    // console.log(time);
+    console.log(time);
     this.setState({
-      eventTime: time
+      eventTime: new Date(time)
     });
   }
 
@@ -82,23 +91,50 @@ class CreateEventPanel extends React.Component {
   }
 
   handleCreate() {
+
+    const eventName = this.state.eventName;
+    const eventTime = this.state.eventTime;
+    const eventLocation = this.state.eventLocation;
+
     const event = {
-      userId: this.props.userId,
-      eventName: this.state.eventName,
+      ownerID: this.state.ownerID,
+      eventName: eventName,
+      eventTime: eventTime,
       eventType: eventType[this.state.eventType-1],
       eventCategory: eventCategory[this.state.eventCategory-1],
-      eventLocation: this.state.eventLocation,
-      splitType: splitType[this.state.splitType-1]
+      eventLocation: eventLocation,
+      splitType: splitType[this.state.splitType-1],
+      invitationList: []
     }
 
+    console.log(event);
+    const failMsg = "Failed to create this event...";
+    const successMsg = "Event created!!";
 
 
-
-    createEvent(event)
+    if (eventName === "") {
+      alertMsg("Event Name");
+    }
+    else if (eventTime === "") {
+      alertMsg("Event Time");
+    }
+    else if (eventLocation === "") {
+      alertMsg("Event Location");
+    }
+    else {
+      createEvent(event)
       .then(data => {
-        console.log(JSON.stringify(data))
-        alert("Created event successfully");
+        // console.log(JSON.stringify(data))
+        alert(successMsg);
+      })
+      .catch((err) => {
+        // console.log(JSON.stringify(err));
+        const status = err.response.status;
+        const statusText = err.response.statusText;
+        const data = err.response.data
+        alert(failMsg + "\n" + status + " " + statusText + " " + data);
       });
+    }
   }
 
 
@@ -106,7 +142,7 @@ class CreateEventPanel extends React.Component {
   render() {
     // console.log(JSON.stringify(this.state));
     const onClick = this.props.onClick;
-    
+    console.log(this.state);
     return (       
       <div id = "pageDiv">
             <h1>CREATE PAGE</h1>
@@ -121,17 +157,6 @@ class CreateEventPanel extends React.Component {
                 onChange={(event, input) => this.inputEventName(input)}    
             />
 
-           
-          
-
-            <br />
-            <TextField
-                id="eventTime"  
-                hintText="Event Time"
-                hintStyle={styles.floatingLabelStyle}
-                underlineStyle={styles.underlineStyle}
-                onChange={(event, input) => this.inputEventTime(input)} 
-            />
             <br />
             <TextField
                 id="eventLocation"    
@@ -142,6 +167,14 @@ class CreateEventPanel extends React.Component {
             />
             <br />
             
+            <DatePicker 
+              hintText="Event Date" 
+              mode="landscape" 
+              defaultDate={new Date()}
+              onChange={(event, input) => this.inputEventTime(input)}
+            />
+            <br />
+
             <p id="splitType" style={styles.floatingLabelStyle} >
               Split Type: 
             </p>
