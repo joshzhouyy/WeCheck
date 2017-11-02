@@ -96,16 +96,16 @@ const BtnGroup = (props) => {
   if (!isCreator) {
     return (
       <div id="memberBtnsDiv">
-        <InputDialogBox className="raisedBtns" {...inputBtnProps}/>
-        <DialogBox className="creatorBtns" {...deleteBtnProps} />
+        <InputDialogBox className="memberBtnDialog" {...inputBtnProps}/>
+        <DialogBox className="memberBtnDialog" {...deleteBtnProps} />
       </div>  
     );
   } else {
       return (
         <div id="creatorBtnsDiv">
-          <InputDialogBox className="creatorBtns" {...addBtnProps} />
-          <EditDialogBox className="creatorBtns" {...editBtnProps} />
-          <DialogBox className="creatorBtns" {...deleteBtnProps} />
+          <InputDialogBox className="creatorBtnDialog" {...addBtnProps} />
+          <EditDialogBox className="creatorBtnDialog" {...editBtnProps} />
+          <DialogBox className="creatorBtnDialog" {...deleteBtnProps} />
         </div>
 
       );  

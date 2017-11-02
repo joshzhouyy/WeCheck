@@ -274,7 +274,8 @@ export const updateEvent = (event, userId) => {
       eventType: eventType,
       eventCategory: eventCategory,
       splitType: splitType,
-      userId: userId
+      ownerID: userId,
+      userID: userId
     })
     .then((response) => {
       const data = response.data;

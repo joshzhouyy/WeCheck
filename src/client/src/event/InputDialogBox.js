@@ -115,7 +115,7 @@ class InputDialogBox extends React.Component {
     ];
 
     return (
-      <div>
+      <div className="eventPanelBtns">
         {DialogBtn(type, label, this.handleOpen, backgroundColor, style)}
         <Dialog
           title={title}
