@@ -54,7 +54,7 @@ class Signup extends Component {
             password: this.state.password,
           };
 
-          console.log(JSON.stringify(userObj));
+          // console.log(JSON.stringify(userObj));
 
           dispatch(authActions.signUp(userObj));
 

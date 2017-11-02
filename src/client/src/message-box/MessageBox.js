@@ -23,34 +23,40 @@ const iconButtonElement = (
   </IconButton>
 );
 
-const rightIconMenu = (confirmLabel, rejectLabel, eventId) => (
+const rightIconMenu = (confirmLabel, rejectLabel, userId, eventId) => (
   <IconMenu iconButtonElement={iconButtonElement}>
-    <MenuItem>{confirmLabel}</MenuItem>
+    <MenuItem onClick={()=>{handleAcceptInvitation(userId, eventId)}}>{confirmLabel}</MenuItem>
     <MenuItem>{rejectLabel}</MenuItem>
   </IconMenu>
 );
 
-const InvitationListItem = (v) => {
+const InvitationListItem = (v, userId) => {
   const text = v.ownerAccount + " wants to invite you to Event " + v.eventName;
   const eventId = v._id;
-  const userId = v.userId;
-
+  // console.log(eventId);
+  // console.log(userId);
   return (
     <ListItem
       key={v._id}
-      rightIconButton={rightIconMenu("Accept", "Reject", eventId)}
+      rightIconButton={rightIconMenu("Accept", "Reject", userId, eventId)}
       primaryText={text}
-      onClick={handleAcceptInvitation(userId, eventId)}
     />
   )};
 
+const print = (e) => {
+  e.preventDefault();
+  console.log("clicked")
+}
+
 const handleAcceptInvitation = (userId, eventId) => {
+  // console.log(userId)
+  // console.log(eventId)
   acceptInvitation(userId, eventId)
     .then(value => {
       alert("Invitation Accepted!");
     })
-    .catch(err => {
-      console.log(JSON.stringify(err));
+    .catch((err) => {
+      // console.log(JSON.stringify(err));
       const response = err.response;
       const status = response.status;
       const statusText = response.statusText;
@@ -191,8 +197,7 @@ class MessageBox extends React.Component {
               <List>
                 {
                   _.map(invitations, v => {
-                    v.userId = userId;
-                    return InvitationListItem(v)
+                    return InvitationListItem(v, userId)
                   })
                 }
               </List>
