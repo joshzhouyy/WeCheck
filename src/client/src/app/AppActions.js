@@ -15,6 +15,11 @@ export const selectActivePanel = (selectedPanel) => {
   }
 
 
+  export const selectCreateNewEvent = () => ({
+    type: "SELECT_CREATE_NEW_EVENT"
+  })
+
+
 
 // Defect 11, 25
 // export const selectActivePanel = (selectedPanel) => {
