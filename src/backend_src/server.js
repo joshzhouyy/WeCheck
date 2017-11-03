@@ -5,7 +5,8 @@ var socketIO = require('socket.io');
 var mongoose = require('mongoose');
 var MongoClient = require('mongodb').MongoClient;
 
-var mongooseURL = process.env.MONGOLAB_URL || 'mongodb://admin:admin@ds139844.mlab.com:39844/wecheckdb';
+//var mongooseURL = process.env.MONGOLAB_URL || 'mongodb://admin:admin@ds139844.mlab.com:39844/wecheckdb';
+var mongooseURL = process.env.MONGOLAB_URL || 'mongodb://tester:cs408test@ds245615.mlab.com:45615/wecheck-test';
 
 mongoose.connect(mongooseURL,{useMongoClient:true}, function(err){
 //MongoClient.connect(mongooseURL, function(err){
