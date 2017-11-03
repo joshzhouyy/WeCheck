@@ -53,6 +53,8 @@ export const styles = {
 
   dropdown: {
     // height:61,
+    left: 70,
+    top:-75,
   },
 
   block: {
