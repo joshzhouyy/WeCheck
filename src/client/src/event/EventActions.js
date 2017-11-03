@@ -279,7 +279,7 @@ export const createEvent = (event) => {
       invitationList: event.invitationList
     })
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       const data = response.data;
       if (data !== null) {
         resolve(data);

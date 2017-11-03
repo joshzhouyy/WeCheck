@@ -1,7 +1,8 @@
 import {
   SELECT_ACTIVE_PANEL, 
   SELECT_EVENT,
-  SELECT_ACTIVE_PAGE
+  SELECT_ACTIVE_PAGE,
+  SELECT_CREATE_NEW_EVENT
         } from '../constants/ActionTypes'
 import {EVENT_PANEL} from '../constants/Names';
 
@@ -68,6 +69,12 @@ const panels = (state = initialState, action) => {
       return {
         ...state,
         selectedPage: action.selectedPage
+      }
+    case SELECT_CREATE_NEW_EVENT:
+      return {
+        ...state,
+        selectedPanel: "CREATE_BOX",
+        activePanel: "CREATE_BOX"
       }
     default:
       return state;
