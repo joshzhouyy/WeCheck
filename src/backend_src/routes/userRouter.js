@@ -671,13 +671,13 @@ module.exports = function loadUserRoutes(router) {
                 //bug2
                 //if(req.body.userAccount != '' && req.body.password != '' && req.body.userName != ''){
                     let re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-                    if(re.test(req.body.userAccount) === false){
-                        console.log("invalid email");
-                        res.status(500).send("invalid email!");
-                        return;
-                    }
-                    else
-                    {
+                    // if(re.test(req.body.userAccount) === false){
+                    //     console.log("invalid email");
+                    //     res.status(500).send("invalid email!");
+                    //     return;
+                    // }
+                    //else
+                    //{
                         let newUser = new user();
                         newUser.userAccount = req.body.userAccount;
                         newUser.password = hash(req.body.password);
@@ -699,7 +699,7 @@ module.exports = function loadUserRoutes(router) {
                         }
                         res.json(newUser);
                         });
-                    }
+                    //}
                // }
                 //else{
                   //  res.status(500).send("bad parameters");
