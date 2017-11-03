@@ -15,7 +15,7 @@ const CreateNewEventbtn = ({onClick, activePanel}) => {
           backgroundColor={colors.orange100}
           className="eventListBtn"
           style={{ fontSize: '1.5rem' }}
-          onClick={() => onClick("CREATE_BOX")}
+          onClick={() => onClick()}
           /> 
         </div>
     );} 

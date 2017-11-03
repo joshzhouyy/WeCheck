@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {selectActivePanel} from '../app/AppActions';
+import {selectCreateNewEvent} from '../app/AppActions';
 import * as appSelectors from '../app/appReducer';
 import CreateNewEventbtn from './CreateNewEventbtn';
 
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onClick: bindActionCreators(selectActivePanel, dispatch)
+  onClick: bindActionCreators(selectCreateNewEvent, dispatch)
 });
 
 
