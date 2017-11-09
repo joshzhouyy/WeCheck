@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import {selectEvent, removeEvent} from './EventActions';
+import {selectEvent} from './EventActions';
 import * as appSelectors from '../app/appReducer';
 import * as authSelectors from '../reducers/auth_reducer';
 import * as eventSelectors from './eventReducer';

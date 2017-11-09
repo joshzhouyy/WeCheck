@@ -44,6 +44,7 @@ const VerifyMsg = () => {
 const BtnGroup = (props) => {
   const isCreator = props.isCreator;
   const deleteEvent = props.deleteEvent;
+  const updatedTotal = props.updatedTotal;
   const addTotal = props.addTotal;
   const eventId = props.eventId;
   const userId = props.userId;
@@ -67,6 +68,8 @@ const BtnGroup = (props) => {
     label: "Add",
     title: "Add Total Amount",
     onClick: addTotal,
+    dispatchFunc: updatedTotal,
+    onClickType: "addTotal",
     eventId: eventId,
     userId: userId,
     id: "addBtn",
@@ -153,6 +156,7 @@ const CreatorMemberListBtns = ({eventId, userId}) => {
     failMsg: "Failed to send invitation..."
   };
 
+  // TODO: add onClickType & dispatchFunc
   const deleteMemberBtnProps = {
     type: "default",
     label: "-",
@@ -298,11 +302,13 @@ class EventMemberPanel extends React.Component {
   }
 
   render (){
-    // console.log("in render" + JSON.stringify(this.props));
+    // console.log(this.props);
     const isCreator = this.props.isCreator;
     const eventId = this.props.selectedEventId;
     const userId = this.props.userId;
     const eventName = this.props.eventName;
+
+    const updatedTotal = this.props.updatedTotal;
 
     const members = this.state.members;
     const billSum = this.state.billSum;
@@ -319,12 +325,15 @@ class EventMemberPanel extends React.Component {
       userId: userId
     }
 
+    // const {dispatch} = this.props;
+    // console.log(dispatch);
 
     if (event !== null) 
     {
         const btnGroupProps = {
           isCreator: isCreator,
           deleteEvent: deleteEvent,
+          updatedTotal: updatedTotal,
           addTotal: addTotal,
           eventId: eventId,
           userId: userId,

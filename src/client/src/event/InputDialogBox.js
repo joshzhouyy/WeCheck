@@ -56,7 +56,9 @@ class InputDialogBox extends React.Component {
   };
 
   handleSubmit = (props) => {
+    const onClickType = props.onClickType;
     const onClick = props.onClick;
+    const dispatchFunc = props.dispatchFunc;
     const eventId = props.eventId;
     const userId = props.userId;
     const successMsg = props.successMsg;
@@ -70,7 +72,17 @@ class InputDialogBox extends React.Component {
       // console.log(this.state.input);
       onClick(eventId, userId, userInput)
       .then(value => {
-        console.log("success")
+        console.log("success");
+        switch(onClickType) {
+          case "addTotal":
+            const event = {
+              eventName: value.eventName,
+              eventTotal: value.totalAmount
+            }
+            dispatchFunc(event); 
+          default:
+            return;
+        }
         alert(successMsg);
       })
       .catch((err) => {
@@ -88,9 +100,11 @@ class InputDialogBox extends React.Component {
   render () {
     // console.log(this.props);
     const type = this.props.type;
+    const onClickType = this.props.onClickType;
     const label = this.props.label;
     const title = this.props.title;
     const onClick = this.props.onClick;
+    const dispatchFunc = this.props.dispatchFunc;
     const eventId = this.props.eventId;
     const userId = this.props.userId;
     const backgroundColor = this.props.backgroundColor;
@@ -100,7 +114,9 @@ class InputDialogBox extends React.Component {
     const failMsg = this.props.failMsg;
 
     const handleSubmitProps = {
+      onClickType: onClickType,
       onClick: onClick,
+      dispatchFunc: dispatchFunc,
       eventId: eventId,
       userId: userId,
       successMsg: successMsg,

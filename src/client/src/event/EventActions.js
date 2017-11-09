@@ -134,6 +134,12 @@ export const deleteEvent = (eventId) => {
   })
 }
 
+
+export const updatedTotal = (event) => ({
+  type: "UPDATED_TOTAL",
+  event
+})
+
 export const addTotal = (eventId, userId, totalAmount) => {
   return new Promise ((resolve, reject) => {
     // console.log(typeof totalAmount);
@@ -142,7 +148,10 @@ export const addTotal = (eventId, userId, totalAmount) => {
     })
     .then((response) => {
       const data = response.data;
-      resolve(data);
+      // console.log(JSON.stringify(data));
+      if (data !== null) {
+        resolve(data);
+      }
     })
     .catch((err) => {
       console.log(err);

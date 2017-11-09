@@ -40,7 +40,7 @@ const initialState = {
     isOwner: false,
     selectedPage: "SPLITTER",
     eventListDefaultValue: -1,
-    selectedEventName: ""
+    selectedEventName: "",
 };
 
 

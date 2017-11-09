@@ -21,3 +21,4 @@ export const RECEIVE_SOCKET = "RECEIVE_SOCKET"
 
 // Event
 export const REMOVE_EVENT = "REMOVE_EVENT"
+export const UPDATED_TOTAL = "UPDATED_TOTAL"
