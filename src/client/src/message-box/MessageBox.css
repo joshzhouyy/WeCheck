@@ -1,0 +1,14 @@
+#MsgBoxContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#topCard {
+  height: 6%;
+}
+
+.btmCards {
+  min-height: 12%;
+  max-height: 30%;
+  overflow-y: auto;
+}

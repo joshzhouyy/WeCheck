@@ -1,0 +1,38 @@
+#ExpenseRecordContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#ExpenseRecordGrid {
+  height: 100%;
+  width: 100%;
+}
+
+#ExpenseCreateRow {
+  width: 100%;
+  height: 10%;
+}
+
+#ExpenseRecordRow {
+  width: 100%;
+  height: 84%;
+}
+
+#ExpenseCreateDiv {
+  height: 100%;
+  width: 100%
+}
+
+
+.createBtn {
+  width: 40%;
+  position: absolute;
+  left: 30%;
+}
+
+#viewDropdown {
+  position: absolute;
+  left: 70%;
+  margin-top: -5%;
+}
+

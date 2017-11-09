@@ -1,0 +1,18 @@
+#balanceContainer {
+  height: 99%;
+  width: 100%;
+}
+
+#topCard {
+  height: 6%;
+}
+
+.btmCards {
+  min-height: 12%;
+  max-height: 40%;
+  overflow-y: auto;
+}
+
+.raisedBtns {
+  margin: 0.8rem;
+}

@@ -1,6 +1,9 @@
 {
   "name": "local_src",
   "version": "1.0.0",
+  "engines":{
+	  "node":"6.11.5"
+	},
   "description": "local server for wecheck",
   "main": "server.js",
   "scripts": {
@@ -15,6 +18,7 @@
     "express": "^4.15.4",
     "mongodb": "^2.2.31",
     "mongoose": "^4.11.12",
+    "object-hash": "^1.2.0",
     "path": "^0.12.7",
     "socket.io": "^2.0.3"
   }
