@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as appSelectors from '../app/appReducer';
 import * as authSelectors from '../reducers/auth_reducer';
 import * as eventSelectors from './eventReducer';
-import {removeEvent, updatedTotal} from './EventActions';
+import {removeEvent, updatedTotal, deletedMember} from './EventActions';
 import EventMemberPanel from './EventMemberPanel';
 
 const mapStateToProps = (state) => ({
@@ -12,11 +12,13 @@ const mapStateToProps = (state) => ({
   selectedEventId: appSelectors.getSelectedEventId(state),
   userId: authSelectors.getUserId(state),
   eventName: appSelectors.getSelectedEventName(state),
-  updatedTotal: eventSelectors.getUpdatedTotal(state)
+  updatedTotal: eventSelectors.getUpdatedTotal(state),
+  memberDeleted: eventSelectors.getDeletedMember(state) 
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updatedTotal: bindActionCreators(updatedTotal, dispatch)
+  updatedTotal: bindActionCreators(updatedTotal, dispatch),
+  deletedMember: bindActionCreators(deletedMember, dispatch)
 });
 
 const EventPanelContainer = connect(

@@ -141,7 +141,7 @@ const BillSum = (totalSum) => {
 }
 
 // creator's + and - members
-const CreatorMemberListBtns = ({eventId, userId}) => {
+const CreatorMemberListBtns = ({eventId, userId, deletedMember}) => {
   const inviteMemberBtnProps = {
     type: "default",
     label: "+",
@@ -164,6 +164,8 @@ const CreatorMemberListBtns = ({eventId, userId}) => {
     onClick: deleteMember,
     eventId: eventId,
     userId: userId,
+    dispatchFunc: deletedMember,
+    onClickType: "deleteMember",
     id: "deleteMemberBtn",
     backgroundColor:colors.indigo100,
     style:{ fontSize: '1.5rem' },
@@ -226,10 +228,12 @@ const EventMemberList = (memberListProps) => {
   const members = memberListProps.members;
   const eventId = memberListProps.eventId;
   const userId = memberListProps.userId;
+  const deletedMember = memberListProps.deletedMember;
 
   const btnProps = {
     eventId: eventId,
-    userId: userId
+    userId: userId,
+    deletedMember: deletedMember
   }
 
   if (!isCreator) {
@@ -241,7 +245,7 @@ const EventMemberList = (memberListProps) => {
             return Member(m.userAccount, m._id);
           })
         }
-        <CreatorMemberListBtns {...btnProps}/>
+        <MemberListBtns {...btnProps}/>
       </List>
       );
   } else {
@@ -309,6 +313,7 @@ class EventMemberPanel extends React.Component {
     const eventName = this.props.eventName;
 
     const updatedTotal = this.props.updatedTotal;
+    const deletedMember = this.props.deletedMember;
 
     const members = this.state.members;
     const billSum = this.state.billSum;
@@ -322,7 +327,8 @@ class EventMemberPanel extends React.Component {
       isCreator: isCreator,
       members: members,
       eventId: eventId,
-      userId: userId
+      userId: userId,
+      deletedMember: deletedMember
     }
 
     // const {dispatch} = this.props;

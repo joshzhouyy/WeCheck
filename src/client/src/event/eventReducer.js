@@ -1,4 +1,8 @@
-import {REMOVE_EVENT, UPDATED_TOTAL} from '../constants/ActionTypes'
+import {
+  REMOVE_EVENT, 
+  UPDATED_TOTAL, 
+  DELETED_MEMBER
+} from '../constants/ActionTypes'
 
 // Selectors(getters)
 export const getRemovedEventId = (state) => {
@@ -9,9 +13,15 @@ export const getUpdatedTotal = (state) => {
   return state.event.updatedTotal;
 }
 
+export const getDeletedMember = (state) => {
+  return state.event.deletedMember;
+}
+
+
 const initialState = {
     selectedDeleteEventId: "",
-    updatedTotal: null
+    updatedTotal: null,
+    deletedMember: false
 };
 
 // Reducers(setters)
@@ -24,10 +34,16 @@ const event = (state = initialState, action) => {
         selectedDeleteEventId: action.eventId,
       }
     case UPDATED_TOTAL:
-      console.log("user updated total amount for " + action.event.eventName + " to " + action.event.eventTotal);
+      // console.log("user updated total amount for " + action.event.eventName + " to " + action.event.eventTotal);
       return {
         ...state,
         updatedTotal: action.event.eventTotal
+      }
+    case DELETED_MEMBER:
+      // console.log(state)
+      return {
+        ...state,
+        deletedMember: !state.deletedMember
       }
     default:
       return state;

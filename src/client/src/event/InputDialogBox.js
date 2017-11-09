@@ -73,6 +73,7 @@ class InputDialogBox extends React.Component {
       onClick(eventId, userId, userInput)
       .then(value => {
         console.log("success");
+        alert(successMsg);
         switch(onClickType) {
           case "addTotal":
             const event = {
@@ -80,10 +81,11 @@ class InputDialogBox extends React.Component {
               eventTotal: value.totalAmount
             }
             dispatchFunc(event); 
+          case "deleteMember":
+            dispatchFunc();
           default:
             return;
         }
-        alert(successMsg);
       })
       .catch((err) => {
         console.log(JSON.stringify(err));

@@ -253,6 +253,10 @@ export const declineInvitation = (receiverId, eventId) => {
   })
 }
 
+export const deletedMember = () => ({
+  type: "DELETED_MEMBER"
+})
+
 
 export const deleteMember = (eventId, userId, input) => {
   return new Promise ((resolve, reject) => {
