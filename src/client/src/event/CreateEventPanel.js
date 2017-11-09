@@ -21,7 +21,7 @@ const splitType = ["even", "separate"];
 const eventType = ["public", "private"];
 const eventCategory = ["hotel", "restaurant", "flight"];
 
-console.log(styles)
+// console.log(styles)
 
 const alertMsg = (fieldName) => {
   alert(fieldName + " cannot be empty!!");
