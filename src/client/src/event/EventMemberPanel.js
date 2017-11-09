@@ -237,7 +237,7 @@ const EventMemberList = (memberListProps) => {
             return Member(m.userAccount, m._id);
           })
         }
-        <MemberListBtns {...btnProps}/>
+        <CreatorMemberListBtns {...btnProps}/>
       </List>
       );
   } else {

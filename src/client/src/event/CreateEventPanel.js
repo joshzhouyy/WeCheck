@@ -32,7 +32,6 @@ class CreateEventPanel extends React.Component {
   constructor(props) {
 
         super(props);
-        // console.log(props);
         this.state = {
             ownerID: props.userId,
             eventName: '',
@@ -143,7 +142,7 @@ class CreateEventPanel extends React.Component {
   render() {
     // console.log(JSON.stringify(this.state));
     const onClick = this.props.onClick;
-    console.log(this.state);
+    // console.log(this.state);
     return (       
       <div id = "pageDiv">
             <h1>CREATE PAGE</h1>
@@ -204,7 +203,7 @@ class CreateEventPanel extends React.Component {
 
              <br />
              <p id="eventCategory" style={styles.floatingLabelStyle} >
-              Event Type: 
+              Event Category: 
               </p>
           
 
