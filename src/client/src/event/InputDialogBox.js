@@ -61,21 +61,27 @@ class InputDialogBox extends React.Component {
     const successMsg = props.successMsg;
     const failMsg = props.failMsg;
 
-    // console.log(this.state.input);
-    onClick(eventId, userId, this.state.input)
-    .then(value => {
-      console.log("success")
-      alert(successMsg);
-    })
-    .catch((err) => {
-      console.log(JSON.stringify(err));
-      const status = err.response.status;
-      const statusText = err.response.statusText;
-      const data = err.response.data;
-      alert(failMsg + "\n" + status + " " + statusText + "\n" + data);
-    });
+    const userInput = this.state.input;
+    if (userInput.length === 0) {
+      alert("Please input something!");
+    }
+    else {
+      // console.log(this.state.input);
+      onClick(eventId, userId, userInput)
+      .then(value => {
+        console.log("success")
+        alert(successMsg);
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+        const status = err.response.status;
+        const statusText = err.response.statusText;
+        const data = err.response.data;
+        alert(failMsg + "\n" + status + " " + statusText + "\n" + data);
+      });
 
-    this.setState({open: false});
+      this.setState({open: false});
+      }
   }
 
   render () {

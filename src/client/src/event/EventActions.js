@@ -345,6 +345,18 @@ export const updateEvent = (event, userId) => {
 }
 
 
-export const verifyEvent = () => {
-  //TODO
+export const verifyEvent = (eventId) => {
+  return new Promise((resolve, reject) => {
+    axios.put('/verifyAmount/' + eventId)
+    .then((response) => {
+      const data = response.data;
+      if (data !== null) {
+        resolve(data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      reject(err);
+    })
+  })
 }
