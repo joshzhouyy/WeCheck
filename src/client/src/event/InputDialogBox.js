@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import {styles} from './CreateEventPanelStyle';
 
 const DialogBtn = (type, label, handleOpen, backgroundColor, style) => {
   switch(type) {
@@ -130,7 +131,9 @@ class InputDialogBox extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-        <TextField id={id} onChange={(event, input) => this.onChange(event, input)}/>
+        <TextField id={id} 
+          underlineStyle={styles.underlineStyle}
+          onChange={(event, input) => this.onChange(event, input)}/>
         </Dialog>
       </div>
     );

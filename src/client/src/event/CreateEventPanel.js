@@ -21,6 +21,8 @@ const splitType = ["even", "separate"];
 const eventType = ["public", "private"];
 const eventCategory = ["hotel", "restaurant", "flight"];
 
+console.log(styles)
+
 const alertMsg = (fieldName) => {
   alert(fieldName + " cannot be empty!!");
 }
@@ -30,8 +32,7 @@ class CreateEventPanel extends React.Component {
   constructor(props) {
 
         super(props);
-        console.log("what is props");
-        console.log(props);
+        // console.log(props);
         this.state = {
             ownerID: props.userId,
             eventName: '',

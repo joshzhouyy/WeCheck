@@ -206,6 +206,7 @@ class EditDialogBox extends React.Component {
             floatingLabelText="Event Name"
             floatingLabelFixed={true}
             onChange={(event, input) => this.inputEventName(input)}
+            underlineStyle={styles.underlineStyle}
           /><br />
           
           <TextField
@@ -213,6 +214,7 @@ class EditDialogBox extends React.Component {
             floatingLabelText="Event Location"
             floatingLabelFixed={true}
             onChange={(event, input) => this.inputEventLocation(input)} 
+            underlineStyle={styles.underlineStyle}
           /><br />
 
           <DatePicker 
