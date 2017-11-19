@@ -363,7 +363,7 @@ class EventMemberPanel extends React.Component {
                       {BillSum(billSum)}
                     </Row>
                     <Row id="eventBillDetailRow" className="eventInnerRows">
-                      {EventBillSumChart()}
+        
                     </Row>
                   </Col>
                   <Col md={3} id="eventMemberListCol">
