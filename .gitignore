@@ -2,3 +2,4 @@ node_modules/
 npm-debug.log
 .DS_Store
 //src/client/dist/*
+src/backend_src/.DS_Store
