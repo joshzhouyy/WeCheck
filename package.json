@@ -24,7 +24,7 @@
     "jsdom": "^11.2.0",
     "lodash": "^4.17.19",
     "mongodb": "^2.2.31",
-    "mongoose": "^4.11.12",
+    "mongoose": "^5.7.5",
     "object-hash": "1.1.8",
     "path": "0.12.7",
     "prop-types": "^15.6.0",
