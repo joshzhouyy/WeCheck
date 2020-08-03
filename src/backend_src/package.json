@@ -17,7 +17,7 @@
     "cors": "^2.8.4",
     "express": "^4.15.4",
     "mongodb": "^2.2.31",
-    "mongoose": "^4.11.12",
+    "mongoose": "^5.9.27",
     "object-hash": "^1.2.0",
     "path": "^0.12.7",
     "socket.io": "^2.0.3"
